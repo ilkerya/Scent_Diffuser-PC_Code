@@ -6,7 +6,7 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
+           
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -43,22 +43,11 @@
             this.SP1_richTextBox = new System.Windows.Forms.RichTextBox();
             this.plotSurface2D1 = new NPlot.Windows.PlotSurface2D();
             this.plotSurface2D2 = new NPlot.Windows.PlotSurface2D();
-            this.checkBox_Cl_ProfileSpeed = new System.Windows.Forms.CheckBox();
-            this.checkBox_Cl_ActualSpeed = new System.Windows.Forms.CheckBox();
-            this.checkBox_Cl_Current = new System.Windows.Forms.CheckBox();
-            this.checkBox_Cl_RefAkim = new System.Windows.Forms.CheckBox();
-            this.checkBox_Cl_SpeedError = new System.Windows.Forms.CheckBox();
-            this.checkBox_Cl_PID = new System.Windows.Forms.CheckBox();
-            this.checkBox_Op_PID = new System.Windows.Forms.CheckBox();
-            this.checkBox_Op_SpeedError = new System.Windows.Forms.CheckBox();
-            this.checkBox_Op_RefAkim = new System.Windows.Forms.CheckBox();
-            this.checkBox_Op_Current = new System.Windows.Forms.CheckBox();
-            this.checkBox_Op_ActualSpeed = new System.Windows.Forms.CheckBox();
-            this.checkBox_Op_ProfileSpeed = new System.Windows.Forms.CheckBox();
-            this.checkBox_Op_HighLimit = new System.Windows.Forms.CheckBox();
-            this.checkBox_Cl_HighLimit = new System.Windows.Forms.CheckBox();
-            this.checkBox_Op_LowLimit = new System.Windows.Forms.CheckBox();
-            this.checkBox_Cl_LowLimit = new System.Windows.Forms.CheckBox();
+            this.checkBox_Temperature = new System.Windows.Forms.CheckBox();
+            this.checkBox_Voltage = new System.Windows.Forms.CheckBox();
+            this.checkBox_Power = new System.Windows.Forms.CheckBox();
+            this.checkBox_Current = new System.Windows.Forms.CheckBox();
+            this.checkBox_Speed = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // SP1_serialPort
@@ -81,9 +70,10 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(96, 104);
+            this.button1.Location = new System.Drawing.Point(128, 128);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(100, 28);
             this.button1.TabIndex = 736;
             this.button1.Text = "Clear";
             this.button1.UseVisualStyleBackColor = false;
@@ -92,10 +82,11 @@
             // SP1_SendtextBox
             // 
             this.SP1_SendtextBox.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.SP1_SendtextBox.Location = new System.Drawing.Point(8, 136);
+            this.SP1_SendtextBox.Location = new System.Drawing.Point(11, 167);
+            this.SP1_SendtextBox.Margin = new System.Windows.Forms.Padding(4);
             this.SP1_SendtextBox.Multiline = true;
             this.SP1_SendtextBox.Name = "SP1_SendtextBox";
-            this.SP1_SendtextBox.Size = new System.Drawing.Size(248, 56);
+            this.SP1_SendtextBox.Size = new System.Drawing.Size(329, 68);
             this.SP1_SendtextBox.TabIndex = 729;
             this.SP1_SendtextBox.Text = "Send Log";
             // 
@@ -108,9 +99,10 @@
             this.SP1_DisConnectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SP1_DisConnectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SP1_DisConnectButton.ForeColor = System.Drawing.Color.Black;
-            this.SP1_DisConnectButton.Location = new System.Drawing.Point(184, 72);
+            this.SP1_DisConnectButton.Location = new System.Drawing.Point(245, 89);
+            this.SP1_DisConnectButton.Margin = new System.Windows.Forms.Padding(4);
             this.SP1_DisConnectButton.Name = "SP1_DisConnectButton";
-            this.SP1_DisConnectButton.Size = new System.Drawing.Size(72, 23);
+            this.SP1_DisConnectButton.Size = new System.Drawing.Size(96, 28);
             this.SP1_DisConnectButton.TabIndex = 732;
             this.SP1_DisConnectButton.Text = "Close";
             this.SP1_DisConnectButton.UseVisualStyleBackColor = false;
@@ -124,9 +116,10 @@
             this.SP1_IO_Serial_lstCOMPorts.FormattingEnabled = true;
             this.SP1_IO_Serial_lstCOMPorts.Items.AddRange(new object[] {
             "COM56"});
-            this.SP1_IO_Serial_lstCOMPorts.Location = new System.Drawing.Point(87, 69);
+            this.SP1_IO_Serial_lstCOMPorts.Location = new System.Drawing.Point(116, 85);
+            this.SP1_IO_Serial_lstCOMPorts.Margin = new System.Windows.Forms.Padding(4);
             this.SP1_IO_Serial_lstCOMPorts.Name = "SP1_IO_Serial_lstCOMPorts";
-            this.SP1_IO_Serial_lstCOMPorts.Size = new System.Drawing.Size(97, 21);
+            this.SP1_IO_Serial_lstCOMPorts.Size = new System.Drawing.Size(128, 24);
             this.SP1_IO_Serial_lstCOMPorts.TabIndex = 731;
             // 
             // SP1_ConnectButton
@@ -137,9 +130,10 @@
             this.SP1_ConnectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SP1_ConnectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SP1_ConnectButton.ForeColor = System.Drawing.Color.Black;
-            this.SP1_ConnectButton.Location = new System.Drawing.Point(5, 69);
+            this.SP1_ConnectButton.Location = new System.Drawing.Point(7, 85);
+            this.SP1_ConnectButton.Margin = new System.Windows.Forms.Padding(4);
             this.SP1_ConnectButton.Name = "SP1_ConnectButton";
-            this.SP1_ConnectButton.Size = new System.Drawing.Size(76, 23);
+            this.SP1_ConnectButton.Size = new System.Drawing.Size(101, 28);
             this.SP1_ConnectButton.TabIndex = 730;
             this.SP1_ConnectButton.Text = "Connect";
             this.SP1_ConnectButton.UseVisualStyleBackColor = false;
@@ -148,10 +142,11 @@
             // SP1_textBox_PortName
             // 
             this.SP1_textBox_PortName.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.SP1_textBox_PortName.Location = new System.Drawing.Point(176, 104);
+            this.SP1_textBox_PortName.Location = new System.Drawing.Point(235, 128);
+            this.SP1_textBox_PortName.Margin = new System.Windows.Forms.Padding(4);
             this.SP1_textBox_PortName.Multiline = true;
             this.SP1_textBox_PortName.Name = "SP1_textBox_PortName";
-            this.SP1_textBox_PortName.Size = new System.Drawing.Size(80, 26);
+            this.SP1_textBox_PortName.Size = new System.Drawing.Size(105, 31);
             this.SP1_textBox_PortName.TabIndex = 735;
             // 
             // label1
@@ -160,9 +155,10 @@
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.Transparent;
-            this.label1.Location = new System.Drawing.Point(61, 29);
+            this.label1.Location = new System.Drawing.Point(81, 36);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(168, 19);
+            this.label1.Size = new System.Drawing.Size(207, 24);
             this.label1.TabIndex = 733;
             this.label1.Text = "Interface Connection";
             // 
@@ -174,9 +170,10 @@
             this.SP1_SendButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SP1_SendButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SP1_SendButton.ForeColor = System.Drawing.Color.Black;
-            this.SP1_SendButton.Location = new System.Drawing.Point(8, 104);
+            this.SP1_SendButton.Location = new System.Drawing.Point(11, 128);
+            this.SP1_SendButton.Margin = new System.Windows.Forms.Padding(4);
             this.SP1_SendButton.Name = "SP1_SendButton";
-            this.SP1_SendButton.Size = new System.Drawing.Size(75, 23);
+            this.SP1_SendButton.Size = new System.Drawing.Size(100, 28);
             this.SP1_SendButton.TabIndex = 734;
             this.SP1_SendButton.Text = "Send";
             this.SP1_SendButton.UseVisualStyleBackColor = false;
@@ -185,20 +182,22 @@
             // SP1_DatatextBox
             // 
             this.SP1_DatatextBox.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.SP1_DatatextBox.Location = new System.Drawing.Point(8, 200);
+            this.SP1_DatatextBox.Location = new System.Drawing.Point(11, 246);
+            this.SP1_DatatextBox.Margin = new System.Windows.Forms.Padding(4);
             this.SP1_DatatextBox.Multiline = true;
             this.SP1_DatatextBox.Name = "SP1_DatatextBox";
             this.SP1_DatatextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.SP1_DatatextBox.Size = new System.Drawing.Size(248, 136);
+            this.SP1_DatatextBox.Size = new System.Drawing.Size(329, 166);
             this.SP1_DatatextBox.TabIndex = 738;
             this.SP1_DatatextBox.Text = "Receive Log";
             // 
             // SP1_richTextBox
             // 
             this.SP1_richTextBox.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.SP1_richTextBox.Location = new System.Drawing.Point(8, 344);
+            this.SP1_richTextBox.Location = new System.Drawing.Point(11, 423);
+            this.SP1_richTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.SP1_richTextBox.Name = "SP1_richTextBox";
-            this.SP1_richTextBox.Size = new System.Drawing.Size(248, 400);
+            this.SP1_richTextBox.Size = new System.Drawing.Size(329, 491);
             this.SP1_richTextBox.TabIndex = 737;
             this.SP1_richTextBox.Text = "Receive Log";
             // 
@@ -210,11 +209,12 @@
             this.plotSurface2D1.DateTimeToolTip = false;
             this.plotSurface2D1.Legend = null;
             this.plotSurface2D1.LegendZOrder = -1;
-            this.plotSurface2D1.Location = new System.Drawing.Point(264, 8);
+            this.plotSurface2D1.Location = new System.Drawing.Point(352, 10);
+            this.plotSurface2D1.Margin = new System.Windows.Forms.Padding(4);
             this.plotSurface2D1.Name = "plotSurface2D1";
             this.plotSurface2D1.RightMenu = null;
             this.plotSurface2D1.ShowCoordinates = true;
-            this.plotSurface2D1.Size = new System.Drawing.Size(1180, 340);
+            this.plotSurface2D1.Size = new System.Drawing.Size(1573, 418);
             this.plotSurface2D1.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
             this.plotSurface2D1.TabIndex = 739;
             this.plotSurface2D1.Text = "plotSurface2D1";
@@ -233,11 +233,12 @@
             this.plotSurface2D2.DateTimeToolTip = false;
             this.plotSurface2D2.Legend = null;
             this.plotSurface2D2.LegendZOrder = -1;
-            this.plotSurface2D2.Location = new System.Drawing.Point(264, 384);
+            this.plotSurface2D2.Location = new System.Drawing.Point(352, 473);
+            this.plotSurface2D2.Margin = new System.Windows.Forms.Padding(4);
             this.plotSurface2D2.Name = "plotSurface2D2";
             this.plotSurface2D2.RightMenu = null;
             this.plotSurface2D2.ShowCoordinates = true;
-            this.plotSurface2D2.Size = new System.Drawing.Size(1180, 340);
+            this.plotSurface2D2.Size = new System.Drawing.Size(1573, 418);
             this.plotSurface2D2.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
             this.plotSurface2D2.TabIndex = 740;
             this.plotSurface2D2.Text = "plotSurface2D2";
@@ -248,246 +249,90 @@
             this.plotSurface2D2.YAxis1 = null;
             this.plotSurface2D2.YAxis2 = null;
             // 
-            // checkBox_Cl_ProfileSpeed
+            // checkBox_Temperature
             // 
-            this.checkBox_Cl_ProfileSpeed.AutoSize = true;
-            this.checkBox_Cl_ProfileSpeed.Checked = true;
-            this.checkBox_Cl_ProfileSpeed.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Cl_ProfileSpeed.ForeColor = System.Drawing.Color.Red;
-            this.checkBox_Cl_ProfileSpeed.Location = new System.Drawing.Point(456, 728);
-            this.checkBox_Cl_ProfileSpeed.Name = "checkBox_Cl_ProfileSpeed";
-            this.checkBox_Cl_ProfileSpeed.Size = new System.Drawing.Size(69, 17);
-            this.checkBox_Cl_ProfileSpeed.TabIndex = 741;
-            this.checkBox_Cl_ProfileSpeed.Text = "Profil Hizi";
-            this.checkBox_Cl_ProfileSpeed.UseVisualStyleBackColor = true;
+            this.checkBox_Temperature.AutoSize = true;
+            this.checkBox_Temperature.Checked = true;
+            this.checkBox_Temperature.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_Temperature.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox_Temperature.ForeColor = System.Drawing.Color.Gold;
+            this.checkBox_Temperature.Location = new System.Drawing.Point(1078, 432);
+            this.checkBox_Temperature.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox_Temperature.Name = "checkBox_Temperature";
+            this.checkBox_Temperature.Size = new System.Drawing.Size(112, 21);
+            this.checkBox_Temperature.TabIndex = 752;
+            this.checkBox_Temperature.Text = "Temperature";
+            this.checkBox_Temperature.UseVisualStyleBackColor = true;
             // 
-            // checkBox_Cl_ActualSpeed
+            // checkBox_Voltage
             // 
-            this.checkBox_Cl_ActualSpeed.AutoSize = true;
-            this.checkBox_Cl_ActualSpeed.Checked = true;
-            this.checkBox_Cl_ActualSpeed.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Cl_ActualSpeed.ForeColor = System.Drawing.Color.Blue;
-            this.checkBox_Cl_ActualSpeed.Location = new System.Drawing.Point(552, 728);
-            this.checkBox_Cl_ActualSpeed.Name = "checkBox_Cl_ActualSpeed";
-            this.checkBox_Cl_ActualSpeed.Size = new System.Drawing.Size(79, 17);
-            this.checkBox_Cl_ActualSpeed.TabIndex = 742;
-            this.checkBox_Cl_ActualSpeed.Text = "Gercek Hiz";
-            this.checkBox_Cl_ActualSpeed.UseVisualStyleBackColor = true;
+            this.checkBox_Voltage.AutoSize = true;
+            this.checkBox_Voltage.BackColor = System.Drawing.Color.Transparent;
+            this.checkBox_Voltage.Checked = true;
+            this.checkBox_Voltage.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_Voltage.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.checkBox_Voltage.Location = new System.Drawing.Point(864, 433);
+            this.checkBox_Voltage.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox_Voltage.Name = "checkBox_Voltage";
+            this.checkBox_Voltage.Size = new System.Drawing.Size(76, 20);
+            this.checkBox_Voltage.TabIndex = 751;
+            this.checkBox_Voltage.Text = "Voltage";
+            this.checkBox_Voltage.UseVisualStyleBackColor = false;
             // 
-            // checkBox_Cl_Current
+            // checkBox_Power
             // 
-            this.checkBox_Cl_Current.AutoSize = true;
-            this.checkBox_Cl_Current.Checked = true;
-            this.checkBox_Cl_Current.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Cl_Current.ForeColor = System.Drawing.Color.Green;
-            this.checkBox_Cl_Current.Location = new System.Drawing.Point(760, 728);
-            this.checkBox_Cl_Current.Name = "checkBox_Cl_Current";
-            this.checkBox_Cl_Current.Size = new System.Drawing.Size(49, 17);
-            this.checkBox_Cl_Current.TabIndex = 743;
-            this.checkBox_Cl_Current.Text = "Akim";
-            this.checkBox_Cl_Current.UseVisualStyleBackColor = true;
+            this.checkBox_Power.AutoSize = true;
+            this.checkBox_Power.Checked = true;
+            this.checkBox_Power.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_Power.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox_Power.ForeColor = System.Drawing.Color.Purple;
+            this.checkBox_Power.Location = new System.Drawing.Point(961, 436);
+            this.checkBox_Power.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox_Power.Name = "checkBox_Power";
+            this.checkBox_Power.Size = new System.Drawing.Size(69, 21);
+            this.checkBox_Power.TabIndex = 750;
+            this.checkBox_Power.Text = "Power";
+            this.checkBox_Power.UseVisualStyleBackColor = true;
             // 
-            // checkBox_Cl_RefAkim
+            // checkBox_Current
             // 
-            this.checkBox_Cl_RefAkim.AutoSize = true;
-            this.checkBox_Cl_RefAkim.Checked = true;
-            this.checkBox_Cl_RefAkim.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Cl_RefAkim.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_Cl_RefAkim.ForeColor = System.Drawing.Color.DarkOliveGreen;
-            this.checkBox_Cl_RefAkim.Location = new System.Drawing.Point(824, 728);
-            this.checkBox_Cl_RefAkim.Name = "checkBox_Cl_RefAkim";
-            this.checkBox_Cl_RefAkim.Size = new System.Drawing.Size(95, 17);
-            this.checkBox_Cl_RefAkim.TabIndex = 744;
-            this.checkBox_Cl_RefAkim.Text = "Referans Akim";
-            this.checkBox_Cl_RefAkim.UseVisualStyleBackColor = true;
+            this.checkBox_Current.AutoSize = true;
+            this.checkBox_Current.Checked = true;
+            this.checkBox_Current.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_Current.ForeColor = System.Drawing.Color.Blue;
+            this.checkBox_Current.Location = new System.Drawing.Point(736, 433);
+            this.checkBox_Current.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox_Current.Name = "checkBox_Current";
+            this.checkBox_Current.Size = new System.Drawing.Size(71, 20);
+            this.checkBox_Current.TabIndex = 748;
+            this.checkBox_Current.Text = "Current";
+            this.checkBox_Current.UseVisualStyleBackColor = true;
             // 
-            // checkBox_Cl_SpeedError
+            // checkBox_Speed
             // 
-            this.checkBox_Cl_SpeedError.AutoSize = true;
-            this.checkBox_Cl_SpeedError.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_Cl_SpeedError.Checked = true;
-            this.checkBox_Cl_SpeedError.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Cl_SpeedError.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.checkBox_Cl_SpeedError.Location = new System.Drawing.Point(656, 728);
-            this.checkBox_Cl_SpeedError.Name = "checkBox_Cl_SpeedError";
-            this.checkBox_Cl_SpeedError.Size = new System.Drawing.Size(65, 17);
-            this.checkBox_Cl_SpeedError.TabIndex = 745;
-            this.checkBox_Cl_SpeedError.Text = "Hiz error";
-            this.checkBox_Cl_SpeedError.UseVisualStyleBackColor = false;
-            // 
-            // checkBox_Cl_PID
-            // 
-            this.checkBox_Cl_PID.AutoSize = true;
-            this.checkBox_Cl_PID.Checked = true;
-            this.checkBox_Cl_PID.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Cl_PID.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_Cl_PID.ForeColor = System.Drawing.Color.DarkViolet;
-            this.checkBox_Cl_PID.Location = new System.Drawing.Point(928, 728);
-            this.checkBox_Cl_PID.Name = "checkBox_Cl_PID";
-            this.checkBox_Cl_PID.Size = new System.Drawing.Size(44, 17);
-            this.checkBox_Cl_PID.TabIndex = 746;
-            this.checkBox_Cl_PID.Text = "PID";
-            this.checkBox_Cl_PID.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_Op_PID
-            // 
-            this.checkBox_Op_PID.AutoSize = true;
-            this.checkBox_Op_PID.Checked = true;
-            this.checkBox_Op_PID.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Op_PID.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_Op_PID.ForeColor = System.Drawing.Color.DarkViolet;
-            this.checkBox_Op_PID.Location = new System.Drawing.Point(928, 352);
-            this.checkBox_Op_PID.Name = "checkBox_Op_PID";
-            this.checkBox_Op_PID.Size = new System.Drawing.Size(44, 17);
-            this.checkBox_Op_PID.TabIndex = 752;
-            this.checkBox_Op_PID.Text = "PID";
-            this.checkBox_Op_PID.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_Op_SpeedError
-            // 
-            this.checkBox_Op_SpeedError.AutoSize = true;
-            this.checkBox_Op_SpeedError.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_Op_SpeedError.Checked = true;
-            this.checkBox_Op_SpeedError.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Op_SpeedError.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.checkBox_Op_SpeedError.Location = new System.Drawing.Point(648, 352);
-            this.checkBox_Op_SpeedError.Name = "checkBox_Op_SpeedError";
-            this.checkBox_Op_SpeedError.Size = new System.Drawing.Size(65, 17);
-            this.checkBox_Op_SpeedError.TabIndex = 751;
-            this.checkBox_Op_SpeedError.Text = "Hiz error";
-            this.checkBox_Op_SpeedError.UseVisualStyleBackColor = false;
-            // 
-            // checkBox_Op_RefAkim
-            // 
-            this.checkBox_Op_RefAkim.AutoSize = true;
-            this.checkBox_Op_RefAkim.Checked = true;
-            this.checkBox_Op_RefAkim.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Op_RefAkim.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_Op_RefAkim.ForeColor = System.Drawing.Color.DarkOliveGreen;
-            this.checkBox_Op_RefAkim.Location = new System.Drawing.Point(824, 352);
-            this.checkBox_Op_RefAkim.Name = "checkBox_Op_RefAkim";
-            this.checkBox_Op_RefAkim.Size = new System.Drawing.Size(95, 17);
-            this.checkBox_Op_RefAkim.TabIndex = 750;
-            this.checkBox_Op_RefAkim.Text = "Referans Akim";
-            this.checkBox_Op_RefAkim.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_Op_Current
-            // 
-            this.checkBox_Op_Current.AutoSize = true;
-            this.checkBox_Op_Current.Checked = true;
-            this.checkBox_Op_Current.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Op_Current.ForeColor = System.Drawing.Color.Green;
-            this.checkBox_Op_Current.Location = new System.Drawing.Point(760, 352);
-            this.checkBox_Op_Current.Name = "checkBox_Op_Current";
-            this.checkBox_Op_Current.Size = new System.Drawing.Size(49, 17);
-            this.checkBox_Op_Current.TabIndex = 749;
-            this.checkBox_Op_Current.Text = "Akim";
-            this.checkBox_Op_Current.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_Op_ActualSpeed
-            // 
-            this.checkBox_Op_ActualSpeed.AutoSize = true;
-            this.checkBox_Op_ActualSpeed.Checked = true;
-            this.checkBox_Op_ActualSpeed.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Op_ActualSpeed.ForeColor = System.Drawing.Color.Blue;
-            this.checkBox_Op_ActualSpeed.Location = new System.Drawing.Point(552, 352);
-            this.checkBox_Op_ActualSpeed.Name = "checkBox_Op_ActualSpeed";
-            this.checkBox_Op_ActualSpeed.Size = new System.Drawing.Size(79, 17);
-            this.checkBox_Op_ActualSpeed.TabIndex = 748;
-            this.checkBox_Op_ActualSpeed.Text = "Gercek Hiz";
-            this.checkBox_Op_ActualSpeed.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_Op_ProfileSpeed
-            // 
-            this.checkBox_Op_ProfileSpeed.AutoSize = true;
-            this.checkBox_Op_ProfileSpeed.Checked = true;
-            this.checkBox_Op_ProfileSpeed.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Op_ProfileSpeed.ForeColor = System.Drawing.Color.Red;
-            this.checkBox_Op_ProfileSpeed.Location = new System.Drawing.Point(456, 352);
-            this.checkBox_Op_ProfileSpeed.Name = "checkBox_Op_ProfileSpeed";
-            this.checkBox_Op_ProfileSpeed.Size = new System.Drawing.Size(69, 17);
-            this.checkBox_Op_ProfileSpeed.TabIndex = 747;
-            this.checkBox_Op_ProfileSpeed.Text = "Profil Hizi";
-            this.checkBox_Op_ProfileSpeed.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_Op_HighLimit
-            // 
-            this.checkBox_Op_HighLimit.AutoSize = true;
-            this.checkBox_Op_HighLimit.Checked = true;
-            this.checkBox_Op_HighLimit.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Op_HighLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_Op_HighLimit.ForeColor = System.Drawing.Color.Orange;
-            this.checkBox_Op_HighLimit.Location = new System.Drawing.Point(1000, 352);
-            this.checkBox_Op_HighLimit.Name = "checkBox_Op_HighLimit";
-            this.checkBox_Op_HighLimit.Size = new System.Drawing.Size(72, 17);
-            this.checkBox_Op_HighLimit.TabIndex = 753;
-            this.checkBox_Op_HighLimit.Text = "High Limit";
-            this.checkBox_Op_HighLimit.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_Cl_HighLimit
-            // 
-            this.checkBox_Cl_HighLimit.AutoSize = true;
-            this.checkBox_Cl_HighLimit.Checked = true;
-            this.checkBox_Cl_HighLimit.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Cl_HighLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_Cl_HighLimit.ForeColor = System.Drawing.Color.Orange;
-            this.checkBox_Cl_HighLimit.Location = new System.Drawing.Point(984, 728);
-            this.checkBox_Cl_HighLimit.Name = "checkBox_Cl_HighLimit";
-            this.checkBox_Cl_HighLimit.Size = new System.Drawing.Size(72, 17);
-            this.checkBox_Cl_HighLimit.TabIndex = 754;
-            this.checkBox_Cl_HighLimit.Text = "High Limit";
-            this.checkBox_Cl_HighLimit.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_Op_LowLimit
-            // 
-            this.checkBox_Op_LowLimit.AutoSize = true;
-            this.checkBox_Op_LowLimit.Checked = true;
-            this.checkBox_Op_LowLimit.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Op_LowLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_Op_LowLimit.ForeColor = System.Drawing.Color.DarkOrange;
-            this.checkBox_Op_LowLimit.Location = new System.Drawing.Point(1096, 352);
-            this.checkBox_Op_LowLimit.Name = "checkBox_Op_LowLimit";
-            this.checkBox_Op_LowLimit.Size = new System.Drawing.Size(70, 17);
-            this.checkBox_Op_LowLimit.TabIndex = 755;
-            this.checkBox_Op_LowLimit.Text = "Low Limit";
-            this.checkBox_Op_LowLimit.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_Cl_LowLimit
-            // 
-            this.checkBox_Cl_LowLimit.AutoSize = true;
-            this.checkBox_Cl_LowLimit.Checked = true;
-            this.checkBox_Cl_LowLimit.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Cl_LowLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_Cl_LowLimit.ForeColor = System.Drawing.Color.DarkOrange;
-            this.checkBox_Cl_LowLimit.Location = new System.Drawing.Point(1096, 728);
-            this.checkBox_Cl_LowLimit.Name = "checkBox_Cl_LowLimit";
-            this.checkBox_Cl_LowLimit.Size = new System.Drawing.Size(70, 17);
-            this.checkBox_Cl_LowLimit.TabIndex = 756;
-            this.checkBox_Cl_LowLimit.Text = "Low Limit";
-            this.checkBox_Cl_LowLimit.UseVisualStyleBackColor = true;
+            this.checkBox_Speed.AutoSize = true;
+            this.checkBox_Speed.Checked = true;
+            this.checkBox_Speed.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_Speed.ForeColor = System.Drawing.Color.Red;
+            this.checkBox_Speed.Location = new System.Drawing.Point(608, 433);
+            this.checkBox_Speed.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox_Speed.Name = "checkBox_Speed";
+            this.checkBox_Speed.Size = new System.Drawing.Size(70, 20);
+            this.checkBox_Speed.TabIndex = 747;
+            this.checkBox_Speed.Text = "Speed";
+            this.checkBox_Speed.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1452, 748);
-            this.Controls.Add(this.checkBox_Cl_LowLimit);
-            this.Controls.Add(this.checkBox_Op_LowLimit);
-            this.Controls.Add(this.checkBox_Cl_HighLimit);
-            this.Controls.Add(this.checkBox_Op_HighLimit);
-            this.Controls.Add(this.checkBox_Op_PID);
-            this.Controls.Add(this.checkBox_Op_SpeedError);
-            this.Controls.Add(this.checkBox_Op_RefAkim);
-            this.Controls.Add(this.checkBox_Op_Current);
-            this.Controls.Add(this.checkBox_Op_ActualSpeed);
-            this.Controls.Add(this.checkBox_Op_ProfileSpeed);
-            this.Controls.Add(this.checkBox_Cl_PID);
-            this.Controls.Add(this.checkBox_Cl_SpeedError);
-            this.Controls.Add(this.checkBox_Cl_RefAkim);
-            this.Controls.Add(this.checkBox_Cl_Current);
-            this.Controls.Add(this.checkBox_Cl_ActualSpeed);
-            this.Controls.Add(this.checkBox_Cl_ProfileSpeed);
+            this.ClientSize = new System.Drawing.Size(1924, 921);
+            this.Controls.Add(this.checkBox_Temperature);
+            this.Controls.Add(this.checkBox_Voltage);
+            this.Controls.Add(this.checkBox_Power);
+            this.Controls.Add(this.checkBox_Current);
+            this.Controls.Add(this.checkBox_Speed);
             this.Controls.Add(this.plotSurface2D2);
             this.Controls.Add(this.plotSurface2D1);
             this.Controls.Add(this.SP1_DatatextBox);
@@ -500,6 +345,7 @@
             this.Controls.Add(this.SP1_textBox_PortName);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.SP1_SendButton);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -523,22 +369,20 @@
         private System.Windows.Forms.RichTextBox SP1_richTextBox;
         private NPlot.Windows.PlotSurface2D plotSurface2D1;
         private NPlot.Windows.PlotSurface2D plotSurface2D2;
+/*
         private System.Windows.Forms.CheckBox checkBox_Cl_ProfileSpeed;
         private System.Windows.Forms.CheckBox checkBox_Cl_ActualSpeed;
         private System.Windows.Forms.CheckBox checkBox_Cl_Current;
         private System.Windows.Forms.CheckBox checkBox_Cl_RefAkim;
         private System.Windows.Forms.CheckBox checkBox_Cl_SpeedError;
         private System.Windows.Forms.CheckBox checkBox_Cl_PID;
-        private System.Windows.Forms.CheckBox checkBox_Op_PID;
-        private System.Windows.Forms.CheckBox checkBox_Op_SpeedError;
-        private System.Windows.Forms.CheckBox checkBox_Op_RefAkim;
-        private System.Windows.Forms.CheckBox checkBox_Op_Current;
-        private System.Windows.Forms.CheckBox checkBox_Op_ActualSpeed;
-        private System.Windows.Forms.CheckBox checkBox_Op_ProfileSpeed;
-        private System.Windows.Forms.CheckBox checkBox_Op_HighLimit;
-        private System.Windows.Forms.CheckBox checkBox_Cl_HighLimit;
-        private System.Windows.Forms.CheckBox checkBox_Op_LowLimit;
-        private System.Windows.Forms.CheckBox checkBox_Cl_LowLimit;
+*/
+        private System.Windows.Forms.CheckBox checkBox_Temperature;
+        private System.Windows.Forms.CheckBox checkBox_Voltage;
+        private System.Windows.Forms.CheckBox checkBox_Power;
+        private System.Windows.Forms.CheckBox checkBox_Current;
+        private System.Windows.Forms.CheckBox checkBox_Speed;
+  //      private System.Windows.Forms.CheckBox checkBox_Cl_LowLimit;
     }
 }
 

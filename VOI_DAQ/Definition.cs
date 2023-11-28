@@ -7,6 +7,9 @@ namespace VOI_DAQ
 {
     class Definition
     {
+
+
+
         public static readonly byte  STOP = 0;
         public static readonly byte OPEN = 64;
         public static readonly byte UNKOWN = 72;
