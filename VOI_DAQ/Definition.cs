@@ -8,7 +8,13 @@ namespace VOI_DAQ
     class Definition
     {
 
+        public static readonly byte CHART_300 = 0;
+        public static readonly byte CHART_500 = 1;
+        public static readonly byte CHART_1000 = 2;
+        public static readonly byte CHART_2000 = 3;
+        public static readonly byte CHART_5000 = 4;
 
+        /*
 
         public static readonly byte  STOP = 0;
         public static readonly byte OPEN = 64;
@@ -46,8 +52,9 @@ namespace VOI_DAQ
     public static readonly byte FAULTMODE_01 =7;
     public static readonly byte FAULTMODE_02 = 8;
 
-
+        */
 
 
     }
 }
+

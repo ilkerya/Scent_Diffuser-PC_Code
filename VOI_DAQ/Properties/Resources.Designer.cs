@@ -59,5 +59,45 @@ namespace VOI_DAQ.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap scooter_kick_transportation_vehicle_kids_icon_258733 {
+            get {
+                object obj = ResourceManager.GetObject("scooter_kick_transportation_vehicle_kids_icon_258733", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap VOI__20231117_05_1812 {
+            get {
+                object obj = ResourceManager.GetObject("VOI--20231117-05.1812", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap VOI__20231117_051 {
+            get {
+                object obj = ResourceManager.GetObject("VOI--20231117-051", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap VOI__20231117_052 {
+            get {
+                object obj = ResourceManager.GetObject("VOI--20231117-052", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

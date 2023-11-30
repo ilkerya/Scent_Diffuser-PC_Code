@@ -70,11 +70,11 @@ namespace VOI_DAQ
        public static readonly UInt16 SHIFT8 = 8;
 
 
-
-
-
 }
 
 
 
 }
+
+
+
