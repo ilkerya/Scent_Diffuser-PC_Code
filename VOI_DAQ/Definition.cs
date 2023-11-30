@@ -8,7 +8,7 @@ namespace VOI_DAQ
     class Definition
     {
 
-
+        /*
 
         public static readonly byte  STOP = 0;
         public static readonly byte OPEN = 64;
@@ -46,8 +46,9 @@ namespace VOI_DAQ
     public static readonly byte FAULTMODE_01 =7;
     public static readonly byte FAULTMODE_02 = 8;
 
-
+        */
 
 
     }
 }
+

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.SP1_serialPort = new System.IO.Ports.SerialPort(this.components);
             this.Base_Timer1mSec = new System.Windows.Forms.Timer(this.components);
             this.button1 = new System.Windows.Forms.Button();
@@ -41,13 +42,25 @@
             this.SP1_SendButton = new System.Windows.Forms.Button();
             this.SP1_DatatextBox = new System.Windows.Forms.TextBox();
             this.SP1_richTextBox = new System.Windows.Forms.RichTextBox();
-            this.plotSurface2D1 = new NPlot.Windows.PlotSurface2D();
             this.plotSurface2D2 = new NPlot.Windows.PlotSurface2D();
             this.checkBox_Temperature = new System.Windows.Forms.CheckBox();
             this.checkBox_Voltage = new System.Windows.Forms.CheckBox();
             this.checkBox_Power = new System.Windows.Forms.CheckBox();
             this.checkBox_Current = new System.Windows.Forms.CheckBox();
             this.checkBox_Speed = new System.Windows.Forms.CheckBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.communicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataLoggerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.systemTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.plotSurface2D1 = new NPlot.Windows.PlotSurface2D();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // SP1_serialPort
@@ -81,7 +94,7 @@
             // 
             // SP1_SendtextBox
             // 
-            this.SP1_SendtextBox.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.SP1_SendtextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.SP1_SendtextBox.Location = new System.Drawing.Point(11, 167);
             this.SP1_SendtextBox.Margin = new System.Windows.Forms.Padding(4);
             this.SP1_SendtextBox.Multiline = true;
@@ -110,10 +123,9 @@
             // 
             // SP1_IO_Serial_lstCOMPorts
             // 
-            this.SP1_IO_Serial_lstCOMPorts.BackColor = System.Drawing.Color.LightBlue;
+            this.SP1_IO_Serial_lstCOMPorts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.SP1_IO_Serial_lstCOMPorts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SP1_IO_Serial_lstCOMPorts.ForeColor = System.Drawing.Color.Black;
-            this.SP1_IO_Serial_lstCOMPorts.FormattingEnabled = true;
             this.SP1_IO_Serial_lstCOMPorts.Items.AddRange(new object[] {
             "COM56"});
             this.SP1_IO_Serial_lstCOMPorts.Location = new System.Drawing.Point(116, 85);
@@ -141,7 +153,7 @@
             // 
             // SP1_textBox_PortName
             // 
-            this.SP1_textBox_PortName.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.SP1_textBox_PortName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.SP1_textBox_PortName.Location = new System.Drawing.Point(235, 128);
             this.SP1_textBox_PortName.Margin = new System.Windows.Forms.Padding(4);
             this.SP1_textBox_PortName.Multiline = true;
@@ -161,6 +173,7 @@
             this.label1.Size = new System.Drawing.Size(207, 24);
             this.label1.TabIndex = 733;
             this.label1.Text = "Interface Connection";
+            this.label1.Visible = false;
             // 
             // SP1_SendButton
             // 
@@ -181,7 +194,7 @@
             // 
             // SP1_DatatextBox
             // 
-            this.SP1_DatatextBox.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.SP1_DatatextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.SP1_DatatextBox.Location = new System.Drawing.Point(11, 246);
             this.SP1_DatatextBox.Margin = new System.Windows.Forms.Padding(4);
             this.SP1_DatatextBox.Multiline = true;
@@ -193,37 +206,13 @@
             // 
             // SP1_richTextBox
             // 
-            this.SP1_richTextBox.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.SP1_richTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.SP1_richTextBox.Location = new System.Drawing.Point(11, 423);
             this.SP1_richTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.SP1_richTextBox.Name = "SP1_richTextBox";
             this.SP1_richTextBox.Size = new System.Drawing.Size(329, 491);
             this.SP1_richTextBox.TabIndex = 737;
             this.SP1_richTextBox.Text = "Receive Log";
-            // 
-            // plotSurface2D1
-            // 
-            this.plotSurface2D1.AutoScaleAutoGeneratedAxes = false;
-            this.plotSurface2D1.AutoScaleTitle = false;
-            this.plotSurface2D1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.plotSurface2D1.DateTimeToolTip = false;
-            this.plotSurface2D1.Legend = null;
-            this.plotSurface2D1.LegendZOrder = -1;
-            this.plotSurface2D1.Location = new System.Drawing.Point(352, 10);
-            this.plotSurface2D1.Margin = new System.Windows.Forms.Padding(4);
-            this.plotSurface2D1.Name = "plotSurface2D1";
-            this.plotSurface2D1.RightMenu = null;
-            this.plotSurface2D1.ShowCoordinates = true;
-            this.plotSurface2D1.Size = new System.Drawing.Size(1573, 418);
-            this.plotSurface2D1.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-            this.plotSurface2D1.TabIndex = 739;
-            this.plotSurface2D1.Text = "plotSurface2D1";
-            this.plotSurface2D1.Title = "";
-            this.plotSurface2D1.TitleFont = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.plotSurface2D1.XAxis1 = null;
-            this.plotSurface2D1.XAxis2 = null;
-            this.plotSurface2D1.YAxis1 = null;
-            this.plotSurface2D1.YAxis2 = null;
             // 
             // plotSurface2D2
             // 
@@ -233,12 +222,12 @@
             this.plotSurface2D2.DateTimeToolTip = false;
             this.plotSurface2D2.Legend = null;
             this.plotSurface2D2.LegendZOrder = -1;
-            this.plotSurface2D2.Location = new System.Drawing.Point(352, 473);
+            this.plotSurface2D2.Location = new System.Drawing.Point(367, 785);
             this.plotSurface2D2.Margin = new System.Windows.Forms.Padding(4);
             this.plotSurface2D2.Name = "plotSurface2D2";
             this.plotSurface2D2.RightMenu = null;
             this.plotSurface2D2.ShowCoordinates = true;
-            this.plotSurface2D2.Size = new System.Drawing.Size(1573, 418);
+            this.plotSurface2D2.Size = new System.Drawing.Size(440, 10);
             this.plotSurface2D2.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
             this.plotSurface2D2.TabIndex = 740;
             this.plotSurface2D2.Text = "plotSurface2D2";
@@ -256,7 +245,7 @@
             this.checkBox_Temperature.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_Temperature.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox_Temperature.ForeColor = System.Drawing.Color.Gold;
-            this.checkBox_Temperature.Location = new System.Drawing.Point(1078, 432);
+            this.checkBox_Temperature.Location = new System.Drawing.Point(1121, 706);
             this.checkBox_Temperature.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox_Temperature.Name = "checkBox_Temperature";
             this.checkBox_Temperature.Size = new System.Drawing.Size(112, 21);
@@ -271,7 +260,7 @@
             this.checkBox_Voltage.Checked = true;
             this.checkBox_Voltage.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_Voltage.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.checkBox_Voltage.Location = new System.Drawing.Point(864, 433);
+            this.checkBox_Voltage.Location = new System.Drawing.Point(907, 707);
             this.checkBox_Voltage.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox_Voltage.Name = "checkBox_Voltage";
             this.checkBox_Voltage.Size = new System.Drawing.Size(76, 20);
@@ -286,7 +275,7 @@
             this.checkBox_Power.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_Power.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox_Power.ForeColor = System.Drawing.Color.Purple;
-            this.checkBox_Power.Location = new System.Drawing.Point(961, 436);
+            this.checkBox_Power.Location = new System.Drawing.Point(1004, 710);
             this.checkBox_Power.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox_Power.Name = "checkBox_Power";
             this.checkBox_Power.Size = new System.Drawing.Size(69, 21);
@@ -300,7 +289,7 @@
             this.checkBox_Current.Checked = true;
             this.checkBox_Current.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_Current.ForeColor = System.Drawing.Color.Blue;
-            this.checkBox_Current.Location = new System.Drawing.Point(736, 433);
+            this.checkBox_Current.Location = new System.Drawing.Point(779, 707);
             this.checkBox_Current.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox_Current.Name = "checkBox_Current";
             this.checkBox_Current.Size = new System.Drawing.Size(71, 20);
@@ -314,7 +303,7 @@
             this.checkBox_Speed.Checked = true;
             this.checkBox_Speed.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_Speed.ForeColor = System.Drawing.Color.Red;
-            this.checkBox_Speed.Location = new System.Drawing.Point(608, 433);
+            this.checkBox_Speed.Location = new System.Drawing.Point(651, 707);
             this.checkBox_Speed.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox_Speed.Name = "checkBox_Speed";
             this.checkBox_Speed.Size = new System.Drawing.Size(70, 20);
@@ -322,11 +311,130 @@
             this.checkBox_Speed.Text = "Speed";
             this.checkBox_Speed.UseVisualStyleBackColor = true;
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.communicationToolStripMenuItem,
+            this.dataLoggerToolStripMenuItem,
+            this.helpToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1924, 28);
+            this.menuStrip1.TabIndex = 753;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.recordToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // recordToolStripMenuItem
+            // 
+            this.recordToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.recordToolStripMenuItem.Name = "recordToolStripMenuItem";
+            this.recordToolStripMenuItem.Size = new System.Drawing.Size(143, 26);
+            this.recordToolStripMenuItem.Text = "Save As";
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(143, 26);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // communicationToolStripMenuItem
+            // 
+            this.communicationToolStripMenuItem.Name = "communicationToolStripMenuItem";
+            this.communicationToolStripMenuItem.Size = new System.Drawing.Size(128, 24);
+            this.communicationToolStripMenuItem.Text = "Communication";
+            // 
+            // dataLoggerToolStripMenuItem
+            // 
+            this.dataLoggerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.startToolStripMenuItem,
+            this.stopToolStripMenuItem,
+            this.openLogFileToolStripMenuItem,
+            this.systemTimeToolStripMenuItem});
+            this.dataLoggerToolStripMenuItem.Name = "dataLoggerToolStripMenuItem";
+            this.dataLoggerToolStripMenuItem.Size = new System.Drawing.Size(106, 24);
+            this.dataLoggerToolStripMenuItem.Text = "Data Logger";
+            this.dataLoggerToolStripMenuItem.Click += new System.EventHandler(this.dataLoggerToolStripMenuItem_Click);
+            // 
+            // startToolStripMenuItem
+            // 
+            this.startToolStripMenuItem.Enabled = false;
+            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.startToolStripMenuItem.Text = "Start";
+            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
+            // 
+            // stopToolStripMenuItem
+            // 
+            this.stopToolStripMenuItem.Enabled = false;
+            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.stopToolStripMenuItem.Text = "Stop";
+            this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
+            // 
+            // openLogFileToolStripMenuItem
+            // 
+            this.openLogFileToolStripMenuItem.Name = "openLogFileToolStripMenuItem";
+            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.openLogFileToolStripMenuItem.Text = "Open Log File";
+            // 
+            // systemTimeToolStripMenuItem
+            // 
+            this.systemTimeToolStripMenuItem.Name = "systemTimeToolStripMenuItem";
+            this.systemTimeToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.systemTimeToolStripMenuItem.Text = "System Time";
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // plotSurface2D1
+            // 
+            this.plotSurface2D1.AutoScaleAutoGeneratedAxes = false;
+            this.plotSurface2D1.AutoScaleTitle = false;
+            this.plotSurface2D1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.plotSurface2D1.BackgroundImage = global::VOI_DAQ.Properties.Resources.VOI__20231117_052;
+            this.plotSurface2D1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.plotSurface2D1.DateTimeToolTip = false;
+            this.plotSurface2D1.Legend = null;
+            this.plotSurface2D1.LegendZOrder = -1;
+            this.plotSurface2D1.Location = new System.Drawing.Point(360, 40);
+            this.plotSurface2D1.Margin = new System.Windows.Forms.Padding(4);
+            this.plotSurface2D1.Name = "plotSurface2D1";
+            this.plotSurface2D1.RightMenu = null;
+            this.plotSurface2D1.ShowCoordinates = true;
+            this.plotSurface2D1.Size = new System.Drawing.Size(1538, 600);
+            this.plotSurface2D1.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+            this.plotSurface2D1.TabIndex = 739;
+            this.plotSurface2D1.Text = "plotSurface2D1";
+            this.plotSurface2D1.Title = "";
+            this.plotSurface2D1.TitleFont = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.plotSurface2D1.XAxis1 = null;
+            this.plotSurface2D1.XAxis2 = null;
+            this.plotSurface2D1.YAxis1 = null;
+            this.plotSurface2D1.YAxis2 = null;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.AutoSize = true;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1924, 921);
             this.Controls.Add(this.checkBox_Temperature);
             this.Controls.Add(this.checkBox_Voltage);
@@ -345,9 +453,15 @@
             this.Controls.Add(this.SP1_textBox_PortName);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.SP1_SendButton);
+            this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "VOI DAQ";
+            this.TransparencyKey = System.Drawing.Color.BlueViolet;
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -382,7 +496,18 @@
         private System.Windows.Forms.CheckBox checkBox_Power;
         private System.Windows.Forms.CheckBox checkBox_Current;
         private System.Windows.Forms.CheckBox checkBox_Speed;
-  //      private System.Windows.Forms.CheckBox checkBox_Cl_LowLimit;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem recordToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem communicationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dataLoggerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openLogFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem systemTimeToolStripMenuItem;
+        //      private System.Windows.Forms.CheckBox checkBox_Cl_LowLimit;
     }
 }
 
