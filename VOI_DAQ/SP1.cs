@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
+
 namespace VOI_DAQ 
 {
     class SP1
@@ -14,7 +16,7 @@ namespace VOI_DAQ
         //   uint ReadSequence;
         public static uint ReadSequence;
         public static UInt16 Preamble;
-        public static UInt16 Length = 88;
+  
         /*
         public static uint Data1;
         public static uint Data2;
@@ -23,16 +25,19 @@ namespace VOI_DAQ
         public static uint Data5;
         */
         public static UInt16 CRC_Received;
+        public static UInt16 Preamble_Trial;
         /*
         public static uint RecCommand;
         public static uint RecAdress;
         public static uint RecAdrLength;
         */
-        public static byte[] ReceiveBuf = new byte[256]; // preamble+length+crc + 4*4 byte data  4 byte + 4 byte + 4 byte + 16 byte
+        public static Byte[] ReceiveBuf = new byte[256]; // preamble+length+crc + 4*4 byte data  4 byte + 4 byte + 4 byte + 16 byte
         public static byte[] SendBuf = new byte[256]; // preamble+length+crc + 4*4 byte data  4 byte + 4 byte + 4 byte + 16 byte
 
-        public static byte[] Buffer = new byte[256];
+   
 
+        public static byte[] Buffer = new byte[256];
+/*
         public static UInt16 Send_TotLength;
         public static uint SendCommand;
         public static uint SendAdress;
@@ -43,7 +48,7 @@ namespace VOI_DAQ
         public static uint SendData4 = 11134;
         public static uint SendData5 = 11134;
         public static uint SendCRC;
-
+        */
         public static UInt16 CRC_Calc;
         public static UInt16 CRC_Error;
         public static UInt32 CRC_Success;
@@ -52,9 +57,6 @@ namespace VOI_DAQ
         //    static byte[] SP1_SendBuf = new byte[256]; // preamble+length+crc + 4*4 byte data  4 byte + 4 byte + 4 byte + 16 byte
 
         //     static byte[] SP1_Buffer = new byte[256];
-
-
-        public static readonly UInt16 DEFAULT_LENGTH = 16; // islemci tarafindaki ayni def ile degerde olmali
         
         //       UInt16 PREAMBLE_BYTES + DATA_BYTES
         // constant variables
@@ -65,12 +67,15 @@ namespace VOI_DAQ
         public static readonly UInt16 DEFAULT_PREAMBLE = 0XAAAA; // preamble+length 4 byte + 4 byte
         public static readonly UInt16 DEFAULT_CRC_INIT = 0XAAAA; // preamble+length 4 byte + 4 byte
 
+        public static readonly UInt16 DEFAULT_LENGTH = 20; // islemci tarafindaki ayni def ile degerde olmali
+
         public static readonly UInt16 SHIFT24 = 24;
         public static readonly UInt16 SHIFT16 = 16;
        public static readonly UInt16 SHIFT8 = 8;
 
+        public static UInt16 Length = DEFAULT_LENGTH;
 
-}
+    }
 
 
 

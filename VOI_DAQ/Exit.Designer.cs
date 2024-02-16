@@ -60,7 +60,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.BackgroundImage = global::VOI_DAQ.Properties.Resources.VOI__20231117_052;
+          //  this.BackgroundImage = global::VOI_DAQ.Properties.Resources.VOI__20231117_052;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.CancelButton = this.button1;
             this.ClientSize = new System.Drawing.Size(705, 377);
