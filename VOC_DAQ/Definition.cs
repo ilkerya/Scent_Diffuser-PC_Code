@@ -35,7 +35,7 @@ using System.Text;
         public static readonly byte ZONE_P04_2 =7;
         public static readonly byte ZONE_P05  =8;
 
-
+         
         public static readonly byte ZONE_KASIKKAPA =9;
         public static readonly byte ZONE_P11 =10;
         public static readonly byte ZONE_P10_1 =11;

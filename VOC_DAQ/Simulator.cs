@@ -138,7 +138,7 @@ public  void Update_Rpm_Sim_Values()
            // checkBox_Rpm_Enabled.Checked = true;
            /*
             if (checkBox_Rpm_Enabled.Checked)
-            {
+            { 
                 DAQ.Simulator_Rpm = true;
             }
             else

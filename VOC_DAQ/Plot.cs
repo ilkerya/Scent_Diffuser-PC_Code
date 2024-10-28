@@ -6,7 +6,7 @@ using System.Text;
 //namespace VOI_DAQ
 //namespace VOI_DAQ
      namespace DAQ_VOC
-{
+{ 
     class Plot
     {
 

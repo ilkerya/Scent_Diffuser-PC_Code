@@ -1346,7 +1346,7 @@ using System.Diagnostics;
         public void LOG_SaveLogFile() { 
             if (LOG_File_SaveAs() == false) return;
         }
-
+          
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //LOG_SaveLogFile();
