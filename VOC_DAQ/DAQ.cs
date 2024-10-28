@@ -45,7 +45,7 @@ using System.Text;
 
         public static string Temperature_Float ;
         public static string Humidity_Float ;
-
+          
         public static Int32 BME_Voc1;
         public static Int32 BME_Voc2;
         public static Int32 BME_Voc3;
