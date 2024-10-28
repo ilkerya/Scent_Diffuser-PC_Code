@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAQ_V1.0", "VOI_DAQ\DAQ_V1.0.csproj", "{5E4A701B-1ED7-42C7-8B4B-9EDFCB4264BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAQ_VOC", "VOC_DAQ\DAQ_VOC.csproj", "{5E4A701B-1ED7-42C7-8B4B-9EDFCB4264BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

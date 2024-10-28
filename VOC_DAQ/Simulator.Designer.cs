@@ -1,4 +1,4 @@
-﻿namespace VOI_DAQ
+﻿namespace DAQ_VOC
 {
     partial class Simulator
     {

@@ -21,13 +21,16 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Microsoft.Win32;
 using System.Text.RegularExpressions;
+using System.Security.Cryptography;
+using System.Diagnostics;
 
 
 
 
 
 
-namespace VOI_DAQ
+//namespace VOI_DAQ
+ namespace DAQ_VOC
 {
 
     public partial class Form1 : Form
@@ -77,7 +80,7 @@ namespace VOI_DAQ
             grid.MinorGridPen = new Pen(Color.LightGray, 1.0f);
 
             plotSurface2D1.Clear();
-            pictureBox2.Visible = false;
+            //pictureBox2.Visible = false;
 
 
         }
@@ -85,13 +88,13 @@ namespace VOI_DAQ
         public Form1()
         {
             InitializeComponent();
-          //   Plot_Init();
+            //   Plot_Init();
 
             try
             {
-                pictureBox1.Image = Image.FromFile("C:\\Projects\\.Net\\VOI_DAQ\\VOI_DAQ\\Pics\\spinning_wheel3.jpg");
-                pictureBox2.BackgroundImage = Image.FromFile("C:\\Projects\\.Net\\VOI_DAQ\\VOI_DAQ\\Pics\\V7_1.png");
-                pictureBox2.BackgroundImageLayout = ImageLayout.Stretch;
+               // pictureBox1.Image = Image.FromFile("C:\\Projects\\.Net\\VOI_DAQ\\VOI_DAQ\\Pics\\spinning_wheel3.jpg");
+               // pictureBox2.BackgroundImage = Image.FromFile("C:\\Projects\\.Net\\VOI_DAQ\\VOI_DAQ\\Pics\\DataBox.gif");
+                //pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
             }
             catch (System.IO.FileNotFoundException)
             {
@@ -102,8 +105,8 @@ namespace VOI_DAQ
             SP1_IO_Serial_UpdateCOMPortList();
 
            SetArrayColors();
-            DAQ.Slope = (double)numericUpDown_incline.Value;
-            DAQ.Wheel_Diameter = (Int16)numericUpDown_Wheel.Value;
+       //     DAQ.Slope = (double)numericUpDown_incline.Value;
+         //   DAQ.Wheel_Diameter = (Int16)numericUpDown_Wheel.Value;
 
             SP1_textBox_PortName.Text = "No Connection";
 
@@ -159,8 +162,11 @@ namespace VOI_DAQ
             */
        
         }
-        public String Check_Com_VID_PID()
+        /*
+        void  Check_Com_VID_PID(String VID, String PID)
         {
+            SP1_SendtextBox.Text = " ";
+            //    return "COM11";
             List<string> ComPortNames(String VID, String PID)
             {
                 String pattern = String.Format("^VID_{0}.PID_{1}", VID, PID);
@@ -187,26 +193,94 @@ namespace VOI_DAQ
                 }
                 return comports;
             }
-            List<string> names = ComPortNames("04D8", "00DD");
+
+       //    List<string> names = ComPortNames(SP1.Def_VID, SP1.Def_PID);
+                   List<string> names = ComPortNames(SP1.Def_VID, SP1.Def_PID);
+         //   List<string> names = ComPortNames("2341", "0042");
             if (names.Count > 0)
             {
-                //textBox1.Text = "No Matching Port ";
+     //           SP1_textBox_PortName.Text = "No Matching Port ";
+           //     textBox1.Text = "No Matching Port ";
                 foreach (String s in SerialPort.GetPortNames())
                 {
-                    if (names.Contains(s))
+                    if (names.Contains(s)) { 
                         //  textBox1.Text = "Port " + s;
                         //  Console.WriteLine("port");
-                        return s;
+                    //    SP1_textBox_PortName.Text = s;
+                        SP1_SendtextBox.Text = s;
+                        Newport = s;
+                       // return s;
+                    }
                 }
             }
             //  else
             //   Console.WriteLine("No COM ports found");
             // textBox1.Text = "No COM ports found";
-            return "No COM ports found";
+            SP1_SendtextBox.Text = "No COM ports found";
+        //    return "No COM ports found";
+        }
+        */
+        String Newport;
+        void ComPort_List(String VID, String PID, String NAM)
+        {
+            SP1_textBox_Device.Text = NAM;
+            List<string> names = ComPortNames(VID, PID); // ftdi
+            if (names.Count > 0)
+            {
+                foreach (String s in SerialPort.GetPortNames())
+                {
+                    if (names.Contains(s))
+                    {
+                        //   Console.WriteLine("My Arduino port is " + s);
+                     //   textBox1.Text += s + "     " + NAM + "\r\n";
+                        //SP1.PortConnectName = SP1_serialPort.PortName;
+                        //SerialPort.
+                        Newport = s;
+                        // return s;
+                    }
+                 //   else SP1_SendtextBox.Text = "No COM ports found";
+                }
+            }
+            else
+                //   textBox1.Text = "No COM ports found";  //
+                SP1_SendtextBox.Text = "No COM ports found";
+            // return "";
+        }
+        List<string> ComPortNames(String VID, String PID)
+        {
+            String pattern = String.Format("^VID_{0}.PID_{1}", VID, PID);
+            Regex _rx = new Regex(pattern, RegexOptions.IgnoreCase);
+            List<string> comports = new List<string>();
+            RegistryKey rk1 = Registry.LocalMachine;
+            RegistryKey rk2 = rk1.OpenSubKey("SYSTEM\\CurrentControlSet\\Enum");
+            foreach (String s3 in rk2.GetSubKeyNames())
+            {
+                //    textBox1.Text += s3 + "\n";
+                // textBox1.Text += s3 + "\r\n";
+                //   textBox1.Text += s3 + Environment.NewLine;
+                RegistryKey rk3 = rk2.OpenSubKey(s3);
+                foreach (String s in rk3.GetSubKeyNames())
+                {
+                    if (_rx.Match(s).Success)
+                    {
+                        RegistryKey rk4 = rk3.OpenSubKey(s);
+                        foreach (String s2 in rk4.GetSubKeyNames())
+                        {
+                            RegistryKey rk5 = rk4.OpenSubKey(s2);
+                            RegistryKey rk6 = rk5.OpenSubKey("Device Parameters");
+                            comports.Add((string)rk6.GetValue("PortName"));
+                        }
+                    }
+                }
+            }
+            return comports;
         }
         public void Serial_UpdateCOMPortList_VID_PID()
         {
-            String Newport = Check_Com_VID_PID();
+       //     String Newport = Check_Com_VID_PID();
+         //   Check_Com_VID_PID(SP1.VID_3, SP1.PID_3);
+           // ComPort_List(SP1.VID_3, SP1.PID_3, SP1.NAM_3);
+            ComPort_List(SP1.Def_VID, SP1.Def_PID, SP1.Def_NAM);
             if (SP1.PortConnectName != Newport) SP1_DisConnect_Procedure();
 
 
@@ -220,26 +294,30 @@ namespace VOI_DAQ
                 //  port (e.g. - "COM1").
                 //      SP1_IO_Serial_lstCOMPorts.SelectedIndex = 2;
                 //      SP1_serialPort.PortName = SP1_IO_Serial_lstCOMPorts.Items[SP1_IO_Serial_lstCOMPorts.SelectedIndex].ToString();
-                SP1_serialPort.PortName = Check_Com_VID_PID();
+     
+            //    SP1_serialPort.PortName = Check_Com_VID_PID();
+                
+                ComPort_List(SP1.Def_VID, SP1.Def_PID, SP1.Def_NAM);
+                SP1_serialPort.PortName = Newport;
                 //    SP1_IO_Serial_lstCOMPorts.Items[SP1_IO_Serial_lstCOMPorts.SelectedIndex].ToString()
 
                 SP1.PortConnectName = SP1_serialPort.PortName;
                 //      SP1_textBox_PortName.Text = SP1.PortConnectName;
                 //Open the COM port.
                 //     SP1_serialPort.BaudRate = 9600;
-                SP1_serialPort.BaudRate = 57600;
-                // SP1_serialPort.BaudRate = 115200;
+               // SP1_serialPort.BaudRate = 57600;
+                 SP1_serialPort.BaudRate = 115200;
                 //    SP1_serialPort.BaudRate = 128000;
 
                 SP1_textBox_PortName.Text = SP1_serialPort.PortName + DAQ.nl;
                 SP1_textBox_PortName.Text += SP1_serialPort.BaudRate.ToString() + " bps" + DAQ.nl;
-                SP1_textBox_PortName.Text += "VID " + "04D8" + DAQ.nl;
-                SP1_textBox_PortName.Text += "PID " + "00DD";
+                SP1_textBox_PortName.Text += "VID " + SP1.Def_VID + DAQ.nl;
+                SP1_textBox_PortName.Text += "PID " + SP1.Def_PID;
                 SP1_serialPort.Parity = Parity.None;
                 SP1_serialPort.StopBits = StopBits.One;
                 SP1_serialPort.DataBits = 8;
                 SP1_serialPort.Handshake = Handshake.None;
-                SP1_serialPort.RtsEnable = true;
+                //        SP1_serialPort.RtsEnable = true;   // SERIAL_8N1 (the default)
                 SP1_serialPort.Open();
 
                 SP1_ConnectButton.Text = "Disconnect";
@@ -259,6 +337,7 @@ namespace VOI_DAQ
 
         void SP1_DisConnect_Procedure()
         {
+            SP1_textBox_Device.Text = " ";
             SP1.PortConnectName = "No Connection";
             DAQ.Connect = false;
             SP1_ConnectButton.Text = "Connect";
@@ -505,223 +584,295 @@ namespace VOI_DAQ
             {
                 SP1.CRC_Success++;
 
-                DAQ.Encoder_Abs = (UInt32)((SP1.ReceiveBuf[0] << SP1.SHIFT24) + (SP1.ReceiveBuf[1] << SP1.SHIFT16) +
-                                (SP1.ReceiveBuf[2] << SP1.SHIFT8) + SP1.ReceiveBuf[3]);  //32 bit
+                byte B_Count = 0;  //  ++
+                DAQ.Multi_Gas_1_VOC = (UInt32)((SP1.ReceiveBuf[B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
 
-                DAQ.CPU_Reset = SP1.ReceiveBuf[5]; // reset 
-                if(DAQ.CPU_Reset != 55) // cpu reset
+                DAQ.Multi_Gas_1_C2H5OH = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                               (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit            
+
+                DAQ.Multi_Gas_1_CO = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+
+                DAQ.Multi_Gas_1_NO2 = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+
+                DAQ.Multi_Gas_2_VOC = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+
+                DAQ.Multi_Gas_2_C2H5OH = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                               (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit            
+
+                DAQ.Multi_Gas_2_CO = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+
+                DAQ.Multi_Gas_2_NO2 = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+
+                DAQ.Multi_Gas_3_VOC = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+
+                DAQ.Multi_Gas_3_C2H5OH = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                               (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit            
+
+                DAQ.Multi_Gas_3_CO = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+
+                DAQ.Multi_Gas_3_NO2 = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+
+                DAQ.Multi_Gas_4_VOC = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+
+                DAQ.Multi_Gas_4_C2H5OH = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                               (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit            
+
+                DAQ.Multi_Gas_4_CO = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+
+                DAQ.Multi_Gas_4_NO2 = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+              
+                UInt32 Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+
+              //  DAQ.Temperature_Convert = (Int32)Rec_Val;
+                Int32 Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
                 {
-                    DAQ.Setup = 0;
+                    Temp *= -1;  // NEGATIVE
+                    Temp--;
                 }
-                if (DAQ.Setup == 0) // initial function run once
-                {
-                    DAQ.Setup = 1;
-                    DAQ.Encoder_Abs_Init = DAQ.Encoder_Abs;
-                }
-                if(DAQ.Encoder_Abs_Init > DAQ.Encoder_Abs) //negative
-                {
-                    DAQ.Encoder_Diff =(Int32) (DAQ.Encoder_Abs_Init - DAQ.Encoder_Abs); // negative
-                    DAQ.Encoder_Diff *= -1;
-                    DAQ.Encoder_Diff--; 
-                }
-                else  // positive
-                {
-                    DAQ.Encoder_Diff = (Int32)(DAQ.Encoder_Abs - DAQ.Encoder_Abs_Init);
-                }
-                DAQ.Encoder_Tot_Distance = (Int32)(100 * Math.PI * DAQ.Encoder_Diff / 2400); //mm
+                //   DAQ.Temperature_Float = ((float)DAQ.Temperature_Convert/100).ToString.Replace(",", "."));
+                DAQ.Temperature_Float = ((float)Temp / 100).ToString();
+                DAQ.Temperature_Float = DAQ.Temperature_Float.Replace(",", ".");
+                DAQ.BME680_Temp_1 = DAQ.Temperature_Float;
 
+                //      s = s.Replace("a", "b")
+                //       Int32 Temp_Real = (Int32)Math.Abs(Temp_Val);
+                //    Int32 Temp_Real = (Int32)Temp_Val;
 
-                
-                if (DAQ.Simulator_Rpm == true)
-                {
-                    DAQ.Enc_Ang_Speed_Raw = DAQ.AngularSpeed_Simulator;
-                    DAQ.Direction = DAQ.AngularSpeedDirection_Simulator; // 128->1 negative  else 0
-
-                    byte Temp = SP1.ReceiveBuf[4];
-                    Temp = SP1.ReceiveBuf[7];
-                    Temp = SP1.ReceiveBuf[6];
-                }
-                else { 
-                    DAQ.Enc_Ang_Speed_Raw = (UInt16)((SP1.ReceiveBuf[6] << SP1.SHIFT8) + SP1.ReceiveBuf[7]);  //32 bit
-                    if (SP1.ReceiveBuf[4] == 128) DAQ.Direction = 1;//negative
-                    else DAQ.Direction = 0;
-                }
-
-
-                DAQ.Enc_Ang_Speed_Abs = (Int32)DAQ.Enc_Ang_Speed_Raw;
-                if (DAQ.Direction == 1)
-                {                  
-                    DAQ.Enc_Ang_Speed_Abs *= -1;
-                //    DAQ.Enc_Ang_Speed_Abs--;
-                }
-
-                //           DAQ.Enc_Ang_Speed_Abs /= 82; // /7.8 -> 226rpm 11 km/h 82->203 9.95 km/h //81-> 207 10.14km/h
-                //           DAQ.Enc_Ang_Speed_Abs *= 10;
-
-                // 100 msec
-           //     DAQ.Enc_Ang_Speed_Abs *= 132;
-           //     DAQ.Enc_Ang_Speed_Abs /= 1000; //1.22  DAQ.Enc_Ang_Speed_Abs *= 10;
-
-                // 10 msec
-                DAQ.Enc_Ang_Speed_Abs *= 1351 ; // multiply with 1.32
-                DAQ.Enc_Ang_Speed_Abs /= 1024; //1.22   1351/1024 = 1.319
-
-                
-             //   Int16 Diameter = DAQ.Wheel_Diameter;
-          //      Int16 Diameter = (Int16)numericUpDown_Wheel.Value;
-
-                DAQ.Vehicle_Ang_Speed_Abs = DAQ.Enc_Ang_Speed_Abs * 10; // wheel diameter of the encode wheel 10 cm
-                DAQ.Vehicle_Ang_Speed_Abs /= DAQ.Wheel_Diameter;
-
-                DAQ.Vehicle_Speed = (float)DAQ.Vehicle_Ang_Speed_Abs;
-                DAQ.Vehicle_Speed /= 10000; // first divide to be in the region of floating point numbers !!!
-                DAQ.Vehicle_Speed *= DAQ.Wheel_Diameter;
-                DAQ.Vehicle_Speed *= 6;
-                DAQ.Vehicle_Speed *= (float)Math.PI; // speed = D*pi*rpm*60 = cm/h //1000000 cm-> km so 6/10.000
-                                                     // Speed (km/h)= D(cm)*pi*rpm*60 /100.000  
-                DAQ.Current_Adc = (UInt16)((SP1.ReceiveBuf[8] << SP1.SHIFT8) + SP1.ReceiveBuf[9]);
-                DAQ.Voltage_Adc = (UInt16)((SP1.ReceiveBuf[10] << SP1.SHIFT8) + SP1.ReceiveBuf[11]);
-                DAQ.Temperature = (Int16)((SP1.ReceiveBuf[12] << SP1.SHIFT8) + SP1.ReceiveBuf[13]);
-
-
-                if (DAQ.Simulator_Electric == true) DAQ.Voltage_Adc = DAQ.Voltage_Simulator;
-                else DAQ.Voltage_Adc += DAQ.Voltage_Adc_Offset;
-
-                DAQ.Voltage_32 = (Int32)DAQ.Voltage_Adc;
-                DAQ.Voltage_32 *= 3300;
-                DAQ.Voltage_32 /= 4096;
-          //      DAQ.Voltage_32 *= 1848;  // 61K/3K3 = 18.48 
-                DAQ.Voltage_32 *= 1965;  // 61K/3K3 = 18.48 
-                DAQ.Voltage_32 /= 100;
-                DAQ.Voltage = (UInt16)DAQ.Voltage_32;
-
-                DAQ.Voltage_d = (double)DAQ.Voltage_Adc;
-                DAQ.Voltage_d *= 0.80566; // 3300/4096
-
-                //      DAQ.Voltage_32 *= 1848;  // 61K/3K3 = 18.48 
-        //        DAQ.Voltage_d *= 1965;  // 61K/3K3 = 18.48 
-        //        DAQ.Voltage_d /= 100;
-       //         DAQ.Voltage_d /= 1000;
-
-                DAQ.Voltage_d *= 0.01965;
-
-
-
-                //       DAQ.Voltage += DAQ.Voltage_Offset;
-                //     DAQ.Voltage_Dec = (Int16)(Temp % 100);
-                //     DAQ.Current_Adc &= 0XFFF7;
-                if (DAQ.Simulator_Electric == true) DAQ.Current_Adc = DAQ.Current_Simulator;
-                else DAQ.Current_Adc += DAQ.Current_Adc_Offset;
-
-                DAQ.Current_32 = (Int32)DAQ.Current_Adc;
-
-
-                DAQ.Current_d = (double)DAQ.Current_Adc;
-                 DAQ.Current_d *= 0.80566; // 3300/4096
-                DAQ.Current_d -= 2500;
-        //        DAQ.Current_d *= -24;// LEM 3 parallel connection multiplier , -8.3333 for thre serial
-        //        DAQ.Current_d /= 1000;
-          //      DAQ.Current_d *= -0.024;
-                DAQ.Current_d *= -0.00833333333; // 3 series Lem Conf.
-
-                DAQ.Current_32 *= 3300;
-                DAQ.Current_32 /= 4096;
-            //    DAQ.Current_32 *= 0.80566;
-                DAQ.Current_32 -= 2500;
-        //        DAQ.Current_32 *= -24;// LEM 3 parallel connection multiplier , -8.3333 for thre serial
-        //       DAQ.Current_32 *= -0.00833333333; // 3 series Lem Conf.
-                DAQ.Current_32 *= -83; // 3 series Lem Conf.
-                DAQ.Current_32 /= 10; // 3 series Lem Conf.
-                DAQ.Current = (Int16)DAQ.Current_32;
-
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
                 /*
-                                Temp = (Int32)DAQ.Current_Adc;
-                                Temp *= 3300;
-                                Temp /= 4096; // Volt in terms of battery current *1000
-                                Temp -= 2500;
-                                Temp *= -24;
-                DAQ.Current_32 = Temp;
-                DAQ.Current= (Int16)(Temp);
-
+                DAQ.Humidity_Convert = (Int32)Temp_Val;
+                if (Temp_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    DAQ.Humidity_Convert *= -1;// NEGATIVE
+                    DAQ.Humidity_Convert--;
+                }
+                DAQ.Humidity_Float = ((float)DAQ.Humidity_Convert / 100).ToString(("#.##"));
+                DAQ.Humidity_Float = DAQ.Humidity_Float.Replace(",", ".");
+*/
+                /*
+                                Int32 Temp2 = (Int32)Temp_Val;
+                                if (Temp_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                                {
+                                    Temp2 *= -1;// NEGATIVE
+                                    Temp2--;
+                                }
+                                DAQ.Humidity_Float = ((float)Temp2 / 100).ToString(("#.##"));
+                                DAQ.Humidity_Float = DAQ.Humidity_Float.Replace(",", ".");
                 */
+                Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;// NEGATIVE
+                    Temp--;
+                }
+                DAQ.Humidity_Float = ((float)Temp / 100).ToString(("#.##"));
+                DAQ.Humidity_Float = DAQ.Humidity_Float.Replace(",", ".");
+                DAQ.BME680_Hum_1 = DAQ.Humidity_Float;
+                ///// voc /////////////////
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+                Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;// NEGATIVE
+                    Temp--;
+                    
+                }
+                DAQ.BME_Voc1 = Temp;
+                DAQ.BME680_Voc_1 = ((float)Temp / 100).ToString(("#.##"));
+                DAQ.BME680_Voc_1 = DAQ.BME680_Voc_1.Replace(",", ".");
+                ///// pressure /////////////////
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+                Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;// NEGATIVE
+                    Temp--;
+                }
+                DAQ.BME680_Prs_1 = ((float)Temp / 100).ToString(("#.##"));
+                DAQ.BME680_Prs_1 = DAQ.BME680_Prs_1.Replace(",", ".");
+
+                /// 2.BME
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+                 Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;  // NEGATIVE
+                    Temp--;
+                }
+                DAQ.BME680_Temp_2 = ((float)Temp / 100).ToString();
+                DAQ.BME680_Temp_2 = DAQ.BME680_Temp_2.Replace(",", ".");
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                             (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+                Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;  // NEGATIVE
+                    Temp--;
+                }
+                DAQ.BME680_Hum_2 = ((float)Temp / 100).ToString();
+                DAQ.BME680_Hum_2 = DAQ.BME680_Hum_2.Replace(",", ".");
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                             (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+                Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;  // NEGATIVE
+                    Temp--;
+                }
+                DAQ.BME_Voc2 = Temp;
+                DAQ.BME680_Voc_2 = ((float)Temp / 100).ToString();
+                DAQ.BME680_Voc_2 = DAQ.BME680_Voc_2.Replace(",", ".");
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                           (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+                Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;  // NEGATIVE
+                    Temp--;             
+                }
+                DAQ.BME680_Prs_2 = ((float)Temp / 100).ToString();
+                DAQ.BME680_Prs_2 = DAQ.BME680_Prs_2.Replace(",", ".");
+
+                /// 3.BME
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+                Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;  // NEGATIVE
+                    Temp--;
+                }
+                DAQ.BME680_Temp_3 = ((float)Temp / 100).ToString();
+                DAQ.BME680_Temp_3 = DAQ.BME680_Temp_3.Replace(",", ".");
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                             (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+                Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;  // NEGATIVE
+                    Temp--;
+                }
+                DAQ.BME680_Hum_3 = ((float)Temp / 100).ToString();
+                DAQ.BME680_Hum_3 = DAQ.BME680_Hum_3.Replace(",", ".");
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                             (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+                Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;  // NEGATIVE
+                    Temp--;
+                }
+                DAQ.BME_Voc3 = Temp;
+                DAQ.BME680_Voc_3 = ((float)Temp / 100).ToString();
+                DAQ.BME680_Voc_3 = DAQ.BME680_Voc_3.Replace(",", ".");
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                           (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+                Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;  // NEGATIVE
+                    Temp--;                
+                }
+                DAQ.BME680_Prs_3 = ((float)Temp / 100).ToString();
+                DAQ.BME680_Prs_3 = DAQ.BME680_Prs_3.Replace(",", ".");
+
+                /// 4. BME
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+                Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;  // NEGATIVE
+                    Temp--;
+                }
+                DAQ.BME680_Temp_4 = ((float)Temp / 100).ToString();
+                DAQ.BME680_Temp_4 = DAQ.BME680_Temp_4.Replace(",", ".");
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                             (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+                Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;  // NEGATIVE
+                    Temp--;
+                }
+                DAQ.BME680_Hum_4 = ((float)Temp / 100).ToString();
+                DAQ.BME680_Hum_4 = DAQ.BME680_Hum_4.Replace(",", ".");
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                             (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+                Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;  // NEGATIVE
+                    Temp--;
+                }
+                DAQ.BME_Voc4 = Temp;
+                DAQ.BME680_Voc_4 = ((float)Temp / 100).ToString();
+                DAQ.BME680_Voc_4 = DAQ.BME680_Voc_4.Replace(",", ".");
+                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
+                           (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+                Temp = (Int32)Rec_Val;
+                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
+                {
+                    Temp *= -1;  // NEGATIVE
+                    Temp--;                
+                }
+                DAQ.BME680_Prs_4 = ((float)Temp / 100).ToString();
+                DAQ.BME680_Prs_4 = DAQ.BME680_Prs_4.Replace(",", ".");
 
                 /*
-                 // 2500mV -> 3103 Adc  // measured 3124 Adc
-                                // 2.5 Volt - > 
-                                if (Temp >= 2500) Temp -= 2500; // adc scaling to 2.5 Volt
-                                else Temp = -1 * (2500 - Temp);           
-                                DAQ.Current = (Int16) (Temp / 42);
-                                DAQ.Current *= -1;
-                            */
-
-                //  2516 mamp
-                //       DAQ.Current = (Int16)(Temp-2500);
-                //       DAQ.Current *= -24;  // volt-> Adc 24 // reverse logic
-
-
-
-
-                // 0.041666
-
-                /*
-                DAQ.Accelometer_X = (Int32)SP1.ReceiveBuf[14] * 0x00FFFFFF;
-                DAQ.Accelometer_X += (Int32)SP1.ReceiveBuf[15] * 0x0000FFFF;
-                DAQ.Accelometer_X += (Int32)SP1.ReceiveBuf[16] * 0x000000FF;
-                DAQ.Accelometer_X += (Int32)SP1.ReceiveBuf[17];
-                DAQ.Accelometer_Xf = ((float)DAQ.Accelometer_X) / 10000;
-
-                DAQ.Accelometer_Y = (Int32)SP1.ReceiveBuf[18] * 0x00FFFFFF;
-                DAQ.Accelometer_Y += (Int32)SP1.ReceiveBuf[19] * 0x0000FFFF;
-                DAQ.Accelometer_Y += (Int32)SP1.ReceiveBuf[20] * 0x000000FF;
-                DAQ.Accelometer_Y += (Int32)SP1.ReceiveBuf[21];
-                DAQ.Accelometer_Yf = ((float)DAQ.Accelometer_Y) / 10000;
-
                 DAQ.Accelometer_Z = (Int32)SP1.ReceiveBuf[22] * 0x00FFFFFF;
                 DAQ.Accelometer_Z += (Int32)SP1.ReceiveBuf[23] * 0x0000FFFF;
                 DAQ.Accelometer_Z += (Int32)SP1.ReceiveBuf[24] * 0x000000FF;
                 DAQ.Accelometer_Z += (Int32)SP1.ReceiveBuf[25];
                 DAQ.Accelometer_Zf = ((float)DAQ.Accelometer_Z) / 10000;
                 */
-                //       if (DAQ.Int_Counter == 3) Array_Fill_new();
-                //       if (DAQ.Int_Counter == 8) Plot_Chart_new();
-                //     Array_Fill();
-                //     Plot_Chart();
+
+                DAQ.Median_Total_VOC1 += DAQ.Multi_Gas_1_VOC;
+                DAQ.Median_Total_VOC2 += DAQ.Multi_Gas_2_VOC;
+                DAQ.Median_Total_VOC3 += DAQ.Multi_Gas_3_VOC;
+                DAQ.Median_Total_VOC4 += DAQ.Multi_Gas_4_VOC;
+
+                DAQ.Median_Counter++;
+                if (DAQ.Median_Counter >= 100)
+                {
+                    DAQ.Median_Counter = 0;
+                    DAQ.Median_Total_VOC1 /= 100;
+
+                }
 
                 DAQ.Int_Counter++;
                 if (DAQ.Int_Counter >= 10)
                 {
-                    DAQ.Int_Counter = 0;        
-                //    Array_Fill();
-                //   Plot_Chart();
-                
-                    if (DAQ.Enc_Ang_Speed_Abs > 20)
-                    {
-                        if (DAQ.Speed_Animation_Latch == 0)
-                            try
-                            {
-                                pictureBox1.Image = Image.FromFile("C:\\Projects\\.Net\\VOI_DAQ\\VOI_DAQ\\Pics\\spinning_wheel.gif");
-                                DAQ.Speed_Animation_Latch = 1;
-                                DAQ.No_Animation_Latch = 0;
-                            }
-                            catch { }                   
-                    }
-                    else {
-                        if (DAQ.No_Animation_Latch == 0) {
-                            try
-                            {
-                                pictureBox1.Image = Image.FromFile("C:\\Projects\\.Net\\VOI_DAQ\\VOI_DAQ\\Pics\\spinning_wheel3.jpg");
-                                DAQ.No_Animation_Latch = 1;
-                                DAQ.Speed_Animation_Latch = 0;
-                            }
-                             catch { }
-                        }
-                    }                   
+                    DAQ.Int_Counter = 0;
+                    //    Array_Fill();
+                    //   Plot_Chart();
                 }
-                if (DAQ.Int_Counter == 2) Array_Fill();
-                if (DAQ.Int_Counter == 4) Plot_Chart();
-                if (DAQ.Int_Counter == 6) Array_Fill();
-                if (DAQ.Int_Counter == 8) Plot_Chart();
-
+                 Array_Fill();
+                Plot_Chart();
+                /*
+                                if (DAQ.Int_Counter == 2) Array_Fill();
+                                if (DAQ.Int_Counter == 4) Plot_Chart();
+                                if (DAQ.Int_Counter == 6) Array_Fill();
+                                if (DAQ.Int_Counter == 8) Plot_Chart();
+                                */
                 if (DAQ.Log_Status == true)
                 {
                     if (SP1_serialPort.IsOpen == false)
@@ -741,153 +892,6 @@ namespace VOI_DAQ
                 }
             }
         }
-
-
-
-        double  Get_Motor_eff()
-        {
-            DAQ.MotorEff[0] = 28;
-            DAQ.MotorEff[1] = 29;
-            DAQ.MotorEff[2] = 30;
-            DAQ.MotorEff[3] = 31;
-            DAQ.MotorEff[4] = 32;
-            DAQ.MotorEff[5] = 33;
-            DAQ.MotorEff[6] = 34;
-            DAQ.MotorEff[7] = 35;
-            DAQ.MotorEff[8] = 36;
-            DAQ.MotorEff[9] = 37;
-
-            DAQ.MotorEff[10] = 38;
-            DAQ.MotorEff[11] = 40;
-            DAQ.MotorEff[12] = 45;
-            DAQ.MotorEff[13] = 50;
-            DAQ.MotorEff[14] = 55;
-            DAQ.MotorEff[15] = 60;
-            DAQ.MotorEff[16] = 65;
-            DAQ.MotorEff[17] = 70;
-            DAQ.MotorEff[18] = 75;
-            DAQ.MotorEff[19] = 80;
-            DAQ.MotorEff[20] = 85;
-
-            DAQ.MotorRpm[0] = 25;
-            DAQ.MotorRpm[1] = 30;
-            DAQ.MotorRpm[2] = 40;
-            DAQ.MotorRpm[3] = 50;
-            DAQ.MotorRpm[4] = 60;
-            DAQ.MotorRpm[5] = 70;
-            DAQ.MotorRpm[6] = 80;
-            DAQ.MotorRpm[7] = 90;
-            DAQ.MotorRpm[8] = 100;
-            DAQ.MotorRpm[9] = 110;
-
-            DAQ.MotorRpm[10] = 120;
-            DAQ.MotorRpm[11] = 140;
-            DAQ.MotorRpm[12] = 180;
-            DAQ.MotorRpm[13] = 190;
-            DAQ.MotorRpm[14] = 230;
-            DAQ.MotorRpm[15] = 250;
-            DAQ.MotorRpm[16] = 320;
-            DAQ.MotorRpm[17] = 380;
-            DAQ.MotorRpm[18] = 420;
-            DAQ.MotorRpm[19] = 620;
-            DAQ.MotorRpm[20] = 650;
-            for (int i = 0; i < 21; i++)
-            {
-                if (Math.Abs(DAQ.Vehicle_Ang_Speed_Abs) < (DAQ.MotorRpm[i]))
-                {
-                  //  DAQ.Motor_Eff = DAQ.MotorEff[i];
-                    return DAQ.MotorEff[i];
-                }
-            }
-            return DAQ.MotorEff[20];
-
-        }
-        void Calculate_Mechanical()
-        {
-            DAQ.Motor_Eff  = Get_Motor_eff();
-
-
-            // = TAN(B5 / 100) * 180 / PI()
-            DAQ.Angle = Math.Tan(DAQ.Slope / 100) * 180 / Math.PI;
-            //    DAQ.Torque =
-            DAQ.Mech_Power = (DAQ.Motor_Eff/100) * DAQ.Power; // eeff 0.1-0,9
-
-            if (DAQ.Vehicle_Ang_Speed_Abs == 0) DAQ.Torque = 0;
-            else
-            {
-                DAQ.Torque = DAQ.Mech_Power * 0.0095488; //Nm     9.5488 kw -> 0.0095488 Watt
-                DAQ.Torque /=  DAQ.Vehicle_Ang_Speed_Abs;
-            }
-/*
-                DAQ.Torque = DAQ.Mech_Power * 9.549; //Nm    9.549)
-            if (DAQ.Vehicle_Ang_Speed_Abs != 0) DAQ.Torque = DAQ.Torque / DAQ.Vehicle_Ang_Speed_Abs; //Nm     
-            else DAQ.Torque = 0;//     DAQ.Weight
-*/
-            DAQ.Radcalc = DAQ.Angle * (Math.PI / 180) / 100;
-
-            DAQ.Torque_Friction = 2.00; //
-            DAQ.Weight1 = DAQ.Torque_Friction / (DAQ.FrictionCoeff * 9.8 * Math.Cos(DAQ.Radcalc));
-            DAQ.Torque_Gradient = DAQ.Torque - DAQ.Torque_Friction;
-            DAQ.Weight2 = (DAQ.Torque_Gradient / ((double)DAQ.Vehicle_Speed * 9.8 /3.6 * Math.Sin(DAQ.Radcalc)));
-            DAQ.Weight = (DAQ.Weight1 + DAQ.Weight2)/2;
-
-            if (DAQ.Weight == 0) DAQ.Weight = 0.01;
-            if (DAQ.Weight > 200) DAQ.Weight = 200;
-
-            //    DAQ.Weight1 = ((double)DAQ.Torque_Gradient / ((double)DAQ.Vehicle_Speed * 9.8 * Math.Sin(DAQ.Radcalc)));
-            //   DAQ.Weight2 = ((double)DAQ.Torque_Friction / ((double)DAQ.Friction* 9.8 * Math.Cos(DAQ.Radcalc)));
-                //    DAQ.Torque_Gradient
-                //   DAQ.Torque_Friction = DAQ.Torque - DAQ.Torque_Gradient;
-
-        }
-        String MechPower_GetTextData()
-        {
-            Calculate_Mechanical();
-            String Textdata = "Angle " + DAQ.Angle.ToString("#.##") + "°" + DAQ.nl;
-            Textdata += "Eff %" + DAQ.Motor_Eff.ToString("#.##")  + DAQ.nl;
-            Textdata += "M.Power " + DAQ.Mech_Power.ToString("##.#") + "Watts " + DAQ.nl;
-            Textdata += "Torque " + DAQ.Torque.ToString("##.######") + "Nm " + DAQ.nl;
-            Textdata += "Weight " + DAQ.Weight.ToString("###") + "Kg " + DAQ.nl;
-        //    Textdata += "Torque " + DAQ.Torque.ToString("#.###") + "Nm " + DAQ.nl;
-       //     Textdata += "Weight " + DAQ.Weight.ToString("###.#") + "Kg " + DAQ.nl;
-            return Textdata;
-        }
-
-            // Speed_richTextBox
-            String Electical_GetTextData()
-        {         
-      //      String Textdata =  (DAQ.Current/1000).ToString() + '.' + (DAQ.Current % 1000).ToString("D2") + " Amp" + DAQ.nl;
-          
-          //  String Textdata = DAQ.Current.ToString("#.#") + " mAmp" + DAQ.nl;
-            String Textdata = (DAQ.Current_d).ToString("#.##") + " Amp" + DAQ.nl;
-      //      Textdata += DAQ.Voltage.ToString("#.#") +  " mVolt" + DAQ.nl;
-            Textdata += (DAQ.Voltage_d ).ToString("#.##") + " Volt" + DAQ.nl;
-
-            //  DAQ.Power = (Int32)((DAQ.Current) * (DAQ.Voltage));
-            //        Textdata +=  (DAQ.Power/100).ToString() + '.' + (DAQ.Power % 10000).ToString() + " Watt" + DAQ.nl;
-            DAQ.Power = ((DAQ.Voltage_d * DAQ.Current_d));
-     //   Textdata += ((DAQ.Voltage* DAQ.Current)/1000000).ToString("#.##") + " Watt" + DAQ.nl;
-            Textdata += DAQ.Power.ToString("#.#") + " Watt" + DAQ.nl;
-            Textdata += DAQ.PowerConsumption.ToString("#.##") + " Watt/km" + DAQ.nl;
-            //  https://stackoverflow.com/questions/164926/how-do-i-display-a-decimal-value-to-2-decimal-places
-            return Textdata;
-        }
-       String Speed_GetTextData()
-        {
-            //       String Textdata = Math.Round((Diameter * DAQ.Angular_Speed_Wheel  * 6 *  Math.PI / 10000),2).ToString();
-            String Textdata = Math.Round(DAQ.Vehicle_Speed, 2).ToString();
-            Textdata += " km/h " + System.Environment.NewLine;
-            Textdata += DAQ.Vehicle_Ang_Speed_Abs.ToString() + " rpm" + System.Environment.NewLine;
-            /*
-            if (DAQ.EncoderAccumSign == 1) Textdata += "+";
-            else Textdata += "-";
-            Textdata +=  ((double)DAQ.TravelAcc / 1000).ToString() + " meters ";
-            */
-            //Textdata += ((double)DAQ.Encoder_Tot_Distance / 1000).ToString("#.###") + " meters";
-            Textdata += DAQ.Encoder_Tot_Distance.ToString() + " mm";
-            return Textdata;
-        }
-
 
         String SP1_GetTextdata2()
         {
@@ -925,15 +929,16 @@ namespace VOI_DAQ
             //String Textdata = "";
 
           //  String Textdata = "Received Data " + System.Environment.NewLine;
-            String Textdata = "Preamble " + "0X" + SP1.Preamble.ToString("X") + System.Environment.NewLine;
-            Textdata += "Preamble_Sync "  + SP1.Preamble_Trial.ToString( ) + System.Environment.NewLine;
+            String Textdata = "Preamble " + "0X" + SP1.Preamble.ToString("X");
+            Textdata += "   Sync "  + SP1.Preamble_Trial.ToString( );
 
 
-            Textdata += "Data Len:" + SP1.Length.ToString() + System.Environment.NewLine;
-            Textdata += "CRC_Recv." + "0X" + SP1.CRC_Received.ToString("X") + System.Environment.NewLine;
-            Textdata += "CRC_Calc. " + "0X" + SP1.CRC_Calc.ToString("X") + System.Environment.NewLine;
-            Textdata += "CRC_Err. " + SP1.CRC_Error.ToString() + System.Environment.NewLine;
-            Textdata += "CRC_Suc.  " + SP1.CRC_Success.ToString() + System.Environment.NewLine;
+            Textdata += "  Length:" + SP1.Length.ToString() + DAQ.nl;
+            Textdata += "CRC_Recv." + "0X" + SP1.CRC_Received.ToString("X");
+            Textdata += "     Calc. " + "0X" + SP1.CRC_Calc.ToString("X") + DAQ.nl;
+
+            Textdata += "CRC_Err. " + SP1.CRC_Error.ToString();
+            Textdata += "    Suc.  " + SP1.CRC_Success.ToString() + DAQ.nl;
 
             if (SP1.CRC_Success != 0)
             {
@@ -947,59 +952,62 @@ namespace VOI_DAQ
 
             Textdata += System.Environment.NewLine + System.Environment.NewLine;
 
+            Textdata += "Multi_Gas_1_VOC  : " + DAQ.Multi_Gas_1_VOC.ToString() + "  " + DAQ.nl;
+            Textdata += "Multi_Gas_1_C2H5OH:" + DAQ.Multi_Gas_1_C2H5OH.ToString() + "  " + DAQ.nl;
+            Textdata += "Multi_Gas_1_CO  :  " + DAQ.Multi_Gas_1_CO.ToString() + "  " + DAQ.nl;
+            Textdata += "Multi_Gas_1_NO2 :  " + DAQ.Multi_Gas_1_NO2.ToString() + "  " + DAQ.nl + DAQ.nl;
 
+            Textdata += "Multi_Gas_2_VOC  : " + DAQ.Multi_Gas_2_VOC.ToString() + "  " + DAQ.nl;
+            Textdata += "Multi_Gas_2_C2H5OH:" + DAQ.Multi_Gas_2_C2H5OH.ToString() + "  " + DAQ.nl;
+            Textdata += "Multi_Gas_2_CO  :  " + DAQ.Multi_Gas_2_CO.ToString() + "  " + DAQ.nl;
+            Textdata += "Multi_Gas_2_NO2 :  " + DAQ.Multi_Gas_2_NO2.ToString() + "  " + DAQ.nl + DAQ.nl;
 
-            //     Textdata += "DAQ.Max_Array_Size " + DAQ.Max_Array_Size + DAQ.nl;
-            //    Textdata += "DAQ.Index " + DAQ.Index + DAQ.nl; 
-            //     Textdata += "DAQ.ChartSize " + DAQ.ChartSize + DAQ.nl;
-            //    Textdata += "DAQ.bp " + DAQ.bp + DAQ.nl;
-            //    Textdata += "DAQ.sp " + DAQ.sp + DAQ.nl;
+            Textdata += "Multi_Gas_3_VOC  : " + DAQ.Multi_Gas_3_VOC.ToString() + "  " + DAQ.nl;
+            Textdata += "Multi_Gas_3_C2H5OH:" + DAQ.Multi_Gas_3_C2H5OH.ToString() + "  " + DAQ.nl;
+            Textdata += "Multi_Gas_3_CO  :  " + DAQ.Multi_Gas_3_CO.ToString() + "  " + DAQ.nl;
+            Textdata += "Multi_Gas_3_NO2 :  " + DAQ.Multi_Gas_3_NO2.ToString() + "  " + DAQ.nl + DAQ.nl;
 
-            /*
-            Textdata += "EncoderAccum: ";
+            Textdata += "Multi_Gas_4_VOC  : " + DAQ.Multi_Gas_4_VOC.ToString() + "  " + DAQ.nl;
+            Textdata += "Multi_Gas_4_C2H5OH:" + DAQ.Multi_Gas_4_C2H5OH.ToString() + "  " + DAQ.nl;
+            Textdata += "Multi_Gas_4_CO  :  " + DAQ.Multi_Gas_4_CO.ToString() + "  " + DAQ.nl;
+            Textdata += "Multi_Gas_4_NO2 :  " + DAQ.Multi_Gas_4_NO2.ToString() + "  " + DAQ.nl + DAQ.nl;
 
-            if (DAQ.EncoderAccumSign == 0) Textdata += "-";
-            else Textdata += "+";
-            Textdata += DAQ.EncoderAccum.ToString() +  " 0X" + DAQ.EncoderAccum.ToString("X") + System.Environment.NewLine;
-       //     Textdata += "EncoderRaw : " + DAQ.EncoderAccumSign.ToString() + " Pulse " + System.Environment.NewLine;
-            Textdata += "Encoder : " + DAQ.Encoder.ToString() + " 0X" + DAQ.Encoder.ToString("X") + System.Environment.NewLine;
-            Textdata += "EncoderH : " + DAQ.EncoderH.ToString() + " 0X" + DAQ.EncoderH.ToString("X") + System.Environment.NewLine;
-            Textdata += "EncoderL : " + DAQ.EncoderL.ToString() + " 0X" + DAQ.EncoderL.ToString("X") + System.Environment.NewLine;
-            */
+            Textdata += "Temperature  :  " + DAQ.Temperature_Float + "  " + DAQ.nl;
+            Textdata += "Humidity  :  " + DAQ.Humidity_Float + "  " + DAQ.nl + DAQ.nl;
 
-            //    Textdata += "VehicleSpeed : " + DAQ.VehicleSpeed.ToString() + " km/h " + System.Environment.NewLine;
-
-            if (DAQ.Simulator_Electric == true) Textdata += "Electric Simulator On ";
-            else Textdata += "Electric Simulator Off";
-            Textdata += DAQ.nl;
-            if (DAQ.Simulator_Rpm == true) Textdata += "Rpm Simulator On ";
-            else Textdata += "Rpm Simulator Off";
-            Textdata += DAQ.nl;
-            Textdata += "Current " + DAQ.Current_Adc.ToString() + "Adc  " + DAQ.Current_d.ToString("#.##") + " Amp" +  DAQ.nl;
-            Textdata += "Voltage " + DAQ.Voltage_Adc.ToString() + "Adc  " + DAQ.Voltage_d.ToString("#.##") + " Volt" + DAQ.nl;
-
-      //      Textdata += "Power : " + DAQ.Power.ToString() + " Watt" + System.Environment.NewLine;
-            Textdata += "Temperature : " + DAQ.Temperature.ToString() + " C" + System.Environment.NewLine;
-
-            Textdata += "Encoder Speed: " + DAQ.Enc_Ang_Speed_Abs.ToString() + " rpm " + System.Environment.NewLine;
-            Textdata += "Encoder_Abs_Init: " +  " 0X" + DAQ.Encoder_Abs_Init.ToString("X") + System.Environment.NewLine;
-            Textdata += "Encoder_Abs : " +  " 0X" + DAQ.Encoder_Abs.ToString("X") + System.Environment.NewLine;
-            Textdata += "Encoder_Diff : " + DAQ.Encoder_Diff.ToString() + " 0X" + DAQ.Encoder_Diff.ToString("X") + System.Environment.NewLine;
-            Textdata += "Tot Distance  : "  + DAQ.Encoder_Tot_Distance.ToString( ) + " mm "+ System.Environment.NewLine;
-
-
-            //    Textdata += "pf " + pf + DAQ.nl;
- /*           Textdata += "Accelometer_xP " + DAQ.Accelometer_xP + DAQ.nl;
-            Textdata += "Accelometer X " + DAQ.Accelometer_Xf + DAQ.nl;
-            Textdata += "Accelometer_yP " + DAQ.Accelometer_yP + DAQ.nl;
-            Textdata += "Accelometer Y " + DAQ.Accelometer_Yf + DAQ.nl;
-            Textdata += "Accelometer_zP " + DAQ.Accelometer_zP + DAQ.nl;
-            Textdata += "Accelometer Z " + DAQ.Accelometer_Zf;
-*/
+            
             return Textdata;
         }
-
-
+        String Print_BME680_1()
+        {
+            String Textdata = "";
+            Textdata += "BME680_1 : " + DAQ.nl;
+            Textdata += "VOC  : " + DAQ.BME680_Voc_1.ToString() + "  " + DAQ.nl;
+            Textdata += "Temp :" + DAQ.BME680_Temp_1.ToString() + "  " + DAQ.nl;
+            Textdata += "Hum  :  " + DAQ.BME680_Hum_1.ToString() + "  " + DAQ.nl;
+            Textdata += "Press :  " + DAQ.BME680_Prs_1.ToString() + "  " + DAQ.nl + DAQ.nl;
+            Textdata += "BME680_2 : " + DAQ.nl;
+            Textdata += "VOC  : " + DAQ.BME680_Voc_2.ToString() + "  " + DAQ.nl;
+            Textdata += "Temp :" + DAQ.BME680_Temp_2.ToString() + "  " + DAQ.nl;
+            Textdata += "Hum  :  " + DAQ.BME680_Hum_2.ToString() + "  " + DAQ.nl;
+            Textdata += "Press :  " + DAQ.BME680_Prs_2.ToString() + "  " + DAQ.nl + DAQ.nl;
+            return Textdata;
+        }
+        String Print_BME680_2()
+        {
+            String Textdata = "";
+            Textdata += "BME680_3 : " + DAQ.nl;
+            Textdata += "VOC  : " + DAQ.BME680_Voc_3.ToString() + "  " + DAQ.nl;
+            Textdata += "Temp :" + DAQ.BME680_Temp_3.ToString() + "  " + DAQ.nl;
+            Textdata += "Hum  :  " + DAQ.BME680_Hum_3.ToString() + "  " + DAQ.nl;
+            Textdata += "Press :  " + DAQ.BME680_Prs_3.ToString() + "  " + DAQ.nl + DAQ.nl;
+            Textdata += "BME680_4 : " + DAQ.nl;
+            Textdata += "VOC  : " + DAQ.BME680_Voc_4.ToString() + "  " + DAQ.nl;
+            Textdata += "Temp :" + DAQ.BME680_Temp_4.ToString() + "  " + DAQ.nl;
+            Textdata += "Hum  :  " + DAQ.BME680_Hum_4.ToString() + "  " + DAQ.nl;
+            Textdata += "Press :  " + DAQ.BME680_Prs_4.ToString() + "  " + DAQ.nl + DAQ.nl;
+            return Textdata;
+        }
         void Base_Timer1mSec_Tick(object sender, EventArgs e)
         {
             Timer_1sec++; // 16mSec
@@ -1011,23 +1019,14 @@ namespace VOI_DAQ
                                                              //      Update_Chart = 1;
                                                              //       Plot_Chart();
 
-            //    if (Task_Counter == 1) 
+       
                     SP1_richTextBox.Text = SP1_GetTextdata(); // main informative screen
-            //    if (Task_Counter == 2) 
+           
                     SP1_DatatextBox.Text = SP1_GetTextdata2();  // all data in hex format screen
-            //  if (Task_Counter == 3)  
-                    Speed_richTextBox.Text = Speed_GetTextData(); // main speed rpm / km gauge
 
-                richTextBox_Electrical.Text = Electical_GetTextData();
+                richTextBox_BME680.Text = Print_BME680_1();
+                richTextBox_BME680_2.Text = Print_BME680_2();
 
-                Power_richTextBox.Text = MechPower_GetTextData();
-
-                //      SP1_SendtextBox.Text = DAQ.Index.ToString();
-                //   Simulate();
-                /*
-                                if( dataLoggerToolStripMenuItem.Checked == true )
-                                    systemTimeToolStripMenuItem.Text = " System Time & Date: " + COMMON_GetDateTime();
-                */
                 if (DAQ.Enable_Menu_Time_Update == true)
                     systemTimeToolStripMenuItem.Text = "Time & Date: " + COMMON_GetDateTime();
 
@@ -1089,27 +1088,52 @@ namespace VOI_DAQ
                 for (int t = 1; t <= DAQ.sp; t++) // sp 0<-1 898<-899  DAQ.MAX_ARRAY_SIZE - 2  0-1798
                 {
                     //   DAQ.Index_Arr[t-1] = DAQ.Index_Arr[t];//0
-                    DAQ.Speed_Arr[t - 1] = DAQ.Speed_Arr[t];
-                    DAQ.Current_Arr[t - 1] = DAQ.Current_Arr[t];
-                    DAQ.Voltage_Arr[t - 1] = DAQ.Voltage_Arr[t];
-                    //   DAQ.Power_Arr[t] = DAQ.Power_Arr[t];
-                    DAQ.Temperature_Arr[t - 1] = DAQ.Temperature_Arr[t];
+                    DAQ.VOC_Arr1[t - 1] = DAQ.VOC_Arr1[t];
+                    DAQ.VOC_Arr3[t - 1] = DAQ.VOC_Arr3[t];
+                    DAQ.VOC_Arr2[t - 1] = DAQ.VOC_Arr2[t];
+                    DAQ.VOC_Arr4[t - 1] = DAQ.VOC_Arr4[t];
+                    DAQ.BME_VOC_Arr1[t - 1] = DAQ.BME_VOC_Arr1[t];
+                    DAQ.BME_VOC_Arr2[t - 1] = DAQ.BME_VOC_Arr2[t];
+                    DAQ.BME_VOC_Arr3[t - 1] = DAQ.BME_VOC_Arr3[t];
+                    DAQ.BME_VOC_Arr4[t - 1] = DAQ.BME_VOC_Arr4[t];
+
+
+
+                
+             //       DAQ.Arr5[t - 1] = DAQ.Arr5[t];
+              //      DAQ.Arr6[t - 1] = DAQ.Arr6[t];
+
+
                 }
             }
             else
             {
                 DAQ.sp++; // sp  0 - 898
             }
-            DAQ.Speed_Arr[DAQ.sp] = DAQ.Vehicle_Speed.ToString();
-            double ValTemp = DAQ.Current / 10;
-            ValTemp /= 100;
-            DAQ.Current_Arr[DAQ.sp] = ValTemp.ToString();
+      //      DAQ.Speed_Arr[DAQ.sp] = DAQ.Vehicle_Speed.ToString();
+            DAQ.VOC_Arr1[DAQ.sp] = DAQ.Multi_Gas_1_VOC.ToString();
+            DAQ.VOC_Arr2[DAQ.sp] = DAQ.Multi_Gas_2_VOC.ToString();
+            DAQ.VOC_Arr3[DAQ.sp] = DAQ.Multi_Gas_3_VOC.ToString();
+            DAQ.VOC_Arr4[DAQ.sp] = DAQ.Multi_Gas_4_VOC.ToString();
+
+            DAQ.BME_VOC_Arr1[DAQ.sp] = (DAQ.BME_Voc1 / 100).ToString();
+            DAQ.BME_VOC_Arr2[DAQ.sp] = (DAQ.BME_Voc2 / 100).ToString();
+            DAQ.BME_VOC_Arr3[DAQ.sp] = (DAQ.BME_Voc3 / 100).ToString();
+            DAQ.BME_VOC_Arr4[DAQ.sp] = (DAQ.BME_Voc4 / 100).ToString();
+
+            //       DAQ.Arr5[DAQ.sp] = (DAQ.Temperature_Convert/100).ToString();
+            //         DAQ.Arr6[DAQ.sp] = (DAQ.Humidity_Convert/100).ToString();
+            //
             //      DAQ.Current_Arr[DAQ.sp] = ((double)(DAQ.Current/100)).ToString();
-            ValTemp = DAQ.Voltage / 10;
-            ValTemp /= 1000;
             //   DAQ.Voltage_Arr[DAQ.sp] = ((double)(DAQ.Voltage/100)).ToString();
-            DAQ.Voltage_Arr[DAQ.sp] = ValTemp.ToString();
-            DAQ.Temperature_Arr[DAQ.sp] = DAQ.Temperature.ToString();
+
+            //       DAQ.Voltage_Arr[DAQ.sp] = ValTemp.ToString();
+
+
+
+            //         DAQ.Temperature_Arr[DAQ.sp] = DAQ.Temperature.ToString();
+
+
             // Adjust bp
             if (DAQ.sp >= DAQ.ChartSize) // 300 550 // bp->250
                 DAQ.bp = (Int16)(DAQ.sp - DAQ.ChartSize);//1-300
@@ -1119,30 +1143,53 @@ namespace VOI_DAQ
         void Plot_Chart()
         {
             //  return;
+            /*
             if (DAQ.Plot_Init != 32)
             {
                 DAQ.Plot_Init = 32;
                 // plotSurface2D1.BackgroundImage = null;
-                pictureBox2.Visible = false;
+                //pictureBox2.Visible = false;
             }
-
+            */
             NPlot.Grid grid = new NPlot.Grid();
             NPlot.LinePlot Graph1 = new NPlot.LinePlot();
             NPlot.LinePlot Graph2 = new NPlot.LinePlot();
             NPlot.LinePlot Graph3 = new NPlot.LinePlot();
             NPlot.LinePlot Graph4 = new NPlot.LinePlot();
+            NPlot.LinePlot Graph5 = new NPlot.LinePlot();
+            NPlot.LinePlot Graph6 = new NPlot.LinePlot();
+            NPlot.LinePlot Graph7 = new NPlot.LinePlot();
+            NPlot.LinePlot Graph8 = new NPlot.LinePlot();
+            /*
+                        Graph1.Pen = new Pen(Color.Red, 1);
+                        Graph2.Pen = new Pen(Color.Blue, 2);
+                        Graph3.Pen = new Pen(Color.Green, 1);
+                        Graph4.Pen = new Pen(Color.Gold, 1);   // 
+                        Graph5.Pen = new Pen(Color.Pink, 1);
+                        Graph6.Pen = new Pen(Color.Black, 1);   // 
+                        Graph7.Pen = new Pen(Color.Red, 1);
+                        Graph8.Pen = new Pen(Color.Blue, 2);
+            */
 
             Graph1.Pen = new Pen(Color.Red, 1);
-            Graph2.Pen = new Pen(Color.Blue, 2);
-            Graph3.Pen = new Pen(Color.Green, 1);
-            Graph4.Pen = new Pen(Color.Gold, 1);   // 
+            Graph2.Pen = new Pen(Color.Red, 1);
+            Graph3.Pen = new Pen(Color.Red, 1);
+            Graph4.Pen = new Pen(Color.Red, 1);   // 
+            Graph5.Pen = new Pen(Color.Blue, 1);
+            Graph6.Pen = new Pen(Color.Blue, 1);   // 
+            Graph7.Pen = new Pen(Color.Blue, 1);
+            Graph8.Pen = new Pen(Color.Blue, 1);
+
 
             List<String> X_Data = new List<String>();
             List<String> Data1 = new List<String>();
             List<String> Data2 = new List<String>();
             List<String> Data3 = new List<String>();
             List<String> Data4 = new List<String>();
-
+            List<String> Data5 = new List<String>();
+            List<String> Data6 = new List<String>();
+            List<String> Data7 = new List<String>();
+            List<String> Data8 = new List<String>();
 
             plotSurface2D1.Clear();
 
@@ -1153,7 +1200,10 @@ namespace VOI_DAQ
             Data2.Clear();
             Data3.Clear();
             Data4.Clear();
-
+            Data5.Clear();
+            Data6.Clear();
+            Data7.Clear();
+            Data8.Clear();
             //     plotSurface2D1.Clear();
             /*
                         grid.VerticalGridType = NPlot.Grid.GridType.Coarse;
@@ -1163,24 +1213,25 @@ namespace VOI_DAQ
             */
             plotSurface2D1.Add(grid);
 
-            //  float FloatNum;
-
             for (Int16 t = DAQ.bp; t <= DAQ.sp; t++)
             {
                 //   Single.TryParse(DAQ.Index_Arr[t], out FloatNum); X_Data.Add(FloatNum.ToString());
                 //    X_Data.Add(DAQ.Index_Arr[t].ToString());
                 X_Data.Add(t.ToString());
                 //     Single.TryParse(DAQ.Speed_Arr[t], out FloatNum); Data1.Add(FloatNum.ToString());
-                Data1.Add(DAQ.Speed_Arr[t].ToString());
+                Data1.Add(DAQ.VOC_Arr1[t].ToString());
                 //      Single.TryParse(DAQ.Current_Arr[t], out FloatNum); Data2.Add(FloatNum.ToString());
-                Data2.Add(DAQ.Current_Arr[t].ToString());
+                Data2.Add(DAQ.VOC_Arr2[t].ToString());
                 //       Single.TryParse(DAQ.Voltage_Arr[t], out FloatNum); Data3.Add(FloatNum.ToString());
-                Data3.Add(DAQ.Voltage_Arr[t].ToString());
+                Data3.Add(DAQ.VOC_Arr3[t].ToString());
                 //  Single.TryParse(DAQ.Temperature_Arr[t], out FloatNum); Data4.Add(FloatNum.ToString()); // akim se
-                Data4.Add(DAQ.Temperature_Arr[t].ToString());
+                Data4.Add(DAQ.VOC_Arr4[t].ToString());
+
+                Data5.Add(DAQ.BME_VOC_Arr1[t].ToString());
+                Data6.Add(DAQ.BME_VOC_Arr2[t].ToString());
+                Data7.Add(DAQ.BME_VOC_Arr3[t].ToString());
+                Data8.Add(DAQ.BME_VOC_Arr4[t].ToString());
             }
-
-
             Graph1.AbscissaData = X_Data;
             Graph1.DataSource = Data1;
             Graph2.AbscissaData = X_Data;
@@ -1190,23 +1241,58 @@ namespace VOI_DAQ
             Graph4.AbscissaData = X_Data;
             Graph4.DataSource = Data4;
 
-            if (checkBox_Speed.Checked == true) plotSurface2D1.Add(Graph1);
-            if (checkBox_Current.Checked == true) plotSurface2D1.Add(Graph2);
-            if (checkBox_Voltage.Checked == true) plotSurface2D1.Add(Graph3);
-            if (checkBox_Temperature.Checked == true) plotSurface2D1.Add(Graph4);
+            Graph5.AbscissaData = X_Data;
+            Graph5.DataSource = Data5;
+            Graph6.AbscissaData = X_Data;
+            Graph6.DataSource = Data6;
+            Graph7.AbscissaData = X_Data;
+            Graph7.DataSource = Data7;
+            Graph8.AbscissaData = X_Data;
+            Graph8.DataSource = Data8;
 
-            if (!((checkBox_Speed.Checked == true) || (checkBox_Current.Checked == true) ||
-                    (checkBox_Voltage.Checked == true) || (checkBox_Temperature.Checked == true)))
+
+            //    checkBox_Power
+
+            int Check = 0;
+
+            if (checkBox_Voc1.Checked == true) {plotSurface2D1.Add(Graph1);  Check++; } // VOC 1
+            if (checkBox_Voc2.Checked == true) {plotSurface2D1.Add(Graph2); Check++; }  // VOC 2
+            if (checkBox_Voc3.Checked == true) {plotSurface2D1.Add(Graph3); Check++; }  // VOC 3
+            if (checkBox_Voc4.Checked == true) {plotSurface2D1.Add(Graph4); Check++; }  // VOC 4
+                                                                           //      if (checkBox_Temperature.Checked == true) plotSurface2D1.Add(Graph5); // VOC 3
+                                                                           //        if (checkBox_Humidity.Checked == true) plotSurface2D1.Add(Graph6); // VOC 4
+
+            if (checkBox_Voc1_Median.Checked == true) {plotSurface2D1.Add(Graph5); Check++; } 
+            if (checkBox_Voc2_Median.Checked == true) {plotSurface2D1.Add(Graph6); Check++; } 
+            if (checkBox_Voc3_Median.Checked == true) {plotSurface2D1.Add(Graph7); Check++; }
+            if (checkBox_Voc4_Median.Checked == true) {plotSurface2D1.Add(Graph8); Check++; }
+            
+            if ( Check == 0)
             {
-                for (Int16 t = DAQ.bp; t <= DAQ.sp; t++)
-                {
-                    Data1.Clear();
-                    Data1.Add("0");
-                }
-                plotSurface2D1.Add(Graph1);
+                plotSurface2D1.Add(Graph7);
             }
+            
+        
 
-            plotSurface2D1.ShowCoordinates = true;
+
+        //     plotSurface2D1.Add(Graph8);
+
+        /*
+        if (!((checkBox_Speed.Checked == true) || (checkBox_Current.Checked == true) ||
+                (checkBox_Voltage.Checked == true) || (checkBox_Temperature.Checked == true)))
+        {
+            for (Int16 t = DAQ.bp; t <= DAQ.sp; t++)
+            {
+                Data1.Clear();
+                Data1.Add("0");
+            }
+            plotSurface2D1.Add(Graph1);
+        }
+        */
+
+
+
+        plotSurface2D1.ShowCoordinates = true;
             //      plotSurface2D1.YAxis1.Label = "";
             plotSurface2D1.YAxis1.LabelOffsetAbsolute = true;
             plotSurface2D1.YAxis1.LabelOffset = 0;
@@ -1474,7 +1560,7 @@ namespace VOI_DAQ
                     else
                     {
                         DAQ.Log_Counter = 1;
-                        String Mystring = " Log No,   Date, Time , Speed(rpm), Distance(mm), Voltage(Volt), Current(Amps),Temperature (C)";
+                        String Mystring = " Log No,   Date, Time , VOC_1, VOC_2, VOC_3, VOC_4,Temperature (C),Humidity %";
                         /*
                         for (int i = 0; i < DAQ.RawIndex; i++)
                         {
@@ -1510,8 +1596,13 @@ namespace VOI_DAQ
                 Mystring += DAQ.Variables_Data[i] + ",";
             }
             */
-            Mystring += DAQ.Enc_Ang_Speed_Abs.ToString() + "," + DAQ.Encoder_Tot_Distance.ToString() + "," + DAQ.Voltage_d.ToString() + "," + DAQ.Current_d.ToString() +
-                 "," + DAQ.Temperature.ToString() + ",";
+            //      Mystring += DAQ.Enc_Ang_Speed_Abs.ToString() + "," + DAQ.Encoder_Tot_Distance.ToString() + "," + DAQ.Voltage_d.ToString() + "," + DAQ.Current_d.ToString() +
+            //            "," + DAQ.Temperature.ToString() + ",";
+            Mystring += DAQ.Multi_Gas_1_VOC.ToString() + "," + DAQ.Multi_Gas_2_VOC.ToString() + "," + DAQ.Multi_Gas_3_VOC.ToString() + "," + DAQ.Multi_Gas_4_VOC.ToString() +
+                  "," + DAQ.Temperature_Float + ","+ DAQ.Humidity_Float;
+
+
+
             return Mystring;
         }
         public String LOG_DeleteStreamWriter(StreamWriter Sw)
@@ -1620,7 +1711,7 @@ namespace VOI_DAQ
 
         private void button_Reset_Distance_Click(object sender, EventArgs e)
         {
-              DAQ.Encoder_Abs_Init = DAQ.Encoder_Abs; // First Data read from dspic
+            //  DAQ.Encoder_Abs_Init = DAQ.Encoder_Abs; // First Data read from dspic
         }
         /*
 private void label2_Click(object sender, EventArgs e)
@@ -1655,25 +1746,80 @@ private void systemTimeToolStripMenuItem_Click(object sender, EventArgs e)
         
         }
 
-        private void numericUpDown_incline_ValueChanged(object sender, EventArgs e)
-        {
-            DAQ.Slope = (double) numericUpDown_incline.Value;
-        }
+//        private void numericUpDown_incline_ValueChanged(object sender, EventArgs e)
+ //       {
+         //   DAQ.Slope = (double) numericUpDown_incline.Value;
+  //      }
 
         private void communicationToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            /*
             Simulator form = new Simulator();
             form.Init_Text();
             form.button_Current_Click(sender, e);
             form.Show();
             DAQ.Simulator_Electric = true;
             form.checkBox_Simulator_State.Checked = true;
+            */
         }
 
-        private void numericUpDown_Wheel_ValueChanged(object sender, EventArgs e)
+        private void deviceManagerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DAQ.Wheel_Diameter = (Int16)numericUpDown_Wheel.Value;
+            Process.Start("devmgmt.msc");
         }
+        void ComPort_List_ForTable(String VID, String PID, String NAM)
+        {
+            List<string> names = ComPortNames(VID, PID); // ftdi
+            if (names.Count > 0)
+            {
+                foreach (String s in SerialPort.GetPortNames())
+                {
+                    if (names.Contains(s))
+                    {
+
+                        SP1_SendtextBox.Text += s + "     " + NAM + "\r\n";
+
+                  //  SP1_SendtextBox.Text = s;
+                       
+                      //  Newport = s;
+                       
+                    }
+                }
+            }
+            else
+                SP1_SendtextBox.Text = "No COM ports found";  //  return s;
+        }
+
+        private void comPortListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ComPort_List_ForTable(SP1.VID_1, SP1.PID_1, SP1.NAM_1);
+            ComPort_List_ForTable(SP1.VID_2, SP1.PID_2, SP1.NAM_2);
+            ComPort_List_ForTable(SP1.VID_3, SP1.PID_3, SP1.NAM_3);
+            ComPort_List_ForTable(SP1.VID_4, SP1.PID_4, SP1.NAM_4);
+            ComPort_List_ForTable(SP1.VID_5, SP1.PID_5, SP1.NAM_5);
+            //    ComPort_List(VID_1, PID_1, NAM_1);
+       //     ShowComs form = new ShowComs();
+            //    form.MdiParent = this;
+            //     form.ShowDialog();
+            //  form.BackColor = Color.
+        //    form.Show();
+        }
+
+        private void checkBox_Temperature_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox_Voc4_Median_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        //    private void numericUpDown_Wheel_ValueChanged(object sender, EventArgs e)
+        //    {
+        //        DAQ.Wheel_Diameter = (Int16)numericUpDown_Wheel.Value;
+        //     }
+
     }
 
 

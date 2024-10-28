@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace VOI_DAQ
+//namespace VOI_DAQ
+     namespace DAQ_VOC
 {
     static class Program
     {

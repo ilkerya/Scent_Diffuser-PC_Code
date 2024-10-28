@@ -5,12 +5,44 @@ using System.Text;
 
 
 
-namespace VOI_DAQ 
+//namespace VOI_DAQ
+     namespace DAQ_VOC
 {
     class SP1
     {
 
-       public  static String PortConnectName;
+        public static String VID_1 = "04D8";
+        public static String PID_1 = "00DD"; // microchip board
+        public static String NAM_1 = "Microchip Serial Interface";
+
+        public static String VID_2 = "0403";
+        public static String PID_2 = "6015"; // ft232 serial converter metinde
+        public static String NAM_2 = "FT232 Serial Converter";
+
+        public static String VID_3 = "10C4";
+        public static String PID_3 = "EA60"; // Silicon Labs CP210x USB to UART Bridge
+        public static String NAM_3 = "ESP32 Serial Interface";
+
+        public static String VID_4 = "2341";
+        public static String PID_4 = "0042"; // Arduino Mega Com Port
+        public static String NAM_4 = "Arduino Mega Serial";
+
+        public static String VID_5 = "0403";
+        public static String PID_5 = "6001"; // ft232 serial converter
+        public static String NAM_5 = "FT232 Serial Converter"; // ft232 serial converter
+
+
+        /*
+         public static String Def_VID = SP1.VID_4;
+         public static String Def_PID = SP1.PID_4;
+         public static String Def_NAM = SP1.NAM_4;
+        */
+
+        public static String Def_VID = SP1.VID_3;
+        public static String Def_PID = SP1.PID_3;
+        public static String Def_NAM = SP1.NAM_3;
+        
+        public static String PortConnectName;
         public static uint ComTimeout;  // SP1.ComTimeout
         public static uint ErrorCount;
         //   uint ReadSequence;
@@ -67,7 +99,7 @@ namespace VOI_DAQ
         public static readonly UInt16 DEFAULT_PREAMBLE = 0XAAAA; // preamble+length 4 byte + 4 byte
         public static readonly UInt16 DEFAULT_CRC_INIT = 0XAAAA; // preamble+length 4 byte + 4 byte
 
-        public static readonly UInt16 DEFAULT_LENGTH = 20; // islemci tarafindaki ayni def ile degerde olmali
+        public static readonly UInt16 DEFAULT_LENGTH = 133; // islemci tarafindaki ayni def ile degerde olmali
 
         public static readonly UInt16 SHIFT24 = 24;
         public static readonly UInt16 SHIFT16 = 16;

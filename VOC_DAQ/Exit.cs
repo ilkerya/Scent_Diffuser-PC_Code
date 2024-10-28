@@ -7,7 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace VOI_DAQ
+//namespace VOI_DAQ
+     namespace DAQ_VOC
 {
     public partial class Exit : Form
     {
@@ -16,7 +17,8 @@ namespace VOI_DAQ
             InitializeComponent();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+       private void button2_Click(object sender, EventArgs e)
+   //     private void Button2_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }

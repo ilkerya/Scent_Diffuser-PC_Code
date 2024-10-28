@@ -7,7 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace VOI_DAQ
+//namespace VOI_DAQ
+     namespace DAQ_VOC
 {
     public partial class Simulator : Form
     {
@@ -23,18 +24,19 @@ namespace VOI_DAQ
         */
         private void Update_TextBox()
         {
-            richTextBox_Outputs.Text = "Current Adc : " + DAQ.Current_Adc.ToString() + DAQ.nl +
-                                       "Voltage Adc : " + DAQ.Voltage_Adc.ToString() + DAQ.nl;
+          //  richTextBox_Outputs.Text = "Current Adc : " + DAQ.Current_Adc.ToString() + DAQ.nl +
+         //                              "Voltage Adc : " + DAQ.Voltage_Adc.ToString() + DAQ.nl;
 
-            richTextBox_Outputs.Text += "Rpm Encoder : ";
+         //   richTextBox_Outputs.Text += "Rpm Encoder : ";
 
-            if (DAQ.Direction == 128) richTextBox_Outputs.Text += "-";
-            else richTextBox_Outputs.Text += "+";
+         //  if (DAQ.Direction == 128) richTextBox_Outputs.Text += "-";
+          //  else richTextBox_Outputs.Text += "+";
 
-            richTextBox_Outputs.Text +=   DAQ.Enc_Ang_Speed_Abs.ToString();
+          //  richTextBox_Outputs.Text +=   DAQ.Enc_Ang_Speed_Abs.ToString();
         }
         public void Init_Text()
         {
+            /*
             if (DAQ.Simulator_Init == false)
             {
                 DAQ.Simulator_Init = true;
@@ -46,10 +48,11 @@ namespace VOI_DAQ
                 richTextBox_Current.Text = DAQ.Current_Simulator.ToString();
                 richTextBox_Voltage.Text = DAQ.Voltage_Simulator.ToString();
             }
-
+            */
         }
 public  void Update_Rpm_Sim_Values()
         {
+            /*
             Int32 Max_Encoder_Ang_Speed = 703 * 1024; // 2800 
             Max_Encoder_Ang_Speed *= DAQ.Wheel_Diameter;
             Max_Encoder_Ang_Speed /= 13510;
@@ -74,18 +77,20 @@ public  void Update_Rpm_Sim_Values()
             }
             DAQ.AngularSpeed_Simulator = (UInt16)Math.Abs(Angular_Speed);
 
-            if (Angular_Speed >= 0) DAQ.AngularSpeedDirection_Simulator = 0;
-            else DAQ.AngularSpeedDirection_Simulator = 128;
+        //    if (Angular_Speed >= 0) DAQ.AngularSpeedDirection_Simulator = 0;
+        //    else DAQ.AngularSpeedDirection_Simulator = 128;
 
             if (DAQ.Simulator_Rpm == true)
             {
-                DAQ.Enc_Ang_Speed_Raw = DAQ.AngularSpeed_Simulator;
-                DAQ.Direction = DAQ.AngularSpeedDirection_Simulator;
+           //     DAQ.Enc_Ang_Speed_Raw = DAQ.AngularSpeed_Simulator;
+          //      DAQ.Direction = DAQ.AngularSpeedDirection_Simulator;
             }
-
+            */
         }
         public void Update_Electrical_Sim_Values()
         {
+            /*
+              
             UInt16.TryParse(richTextBox_Current.Text, out DAQ.Current_Simulator);
             UInt16.TryParse(richTextBox_Voltage.Text, out DAQ.Voltage_Simulator);
 
@@ -104,17 +109,18 @@ public  void Update_Rpm_Sim_Values()
                 richTextBox_Voltage.Text = "4095";
             }
             DAQ.Voltage_Adc = DAQ.Voltage_Simulator;
-
+            */
         }
         public void button_Current_Click(object sender, EventArgs e)
         {
-            Update_Electrical_Sim_Values();
-            Update_Rpm_Sim_Values();
-            Update_TextBox();
+        //    Update_Electrical_Sim_Values();
+         //   Update_Rpm_Sim_Values();
+          //  Update_TextBox();
         }
 
         private void checkBox_Simulator_State_CheckedChanged(object sender, EventArgs e)
         {
+            /*
             if(checkBox_Simulator_State.Checked)
             {
                 DAQ.Simulator_Electric = true;
@@ -123,12 +129,14 @@ public  void Update_Rpm_Sim_Values()
             {
                 DAQ.Simulator_Electric = false; 
             }
+            */
         }
 
         private void checkBox_Rpm_Enabled_CheckedChanged(object sender, EventArgs e)
         {
             // Simulator_Electric
            // checkBox_Rpm_Enabled.Checked = true;
+           /*
             if (checkBox_Rpm_Enabled.Checked)
             {
                 DAQ.Simulator_Rpm = true;
@@ -137,6 +145,7 @@ public  void Update_Rpm_Sim_Values()
             {
                 DAQ.Simulator_Rpm = false;
             }
+            */
         //    Update_Rpm_Sim_Values();
         //   Update_TextBox();
 
