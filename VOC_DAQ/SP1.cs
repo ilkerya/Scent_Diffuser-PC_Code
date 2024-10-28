@@ -31,7 +31,7 @@ using System.Text;
         public static String PID_5 = "6001"; // ft232 serial converter
         public static String NAM_5 = "FT232 Serial Converter"; // ft232 serial converter
 
-
+          
         /*
          public static String Def_VID = SP1.VID_4;
          public static String Def_PID = SP1.PID_4;
