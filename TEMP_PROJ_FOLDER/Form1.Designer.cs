@@ -43,11 +43,7 @@ namespace TemplateProject
             this.SP1_SendButton = new System.Windows.Forms.Button();
             this.SP1_DatatextBox = new System.Windows.Forms.TextBox();
             this.SP1_richTextBox = new System.Windows.Forms.RichTextBox();
-            this.checkBox_Voc4 = new System.Windows.Forms.CheckBox();
-            this.checkBox_Voc3 = new System.Windows.Forms.CheckBox();
             this.checkBox_Temperature = new System.Windows.Forms.CheckBox();
-            this.checkBox_Voc2 = new System.Windows.Forms.CheckBox();
-            this.checkBox_Voc1 = new System.Windows.Forms.CheckBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.recordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,19 +65,11 @@ namespace TemplateProject
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.plotSurface2D1 = new NPlot.Windows.PlotSurface2D();
-            this.label2 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.checkBox_Humidity = new System.Windows.Forms.CheckBox();
-            this.checkBox_Voc4_Median = new System.Windows.Forms.CheckBox();
-            this.checkBox_Voc3_Median = new System.Windows.Forms.CheckBox();
-            this.checkBox_Voc2_Median = new System.Windows.Forms.CheckBox();
-            this.checkBox_Voc1_Median = new System.Windows.Forms.CheckBox();
             this.SP1_textBox_Device = new System.Windows.Forms.TextBox();
-            this.richTextBox_BME680 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox_BME680_2 = new System.Windows.Forms.RichTextBox();
             this.checkBox_Light = new System.Windows.Forms.CheckBox();
-            this.richTextBox_Light = new System.Windows.Forms.RichTextBox();
             this.checkBox_InfraLight = new System.Windows.Forms.CheckBox();
             this.checkBox_FanSpeed = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
@@ -233,30 +221,6 @@ namespace TemplateProject
             this.SP1_richTextBox.TabIndex = 737;
             this.SP1_richTextBox.Text = "Receive Log";
             // 
-            // checkBox_Voc4
-            // 
-            this.checkBox_Voc4.AutoSize = true;
-            this.checkBox_Voc4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_Voc4.ForeColor = System.Drawing.Color.Red;
-            this.checkBox_Voc4.Location = new System.Drawing.Point(366, 811);
-            this.checkBox_Voc4.Name = "checkBox_Voc4";
-            this.checkBox_Voc4.Size = new System.Drawing.Size(71, 21);
-            this.checkBox_Voc4.TabIndex = 752;
-            this.checkBox_Voc4.Text = "VOC 4";
-            this.checkBox_Voc4.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_Voc3
-            // 
-            this.checkBox_Voc3.AutoSize = true;
-            this.checkBox_Voc3.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_Voc3.ForeColor = System.Drawing.Color.Red;
-            this.checkBox_Voc3.Location = new System.Drawing.Point(366, 782);
-            this.checkBox_Voc3.Name = "checkBox_Voc3";
-            this.checkBox_Voc3.Size = new System.Drawing.Size(67, 20);
-            this.checkBox_Voc3.TabIndex = 751;
-            this.checkBox_Voc3.Text = "VOC 3";
-            this.checkBox_Voc3.UseVisualStyleBackColor = false;
-            // 
             // checkBox_Temperature
             // 
             this.checkBox_Temperature.AutoSize = true;
@@ -271,30 +235,6 @@ namespace TemplateProject
             this.checkBox_Temperature.Text = "Temperature";
             this.checkBox_Temperature.UseVisualStyleBackColor = true;
             this.checkBox_Temperature.CheckedChanged += new System.EventHandler(this.checkBox_Temperature_CheckedChanged);
-            // 
-            // checkBox_Voc2
-            // 
-            this.checkBox_Voc2.AutoSize = true;
-            this.checkBox_Voc2.ForeColor = System.Drawing.Color.Red;
-            this.checkBox_Voc2.Location = new System.Drawing.Point(366, 750);
-            this.checkBox_Voc2.Name = "checkBox_Voc2";
-            this.checkBox_Voc2.Size = new System.Drawing.Size(67, 20);
-            this.checkBox_Voc2.TabIndex = 748;
-            this.checkBox_Voc2.Text = "VOC 2";
-            this.checkBox_Voc2.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_Voc1
-            // 
-            this.checkBox_Voc1.AutoSize = true;
-            this.checkBox_Voc1.Checked = true;
-            this.checkBox_Voc1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Voc1.ForeColor = System.Drawing.Color.Red;
-            this.checkBox_Voc1.Location = new System.Drawing.Point(366, 720);
-            this.checkBox_Voc1.Name = "checkBox_Voc1";
-            this.checkBox_Voc1.Size = new System.Drawing.Size(67, 20);
-            this.checkBox_Voc1.TabIndex = 747;
-            this.checkBox_Voc1.Text = "VOC 1";
-            this.checkBox_Voc1.UseVisualStyleBackColor = true;
             // 
             // menuStrip1
             // 
@@ -485,16 +425,6 @@ namespace TemplateProject
             this.plotSurface2D1.YAxis1 = null;
             this.plotSurface2D1.YAxis2 = null;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(837, 858);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(93, 18);
-            this.label2.TabIndex = 756;
-            this.label2.Text = "Wheel Size";
-            // 
             // checkBox_Humidity
             // 
             this.checkBox_Humidity.AutoSize = true;
@@ -509,55 +439,6 @@ namespace TemplateProject
             this.checkBox_Humidity.Text = "Humidity";
             this.checkBox_Humidity.UseVisualStyleBackColor = true;
             // 
-            // checkBox_Voc4_Median
-            // 
-            this.checkBox_Voc4_Median.AutoSize = true;
-            this.checkBox_Voc4_Median.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox_Voc4_Median.ForeColor = System.Drawing.Color.Blue;
-            this.checkBox_Voc4_Median.Location = new System.Drawing.Point(1142, 749);
-            this.checkBox_Voc4_Median.Name = "checkBox_Voc4_Median";
-            this.checkBox_Voc4_Median.Size = new System.Drawing.Size(75, 21);
-            this.checkBox_Voc4_Median.TabIndex = 762;
-            this.checkBox_Voc4_Median.Text = "BME_4";
-            this.checkBox_Voc4_Median.UseVisualStyleBackColor = true;
-            this.checkBox_Voc4_Median.CheckedChanged += new System.EventHandler(this.checkBox_Voc4_Median_CheckedChanged);
-            // 
-            // checkBox_Voc3_Median
-            // 
-            this.checkBox_Voc3_Median.AutoSize = true;
-            this.checkBox_Voc3_Median.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox_Voc3_Median.ForeColor = System.Drawing.Color.Blue;
-            this.checkBox_Voc3_Median.Location = new System.Drawing.Point(1145, 681);
-            this.checkBox_Voc3_Median.Name = "checkBox_Voc3_Median";
-            this.checkBox_Voc3_Median.Size = new System.Drawing.Size(72, 20);
-            this.checkBox_Voc3_Median.TabIndex = 761;
-            this.checkBox_Voc3_Median.Text = "BME_3";
-            this.checkBox_Voc3_Median.UseVisualStyleBackColor = false;
-            // 
-            // checkBox_Voc2_Median
-            // 
-            this.checkBox_Voc2_Median.AutoSize = true;
-            this.checkBox_Voc2_Median.ForeColor = System.Drawing.Color.Blue;
-            this.checkBox_Voc2_Median.Location = new System.Drawing.Point(880, 782);
-            this.checkBox_Voc2_Median.Name = "checkBox_Voc2_Median";
-            this.checkBox_Voc2_Median.Size = new System.Drawing.Size(72, 20);
-            this.checkBox_Voc2_Median.TabIndex = 760;
-            this.checkBox_Voc2_Median.Text = "BME_2";
-            this.checkBox_Voc2_Median.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_Voc1_Median
-            // 
-            this.checkBox_Voc1_Median.AutoSize = true;
-            this.checkBox_Voc1_Median.Checked = true;
-            this.checkBox_Voc1_Median.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Voc1_Median.ForeColor = System.Drawing.Color.Blue;
-            this.checkBox_Voc1_Median.Location = new System.Drawing.Point(880, 681);
-            this.checkBox_Voc1_Median.Name = "checkBox_Voc1_Median";
-            this.checkBox_Voc1_Median.Size = new System.Drawing.Size(72, 20);
-            this.checkBox_Voc1_Median.TabIndex = 759;
-            this.checkBox_Voc1_Median.Text = "BME_1";
-            this.checkBox_Voc1_Median.UseVisualStyleBackColor = true;
-            // 
             // SP1_textBox_Device
             // 
             this.SP1_textBox_Device.BackColor = System.Drawing.Color.AliceBlue;
@@ -567,24 +448,6 @@ namespace TemplateProject
             this.SP1_textBox_Device.Name = "SP1_textBox_Device";
             this.SP1_textBox_Device.Size = new System.Drawing.Size(326, 27);
             this.SP1_textBox_Device.TabIndex = 763;
-            // 
-            // richTextBox_BME680
-            // 
-            this.richTextBox_BME680.BackColor = System.Drawing.Color.AliceBlue;
-            this.richTextBox_BME680.Location = new System.Drawing.Point(749, 629);
-            this.richTextBox_BME680.Name = "richTextBox_BME680";
-            this.richTextBox_BME680.Size = new System.Drawing.Size(241, 219);
-            this.richTextBox_BME680.TabIndex = 764;
-            this.richTextBox_BME680.Text = "Receive Log";
-            // 
-            // richTextBox_BME680_2
-            // 
-            this.richTextBox_BME680_2.BackColor = System.Drawing.Color.AliceBlue;
-            this.richTextBox_BME680_2.Location = new System.Drawing.Point(996, 629);
-            this.richTextBox_BME680_2.Name = "richTextBox_BME680_2";
-            this.richTextBox_BME680_2.Size = new System.Drawing.Size(241, 219);
-            this.richTextBox_BME680_2.TabIndex = 765;
-            this.richTextBox_BME680_2.Text = "Receive Log";
             // 
             // checkBox_Light
             // 
@@ -597,15 +460,6 @@ namespace TemplateProject
             this.checkBox_Light.TabIndex = 767;
             this.checkBox_Light.Text = "Visible Light";
             this.checkBox_Light.UseVisualStyleBackColor = true;
-            // 
-            // richTextBox_Light
-            // 
-            this.richTextBox_Light.BackColor = System.Drawing.Color.AliceBlue;
-            this.richTextBox_Light.Location = new System.Drawing.Point(1243, 629);
-            this.richTextBox_Light.Name = "richTextBox_Light";
-            this.richTextBox_Light.Size = new System.Drawing.Size(273, 219);
-            this.richTextBox_Light.TabIndex = 768;
-            this.richTextBox_Light.Text = "Light \nVisible Light: 2000 Lux\nInfa Light:  2000 Lux\nFan\nSpeed: 345 ug llf";
             // 
             // checkBox_InfraLight
             // 
@@ -639,23 +493,13 @@ namespace TemplateProject
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(1539, 844);
+            this.ClientSize = new System.Drawing.Size(1539, 943);
             this.Controls.Add(this.checkBox_FanSpeed);
             this.Controls.Add(this.checkBox_InfraLight);
             this.Controls.Add(this.checkBox_Light);
-            this.Controls.Add(this.richTextBox_Light);
             this.Controls.Add(this.SP1_textBox_Device);
-            this.Controls.Add(this.checkBox_Voc4_Median);
-            this.Controls.Add(this.checkBox_Voc3_Median);
-            this.Controls.Add(this.checkBox_Voc2_Median);
-            this.Controls.Add(this.checkBox_Voc1_Median);
             this.Controls.Add(this.checkBox_Humidity);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.checkBox_Voc4);
-            this.Controls.Add(this.checkBox_Voc3);
             this.Controls.Add(this.checkBox_Temperature);
-            this.Controls.Add(this.checkBox_Voc2);
-            this.Controls.Add(this.checkBox_Voc1);
             this.Controls.Add(this.SP1_DatatextBox);
             this.Controls.Add(this.SP1_richTextBox);
             this.Controls.Add(this.button1);
@@ -668,12 +512,10 @@ namespace TemplateProject
             this.Controls.Add(this.SP1_SendButton);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.plotSurface2D1);
-            this.Controls.Add(this.richTextBox_BME680_2);
-            this.Controls.Add(this.richTextBox_BME680);
             this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "Scent Diffuser Data Acquisition";
+            this.Text = "Template";
             this.TransparencyKey = System.Drawing.Color.Goldenrod;
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -697,19 +539,7 @@ namespace TemplateProject
         public System.Windows.Forms.TextBox SP1_DatatextBox;
         private System.Windows.Forms.RichTextBox SP1_richTextBox;
         private NPlot.Windows.PlotSurface2D plotSurface2D1;
-        /*
-                private System.Windows.Forms.CheckBox checkBox_Cl_ProfileSpeed;
-                private System.Windows.Forms.CheckBox checkBox_Cl_ActualSpeed;
-                private System.Windows.Forms.CheckBox checkBox_Cl_Current;
-                private System.Windows.Forms.CheckBox checkBox_Cl_RefAkim;
-                private System.Windows.Forms.CheckBox checkBox_Cl_SpeedError;
-                private System.Windows.Forms.CheckBox checkBox_Cl_PID;
-        */
-        private System.Windows.Forms.CheckBox checkBox_Voc4;
-        private System.Windows.Forms.CheckBox checkBox_Voc3;
         private System.Windows.Forms.CheckBox checkBox_Temperature;
-        private System.Windows.Forms.CheckBox checkBox_Voc2;
-        private System.Windows.Forms.CheckBox checkBox_Voc1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recordToolStripMenuItem;
@@ -729,21 +559,13 @@ namespace TemplateProject
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.CheckBox checkBox_Humidity;
-        private System.Windows.Forms.CheckBox checkBox_Voc4_Median;
-        private System.Windows.Forms.CheckBox checkBox_Voc3_Median;
-        private System.Windows.Forms.CheckBox checkBox_Voc2_Median;
-        private System.Windows.Forms.CheckBox checkBox_Voc1_Median;
         private System.Windows.Forms.TextBox SP1_textBox_Device;
         private System.Windows.Forms.ToolStripMenuItem deviceManagerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem comPortListToolStripMenuItem;
-        private System.Windows.Forms.RichTextBox richTextBox_BME680;
-        private System.Windows.Forms.RichTextBox richTextBox_BME680_2;
         private System.Windows.Forms.CheckBox checkBox_Light;
-        private System.Windows.Forms.RichTextBox richTextBox_Light;
         private System.Windows.Forms.CheckBox checkBox_InfraLight;
         private System.Windows.Forms.CheckBox checkBox_FanSpeed;
     }

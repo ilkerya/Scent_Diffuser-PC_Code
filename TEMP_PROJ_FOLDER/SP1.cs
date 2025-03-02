@@ -31,7 +31,10 @@ using System.Text;
         public static String PID_5 = "6001"; // ft232 serial converter
         public static String NAM_5 = "FT232 Serial Converter"; // ft232 serial converter
 
-             
+        public static String VID_6 = "0483";
+        public static String PID_6 = "374E"; // 
+        public static String NAM_6 = "NUCLEO-H743ZI2  STM32H743ZI MCU"; // 
+
         /*
          public static String Def_VID = SP1.VID_4;
          public static String Def_PID = SP1.PID_4;
@@ -64,7 +67,7 @@ using System.Text;
         public static uint RecAdrLength;
         */
         public static Byte[] ReceiveBuf = new byte[256]; // preamble+length+crc + 4*4 byte data  4 byte + 4 byte + 4 byte + 16 byte
-        public static byte[] SendBuf = new byte[256]; // preamble+length+crc + 4*4 byte data  4 byte + 4 byte + 4 byte + 16 byte
+        public static Byte[] SendBuf = new byte[256]; // preamble+length+crc + 4*4 byte data  4 byte + 4 byte + 4 byte + 16 byte
 
    
 

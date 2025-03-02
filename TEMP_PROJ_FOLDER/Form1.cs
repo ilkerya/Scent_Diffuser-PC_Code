@@ -462,12 +462,44 @@ namespace TemplateProject
 
         void SP1_SendData_Procedure()
         {
+           // array < unsigned char> ^USB_SendBuf = gcnew array < unsigned char> (NUMBER_DATA_PC2MICRO_SEND);
+
+            
             try
             {
-                //               SP1_CalculateSendData();
-                //             SP1_serialPort.Write(SP1_SendBuf, 0, (int)SP1.DEFAULT_LENGTH);
-                //             SP1_SendtextBox.Text = SP1_SendTextData();
-                //             SP1_DataRcvtextBox.Text = SP1_PrintSendText();
+                     //         SP1_CalculateSendData();
+                             
+            //          SP1_SendtextBox.Text = SP1_SendTextData();
+            //        SP1_DataRcvtextBox.Text = SP1_PrintSendText();
+            SP1.SendBuf[0] = 0xA;
+            SP1.SendBuf[1] = 0xA;
+                SP1.SendBuf[2] = 0xA;
+                SP1.SendBuf[3] = 0xA;
+                SP1_serialPort.Write(SP1.SendBuf, 0, 24);
+
+            //    SP1_serialPort.Write(SP1.SendBuf, 0, (int)SP1.DEFAULT_LENGTH);
+
+                /*
+                SendBuf[1] = Relays.Valve4Way;
+                SendBuf[2] = Motor.Final.TargetFrequency;
+                USB_SendBuf[3] = EEV.Final.CycleTargetPulse >> 8;
+                USB_SendBuf[4] = EEV.Final.CycleTargetPulse;
+                USB_SendBuf[5] = Fan.FinalRpm >> 8;
+                USB_SendBuf[6] = Fan.FinalRpm;
+                USB_SendBuf[7] = Fan.Indoor.FinalRpm >> 8;
+                USB_SendBuf[8] = Fan.Indoor.FinalRpm;
+                USB_SendBuf[9] = IndoorCommand.SwingYatay.Mode;
+                USB_SendBuf[10] = IndoorCommand.SwingDikey.Mode;
+
+                unsigned int CRC = 0XA0A0;
+                for (unsigned char i = 0; i < 11; i++)
+                {
+                    CRC ^= USB_SendBuf[i];
+                }
+                USB_SendBuf[11] = CRC >> 8;
+                USB_SendBuf[12] = CRC;
+                USB_serialPort1->Write(USB_SendBuf, 0, NUMBER_DATA_PC2MICRO_SEND - 1);// Writes a specified number of bytes to the serial port using d
+                */
 
 
             }
@@ -590,55 +622,12 @@ namespace TemplateProject
                 DAQ.Multi_Gas_1_VOC = (UInt32)((SP1.ReceiveBuf[B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
                                 (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
 
-                DAQ.Multi_Gas_1_C2H5OH = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                               (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit            
 
-                DAQ.Multi_Gas_1_CO = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
+ 
+                
 
-                DAQ.Multi_Gas_1_NO2 = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-
-                DAQ.Multi_Gas_2_VOC = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-
-                DAQ.Multi_Gas_2_C2H5OH = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                               (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit            
-
-                DAQ.Multi_Gas_2_CO = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-
-                DAQ.Multi_Gas_2_NO2 = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-
-                DAQ.Multi_Gas_3_VOC = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-
-                DAQ.Multi_Gas_3_C2H5OH = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                               (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit            
-
-                DAQ.Multi_Gas_3_CO = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-
-                DAQ.Multi_Gas_3_NO2 = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-
-                DAQ.Multi_Gas_4_VOC = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-
-                DAQ.Multi_Gas_4_C2H5OH = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                               (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit            
-
-                DAQ.Multi_Gas_4_CO = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-
-                DAQ.Multi_Gas_4_NO2 = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-              
                 UInt32 Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
                                 (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-
-              //  DAQ.Temperature_Convert = (Int32)Rec_Val;
                 Int32 Temp = (Int32)Rec_Val;
                 if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
                 {
@@ -650,33 +639,8 @@ namespace TemplateProject
                 DAQ.Temperature_Float = ((float)Temp / 100).ToString();
                 DAQ.Temperature_Float = DAQ.Temperature_Float.Replace(",", ".");
                 DAQ.BME680_Temp_1 = DAQ.Temperature_Float;
-
-                //      s = s.Replace("a", "b")
-                //       Int32 Temp_Real = (Int32)Math.Abs(Temp_Val);
-                //    Int32 Temp_Real = (Int32)Temp_Val;
-
                 Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
                                 (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-                /*
-                DAQ.Humidity_Convert = (Int32)Temp_Val;
-                if (Temp_Val > 0x7FFFFFFF) // 0x7FFFFFFF
-                {
-                    DAQ.Humidity_Convert *= -1;// NEGATIVE
-                    DAQ.Humidity_Convert--;
-                }
-                DAQ.Humidity_Float = ((float)DAQ.Humidity_Convert / 100).ToString(("#.##"));
-                DAQ.Humidity_Float = DAQ.Humidity_Float.Replace(",", ".");
-*/
-                /*
-                                Int32 Temp2 = (Int32)Temp_Val;
-                                if (Temp_Val > 0x7FFFFFFF) // 0x7FFFFFFF
-                                {
-                                    Temp2 *= -1;// NEGATIVE
-                                    Temp2--;
-                                }
-                                DAQ.Humidity_Float = ((float)Temp2 / 100).ToString(("#.##"));
-                                DAQ.Humidity_Float = DAQ.Humidity_Float.Replace(",", ".");
-                */
                 Temp = (Int32)Rec_Val;
                 if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
                 {
@@ -694,109 +658,11 @@ namespace TemplateProject
                 if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
                 {
                     Temp *= -1;// NEGATIVE
-                    Temp--;
-                    
+                    Temp--;                 
                 }
-                DAQ.BME_Voc1 = Temp;
-                DAQ.BME680_Voc_1 = ((float)Temp / 100).ToString(("#.##"));
-                DAQ.BME680_Voc_1 = DAQ.BME680_Voc_1.Replace(",", ".");
-                ///// pressure /////////////////
-                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-                Temp = (Int32)Rec_Val;
-                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
-                {
-                    Temp *= -1;// NEGATIVE
-                    Temp--;
-                }
-                DAQ.BME680_Prs_1 = ((float)Temp / 100).ToString(("#.##"));
-                DAQ.BME680_Prs_1 = DAQ.BME680_Prs_1.Replace(",", ".");
-
                 /// 2.BME
                 Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
                                 (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-                 Temp = (Int32)Rec_Val;
-                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
-                {
-                    Temp *= -1;  // NEGATIVE
-                    Temp--;
-                }
-                DAQ.BME680_Temp_2 = ((float)Temp / 100).ToString();
-                DAQ.BME680_Temp_2 = DAQ.BME680_Temp_2.Replace(",", ".");
-                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                             (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-                Temp = (Int32)Rec_Val;
-                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
-                {
-                    Temp *= -1;  // NEGATIVE
-                    Temp--;
-                }
-                DAQ.BME680_Hum_2 = ((float)Temp / 100).ToString();
-                DAQ.BME680_Hum_2 = DAQ.BME680_Hum_2.Replace(",", ".");
-                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                             (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-                Temp = (Int32)Rec_Val;
-                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
-                {
-                    Temp *= -1;  // NEGATIVE
-                    Temp--;
-                }
-                DAQ.BME_Voc2 = Temp;
-                DAQ.BME680_Voc_2 = ((float)Temp / 100).ToString();
-                DAQ.BME680_Voc_2 = DAQ.BME680_Voc_2.Replace(",", ".");
-                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                           (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-                Temp = (Int32)Rec_Val;
-                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
-                {
-                    Temp *= -1;  // NEGATIVE
-                    Temp--;             
-                }
-                DAQ.BME680_Prs_2 = ((float)Temp / 100).ToString();
-                DAQ.BME680_Prs_2 = DAQ.BME680_Prs_2.Replace(",", ".");
-
-                /// 3.BME
-                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                                (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-                Temp = (Int32)Rec_Val;
-                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
-                {
-                    Temp *= -1;  // NEGATIVE
-                    Temp--;
-                }
-                DAQ.BME680_Temp_3 = ((float)Temp / 100).ToString();
-                DAQ.BME680_Temp_3 = DAQ.BME680_Temp_3.Replace(",", ".");
-                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                             (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-                Temp = (Int32)Rec_Val;
-                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
-                {
-                    Temp *= -1;  // NEGATIVE
-                    Temp--;
-                }
-                DAQ.BME680_Hum_3 = ((float)Temp / 100).ToString();
-                DAQ.BME680_Hum_3 = DAQ.BME680_Hum_3.Replace(",", ".");
-                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                             (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-                Temp = (Int32)Rec_Val;
-                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
-                {
-                    Temp *= -1;  // NEGATIVE
-                    Temp--;
-                }
-                DAQ.BME_Voc3 = Temp;
-                DAQ.BME680_Voc_3 = ((float)Temp / 100).ToString();
-                DAQ.BME680_Voc_3 = DAQ.BME680_Voc_3.Replace(",", ".");
-                Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
-                           (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
-                Temp = (Int32)Rec_Val;
-                if (Rec_Val > 0x7FFFFFFF) // 0x7FFFFFFF
-                {
-                    Temp *= -1;  // NEGATIVE
-                    Temp--;                
-                }
-                DAQ.BME680_Prs_3 = ((float)Temp / 100).ToString();
-                DAQ.BME680_Prs_3 = DAQ.BME680_Prs_3.Replace(",", ".");
 
                 /// 4. BME
                 Rec_Val = (UInt32)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
@@ -840,29 +706,15 @@ namespace TemplateProject
                 }
                 DAQ.BME680_Prs_4 = ((float)Temp / 100).ToString();
                 DAQ.BME680_Prs_4 = DAQ.BME680_Prs_4.Replace(",", ".");
-
                 DAQ.Battery_Volt = (UInt16)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //16 bit
                 DAQ.Power_State =SP1.ReceiveBuf[++B_Count];
-
                 DAQ.Fan_Volt = (UInt16)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //16 bit
-
                 DAQ.Light_Visible = (UInt16)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //16 bit
-                DAQ.Light_Infrared = (UInt16)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //16 bit
-
-
-                /*
-                DAQ.Accelometer_Z = (Int32)SP1.ReceiveBuf[22] * 0x00FFFFFF;
-                DAQ.Accelometer_Z += (Int32)SP1.ReceiveBuf[23] * 0x0000FFFF;
-                DAQ.Accelometer_Z += (Int32)SP1.ReceiveBuf[24] * 0x000000FF;
-                DAQ.Accelometer_Z += (Int32)SP1.ReceiveBuf[25];
-                DAQ.Accelometer_Zf = ((float)DAQ.Accelometer_Z) / 10000;
-                */
-
+                DAQ.Light_Infrared = (UInt16)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //16 bi
                 DAQ.Median_Total_VOC1 += DAQ.Multi_Gas_1_VOC;
                 DAQ.Median_Total_VOC2 += DAQ.Multi_Gas_2_VOC;
                 DAQ.Median_Total_VOC3 += DAQ.Multi_Gas_3_VOC;
                 DAQ.Median_Total_VOC4 += DAQ.Multi_Gas_4_VOC;
-
                 DAQ.Median_Counter++;
                 if (DAQ.Median_Counter >= 100)
                 {
@@ -870,7 +722,6 @@ namespace TemplateProject
                     DAQ.Median_Total_VOC1 /= 100;
 
                 }
-
                 DAQ.Int_Counter++;
                 if (DAQ.Int_Counter >= 10)
                 {
@@ -878,14 +729,13 @@ namespace TemplateProject
                     //    Array_Fill();
                     //   Plot_Chart();
                 }
+
+
+
                  Array_Fill();
                 Plot_Chart();
-                /*
-                                if (DAQ.Int_Counter == 2) Array_Fill();
-                                if (DAQ.Int_Counter == 4) Plot_Chart();
-                                if (DAQ.Int_Counter == 6) Array_Fill();
-                                if (DAQ.Int_Counter == 8) Plot_Chart();
-                                */
+
+
                 if (DAQ.Log_Status == true)
                 {
                     if (SP1_serialPort.IsOpen == false)
@@ -945,7 +795,6 @@ namespace TemplateProject
             String Textdata = "Preamble " + "0X" + SP1.Preamble.ToString("X");
             Textdata += "   Sync "  + SP1.Preamble_Trial.ToString( );
 
-
             Textdata += "  Length:" + SP1.Length.ToString() + DAQ.nl;
             Textdata += "CRC_Recv." + "0X" + SP1.CRC_Received.ToString("X");
             Textdata += "     Calc. " + "0X" + SP1.CRC_Calc.ToString("X") + DAQ.nl;
@@ -964,7 +813,7 @@ namespace TemplateProject
             else Textdata += "Error Rate : % 0.0000";
 
             Textdata += System.Environment.NewLine + System.Environment.NewLine;
-
+            /*
             Textdata += "Multi_Gas_1_VOC  : " + DAQ.Multi_Gas_1_VOC.ToString() + "  " + DAQ.nl;
             Textdata += "Multi_Gas_1_C2H5OH:" + DAQ.Multi_Gas_1_C2H5OH.ToString() + "  " + DAQ.nl;
             Textdata += "Multi_Gas_1_CO  :  " + DAQ.Multi_Gas_1_CO.ToString() + "  " + DAQ.nl;
@@ -1001,7 +850,7 @@ namespace TemplateProject
             Textdata += DAQ.nl;
 
             Textdata += "FAN  :  " + DAQ.Fan_Volt.ToString() + " Volt " + DAQ.nl; 
-
+            */
 
 
 
@@ -1061,16 +910,7 @@ namespace TemplateProject
        
                     SP1_richTextBox.Text = SP1_GetTextdata(); // main informative screen
            
-                    SP1_DatatextBox.Text = SP1_GetTextdata2();  // all data in hex format screen
-
-                richTextBox_BME680.Text = Print_BME680_1();
-                richTextBox_BME680_2.Text = Print_BME680_2();
-                richTextBox_Light.Text = Print_Light();
-                richTextBox_Light.Text += "Max Current: " + DAQ.MaxNumber +DAQ.nl;
-                richTextBox_Light.Text += "Max Full: " + DAQ.MaxNumberFull + DAQ.nl;
-    
-
-               
+                   SP1_DatatextBox.Text = SP1_GetTextdata2();  // all data in hex format screen           
 
                 if (DAQ.Enable_Menu_Time_Update == true)
                     systemTimeToolStripMenuItem.Text = "Time & Date: " + COMMON_GetDateTime();
@@ -1178,7 +1018,7 @@ namespace TemplateProject
             DAQ.Fan_Arr[DAQ.sp] =           DAQ.Fan_Volt.ToString();
 
 
-           
+           /*
 
             if(checkBox_Voc1.Checked == true) DAQ.MaxNumber =  DAQ.Multi_Gas_1_VOC;
             else DAQ.MaxNumber = 0;
@@ -1203,6 +1043,7 @@ namespace TemplateProject
             if (checkBox_Voc4_Median.Checked == true) {
                 if ((DAQ.BME_Voc4 / 100) > DAQ.MaxNumber) DAQ.MaxNumber = (UInt32)(DAQ.BME_Voc4 / 100);
             }
+            */
             if (checkBox_Temperature.Checked == true)
             {
                 if (DAQ.Temperature_OnBoard > DAQ.MaxNumber) DAQ.MaxNumber = (UInt32)DAQ.Temperature_OnBoard;
@@ -1422,7 +1263,7 @@ void Plot_Chart()
 
 
             int Check = 0;
-
+            /*
             if (checkBox_Voc1.Checked == true) {plotSurface2D1.Add(Graph1);  Check++; } // VOC 1
             if (checkBox_Voc2.Checked == true) {plotSurface2D1.Add(Graph2); Check++; }  // VOC 2
             if (checkBox_Voc3.Checked == true) {plotSurface2D1.Add(Graph3); Check++; }  // VOC 3
@@ -1431,7 +1272,8 @@ void Plot_Chart()
             if (checkBox_Voc1_Median.Checked == true) {plotSurface2D1.Add(Graph5); Check++; } 
             if (checkBox_Voc2_Median.Checked == true) {plotSurface2D1.Add(Graph6); Check++; } 
             if (checkBox_Voc3_Median.Checked == true) {plotSurface2D1.Add(Graph7); Check++; }
-            if (checkBox_Voc4_Median.Checked == true) {plotSurface2D1.Add(Graph8); Check++; }            
+            if (checkBox_Voc4_Median.Checked == true) {plotSurface2D1.Add(Graph8); Check++; }     
+            */
             if ( Check == 0)
             {
                // plotSurface2D1.Add(Graph7);
