@@ -37,8 +37,8 @@ using System.Text;
         public static UInt32 Multi_Gas_4_CO = 0;
         public static UInt32 Multi_Gas_4_NO2 = 0;
 
-        public static Int32 Temperature_OnBoard = 0;
-        public static Int32 Humidity_OnBoard = 0;
+        public static float Temperature_OnBoard = 0;
+        public static float Humidity_OnBoard = 0;
          
         public static Int32 Temperature_Convert = 0;
         public static Int32 Humidity_Convert = 0;
@@ -50,6 +50,17 @@ using System.Text;
         public static Int32 BME_Voc2;
         public static Int32 BME_Voc3;
         public static Int32 BME_Voc4;
+
+        public static UInt16 Battery_Volt;
+        public static UInt16 Fan_Volt;
+        public static byte Power_State;
+
+        public static byte ONLY_BATTERY = 32;
+        public static byte ONLY_USB = 16;
+        public static byte BATTERY_USB = 64;
+
+        public static UInt16 Light_Visible;
+        public static UInt16 Light_Infrared;
 
         public static string BME680_Temp_1 ="";
         public static string BME680_Hum_1 = "";
@@ -172,6 +183,7 @@ using System.Text;
         public static byte[] ACC_Buf = new byte[32];
         //    public static float* Acc ;
 
+   
 
         public static Int16 sp = -1;  // important start -1
         public static Int16 bp = 0;
@@ -199,6 +211,15 @@ using System.Text;
         public static string[] BME_VOC_Arr3 = new string[MAX_ARRAY_SIZE];
         public static string[] BME_VOC_Arr4 = new string[MAX_ARRAY_SIZE];
 
+        public static string[] Temperature_Arr = new string[MAX_ARRAY_SIZE];
+        public static string[] Humidity_Arr = new string[MAX_ARRAY_SIZE];
+        public static string[] Inf_Light_Arr = new string[MAX_ARRAY_SIZE];
+        public static string[] Visible_Light_Arr = new string[MAX_ARRAY_SIZE];
+        public static string[] Fan_Arr = new string[MAX_ARRAY_SIZE];
+
+        public static string[] MaxNo = new string[MAX_ARRAY_SIZE];
+        public static UInt32 MaxNumber;
+        public static UInt32 MaxNumberFull;
 
         public static string[] Arr5 = new string[MAX_ARRAY_SIZE];
         public static string[] Arr6 = new string[MAX_ARRAY_SIZE];

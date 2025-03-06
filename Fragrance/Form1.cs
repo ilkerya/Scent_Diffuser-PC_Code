@@ -23,6 +23,8 @@ using Microsoft.Win32;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 
 
@@ -30,7 +32,7 @@ using System.Diagnostics;
 
 
 //namespace VOI_DAQ
- namespace DAQ_VOC
+namespace DAQ_VOC
 {
 
     public partial class Form1 : Form
@@ -643,6 +645,7 @@ using System.Diagnostics;
                     Temp *= -1;  // NEGATIVE
                     Temp--;
                 }
+                DAQ.Temperature_OnBoard = (float)Temp / 100;
                 //   DAQ.Temperature_Float = ((float)DAQ.Temperature_Convert/100).ToString.Replace(",", "."));
                 DAQ.Temperature_Float = ((float)Temp / 100).ToString();
                 DAQ.Temperature_Float = DAQ.Temperature_Float.Replace(",", ".");
@@ -680,6 +683,7 @@ using System.Diagnostics;
                     Temp *= -1;// NEGATIVE
                     Temp--;
                 }
+                DAQ.Humidity_OnBoard = (float)Temp / 100;
                 DAQ.Humidity_Float = ((float)Temp / 100).ToString(("#.##"));
                 DAQ.Humidity_Float = DAQ.Humidity_Float.Replace(",", ".");
                 DAQ.BME680_Hum_1 = DAQ.Humidity_Float;
@@ -837,6 +841,15 @@ using System.Diagnostics;
                 DAQ.BME680_Prs_4 = ((float)Temp / 100).ToString();
                 DAQ.BME680_Prs_4 = DAQ.BME680_Prs_4.Replace(",", ".");
 
+                DAQ.Battery_Volt = (UInt16)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //16 bit
+                DAQ.Power_State =SP1.ReceiveBuf[++B_Count];
+
+                DAQ.Fan_Volt = (UInt16)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //16 bit
+
+                DAQ.Light_Visible = (UInt16)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //16 bit
+                DAQ.Light_Infrared = (UInt16)((SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //16 bit
+
+
                 /*
                 DAQ.Accelometer_Z = (Int32)SP1.ReceiveBuf[22] * 0x00FFFFFF;
                 DAQ.Accelometer_Z += (Int32)SP1.ReceiveBuf[23] * 0x0000FFFF;
@@ -973,9 +986,26 @@ using System.Diagnostics;
             Textdata += "Multi_Gas_4_NO2 :  " + DAQ.Multi_Gas_4_NO2.ToString() + "  " + DAQ.nl + DAQ.nl;
 
             Textdata += "Temperature  :  " + DAQ.Temperature_Float + "  " + DAQ.nl;
-            Textdata += "Humidity  :  " + DAQ.Humidity_Float + "  " + DAQ.nl + DAQ.nl;
+            Textdata += "Humidity  :  " + DAQ.Humidity_Float + "  " + DAQ.nl ;
 
-            
+            float TempVal = (float)DAQ.Battery_Volt;
+            TempVal /= 1000;
+
+            Textdata += "Battery  :  " + TempVal.ToString() + " Volt " ;
+            //   Textdata += "Battery State :  ";
+            //      if DAQ.Power_Statee == 0) Textdata += "  USB + BATTERY CHARG"; 
+            //       else Textdata += "  USB  + NO BATTERY  "; Textdata += DAQ.nl;
+            if (DAQ.Power_State == DAQ.ONLY_BATTERY) Textdata += " ONLY BATTERY";
+            if (DAQ.Power_State == DAQ.ONLY_USB) Textdata += " ONLY_USB";
+            if (DAQ.Power_State == DAQ.BATTERY_USB) Textdata += " BATTERY_USB";
+            Textdata += DAQ.nl;
+
+            Textdata += "FAN  :  " + DAQ.Fan_Volt.ToString() + " Volt " + DAQ.nl; 
+
+
+
+
+
             return Textdata;
         }
         String Print_BME680_1()
@@ -1008,6 +1038,15 @@ using System.Diagnostics;
             Textdata += "Press :  " + DAQ.BME680_Prs_4.ToString() + "  " + DAQ.nl + DAQ.nl;
             return Textdata;
         }
+        String Print_Light()
+        {
+            String Textdata = "";
+            Textdata += "Light : " + DAQ.nl;
+            Textdata += "Visible  : " + DAQ.Light_Visible.ToString() + " Lux " + DAQ.nl;
+            Textdata += "Infrared  : " + DAQ.Light_Infrared.ToString() + "Lux " + DAQ.nl;
+            return Textdata;
+        }
+            
         void Base_Timer1mSec_Tick(object sender, EventArgs e)
         {
             Timer_1sec++; // 16mSec
@@ -1026,6 +1065,12 @@ using System.Diagnostics;
 
                 richTextBox_BME680.Text = Print_BME680_1();
                 richTextBox_BME680_2.Text = Print_BME680_2();
+                richTextBox_Light.Text = Print_Light();
+                richTextBox_Light.Text += "Max Current: " + DAQ.MaxNumber +DAQ.nl;
+                richTextBox_Light.Text += "Max Full: " + DAQ.MaxNumberFull + DAQ.nl;
+    
+
+               
 
                 if (DAQ.Enable_Menu_Time_Update == true)
                     systemTimeToolStripMenuItem.Text = "Time & Date: " + COMMON_GetDateTime();
@@ -1097,11 +1142,16 @@ using System.Diagnostics;
                     DAQ.BME_VOC_Arr3[t - 1] = DAQ.BME_VOC_Arr3[t];
                     DAQ.BME_VOC_Arr4[t - 1] = DAQ.BME_VOC_Arr4[t];
 
+                    DAQ.Temperature_Arr[t - 1] = DAQ.Temperature_Arr[t];
+                    DAQ.Humidity_Arr[t - 1] = DAQ.Humidity_Arr[t];
+                    DAQ.Inf_Light_Arr[t - 1] = DAQ.Inf_Light_Arr[t];
+                    DAQ.Visible_Light_Arr[t - 1] = DAQ.Visible_Light_Arr[t];
+                    DAQ.Fan_Arr[t - 1] = DAQ.Fan_Arr[t];
 
-
-                
-             //       DAQ.Arr5[t - 1] = DAQ.Arr5[t];
-              //      DAQ.Arr6[t - 1] = DAQ.Arr6[t];
+                //    DAQ.MaxNo[t - 1] = DAQ.MaxNo[t];
+                    DAQ.MaxNo[t - 1] = "0";
+                    //       DAQ.Arr5[t - 1] = DAQ.Arr5[t];
+                    //      DAQ.Arr6[t - 1] = DAQ.Arr6[t];
 
 
                 }
@@ -1121,18 +1171,63 @@ using System.Diagnostics;
             DAQ.BME_VOC_Arr3[DAQ.sp] = (DAQ.BME_Voc3 / 100).ToString();
             DAQ.BME_VOC_Arr4[DAQ.sp] = (DAQ.BME_Voc4 / 100).ToString();
 
-            //       DAQ.Arr5[DAQ.sp] = (DAQ.Temperature_Convert/100).ToString();
-            //         DAQ.Arr6[DAQ.sp] = (DAQ.Humidity_Convert/100).ToString();
-            //
-            //      DAQ.Current_Arr[DAQ.sp] = ((double)(DAQ.Current/100)).ToString();
-            //   DAQ.Voltage_Arr[DAQ.sp] = ((double)(DAQ.Voltage/100)).ToString();
-
-            //       DAQ.Voltage_Arr[DAQ.sp] = ValTemp.ToString();
+            DAQ.Temperature_Arr[DAQ.sp]   = DAQ.Temperature_OnBoard.ToString();   // DAQ.Temperature_Float;
+            DAQ.Humidity_Arr[DAQ.sp]      = DAQ.Humidity_OnBoard.ToString();      // DAQ.Humidity_Float
+            DAQ.Inf_Light_Arr[DAQ.sp]     = DAQ.Light_Infrared.ToString();
+            DAQ.Visible_Light_Arr[DAQ.sp] = DAQ.Light_Visible.ToString();
+            DAQ.Fan_Arr[DAQ.sp] =           DAQ.Fan_Volt.ToString();
 
 
+           
 
-            //         DAQ.Temperature_Arr[DAQ.sp] = DAQ.Temperature.ToString();
-
+            if(checkBox_Voc1.Checked == true) DAQ.MaxNumber =  DAQ.Multi_Gas_1_VOC;
+            else DAQ.MaxNumber = 0;
+            if (checkBox_Voc2.Checked == true) { 
+                if (DAQ.Multi_Gas_2_VOC > DAQ.MaxNumber) DAQ.MaxNumber = DAQ.Multi_Gas_2_VOC;
+            }
+            if (checkBox_Voc3.Checked == true) { 
+                if (DAQ.Multi_Gas_3_VOC > DAQ.MaxNumber) DAQ.MaxNumber = DAQ.Multi_Gas_3_VOC;
+            }
+            if (checkBox_Voc3.Checked == true) { 
+                if (DAQ.Multi_Gas_4_VOC > DAQ.MaxNumber) DAQ.MaxNumber = DAQ.Multi_Gas_4_VOC;
+            }
+            if (checkBox_Voc1_Median.Checked == true) { 
+                if ((DAQ.BME_Voc1 / 100) > DAQ.MaxNumber) DAQ.MaxNumber =(UInt32) (DAQ.BME_Voc1 / 100);
+            }
+            if (checkBox_Voc2_Median.Checked == true) { 
+                if ((DAQ.BME_Voc2 / 100) > DAQ.MaxNumber) DAQ.MaxNumber = (UInt32)(DAQ.BME_Voc2 / 100);
+            }
+            if (checkBox_Voc3_Median.Checked == true) { 
+                if ((DAQ.BME_Voc3 / 100) > DAQ.MaxNumber) DAQ.MaxNumber = (UInt32)(DAQ.BME_Voc3 / 100);
+            }
+            if (checkBox_Voc4_Median.Checked == true) {
+                if ((DAQ.BME_Voc4 / 100) > DAQ.MaxNumber) DAQ.MaxNumber = (UInt32)(DAQ.BME_Voc4 / 100);
+            }
+            if (checkBox_Temperature.Checked == true)
+            {
+                if (DAQ.Temperature_OnBoard > DAQ.MaxNumber) DAQ.MaxNumber = (UInt32)DAQ.Temperature_OnBoard;
+            }
+            if (checkBox_Humidity.Checked == true)
+            {
+                if (DAQ.Humidity_OnBoard > DAQ.MaxNumber) DAQ.MaxNumber = (UInt32)DAQ.Humidity_OnBoard;
+            }
+            if (checkBox_InfraLight.Checked == true)
+            {
+                if (DAQ.Light_Infrared > DAQ.MaxNumber) DAQ.MaxNumber = (UInt32)DAQ.Light_Infrared;
+            }
+            if (checkBox_Light.Checked == true)
+            {
+                if (DAQ.Light_Visible > DAQ.MaxNumber) DAQ.MaxNumber = (UInt32)DAQ.Light_Visible;
+            }
+            if (checkBox_FanSpeed.Checked == true)
+            {
+                if (DAQ.Fan_Volt > DAQ.MaxNumber) DAQ.MaxNumber = (UInt32)DAQ.Fan_Volt;
+            }
+            if (DAQ.MaxNumber > DAQ.MaxNumberFull) DAQ.MaxNumberFull = DAQ.MaxNumber;
+            //     DAQ.MaxNo[DAQ.sp] = DAQ.MaxNumberFull.ToString();
+         
+            DAQ.MaxNo[DAQ.sp] = (DAQ.MaxNumber * 1.3 ).ToString();
+            if(DAQ.sp != 0)  DAQ.MaxNo[DAQ.sp-1] = "0";
 
             // Adjust bp
             if (DAQ.sp >= DAQ.ChartSize) // 300 550 // bp->250
@@ -1140,7 +1235,14 @@ using System.Diagnostics;
             else DAQ.bp = 0;
 
         }
-        void Plot_Chart()
+        /*
+            if(checkBox_Temperature.Checked == true) {plotSurface2D1.Add(Graph9); Check++; }
+            if(checkBox_Humidity.Checked == true){ plotSurface2D1.Add(Graph10); Check++;}
+ plotSurface2D1.Add(Graph11); Check++; }
+ plotSurface2D1.Add(Graph12); Check++; }
+ plotSurface2D1.Add(Graph13); Check++; }
+*/
+void Plot_Chart()
         {
             //  return;
             /*
@@ -1160,6 +1262,16 @@ using System.Diagnostics;
             NPlot.LinePlot Graph6 = new NPlot.LinePlot();
             NPlot.LinePlot Graph7 = new NPlot.LinePlot();
             NPlot.LinePlot Graph8 = new NPlot.LinePlot();
+            NPlot.LinePlot Graph9 = new NPlot.LinePlot();
+            NPlot.LinePlot Graph10 = new NPlot.LinePlot();
+            NPlot.LinePlot Graph11 = new NPlot.LinePlot();
+            NPlot.LinePlot Graph12 = new NPlot.LinePlot();
+            NPlot.LinePlot Graph13 = new NPlot.LinePlot();
+
+            NPlot.LinePlot Graph20 = new NPlot.LinePlot();
+            //    NPlot.LinePlot Graph20 = new NPlot.LinePlot();
+
+
             /*
                         Graph1.Pen = new Pen(Color.Red, 1);
                         Graph2.Pen = new Pen(Color.Blue, 2);
@@ -1179,6 +1291,18 @@ using System.Diagnostics;
             Graph6.Pen = new Pen(Color.Blue, 1);   // 
             Graph7.Pen = new Pen(Color.Blue, 1);
             Graph8.Pen = new Pen(Color.Blue, 1);
+            
+            Graph9.Pen = new Pen(Color.DarkOrange, 1);
+            Graph10.Pen = new Pen(Color.DarkOliveGreen, 1);
+            Graph11.Pen = new Pen(Color.SaddleBrown, 1);
+            Graph12.Pen = new Pen(Color.DarkGoldenrod,1);   // 
+
+            Graph13.Pen = new Pen(Color.Maroon, 1);   // 
+
+            Graph20.Pen = new Pen(Color.White, 1);   //
+        //    Graph20.Pen = new Pen(Color.DarkGreen, 1);   //
+
+
 
 
             List<String> X_Data = new List<String>();
@@ -1190,6 +1314,13 @@ using System.Diagnostics;
             List<String> Data6 = new List<String>();
             List<String> Data7 = new List<String>();
             List<String> Data8 = new List<String>();
+            List<String> Data10 = new List<String>();
+            List<String> Data9 = new List<String>();
+            List<String> Data11 = new List<String>();
+            List<String> Data12 = new List<String>();
+            List<String> Data13 = new List<String>();
+
+            List<String> Data20 = new List<String>();
 
             plotSurface2D1.Clear();
 
@@ -1204,6 +1335,13 @@ using System.Diagnostics;
             Data6.Clear();
             Data7.Clear();
             Data8.Clear();
+            Data10.Clear();
+            Data9.Clear();
+            Data11.Clear();
+            Data12.Clear();
+            Data13.Clear();
+
+            Data20.Clear();
             //     plotSurface2D1.Clear();
             /*
                         grid.VerticalGridType = NPlot.Grid.GridType.Coarse;
@@ -1231,7 +1369,15 @@ using System.Diagnostics;
                 Data6.Add(DAQ.BME_VOC_Arr2[t].ToString());
                 Data7.Add(DAQ.BME_VOC_Arr3[t].ToString());
                 Data8.Add(DAQ.BME_VOC_Arr4[t].ToString());
+
+                Data9.Add(DAQ.Temperature_Arr[t].ToString());
+                Data10.Add(DAQ.Humidity_Arr[t].ToString());
+                Data11.Add(DAQ.Inf_Light_Arr[t].ToString());
+                Data12.Add(DAQ.Visible_Light_Arr[t].ToString());
+                Data13.Add(DAQ.Fan_Arr[t].ToString());
+
             }
+
             Graph1.AbscissaData = X_Data;
             Graph1.DataSource = Data1;
             Graph2.AbscissaData = X_Data;
@@ -1250,8 +1396,30 @@ using System.Diagnostics;
             Graph8.AbscissaData = X_Data;
             Graph8.DataSource = Data8;
 
+            Graph9.AbscissaData = X_Data;
+            Graph9.DataSource = Data9;
 
-            //    checkBox_Power
+            Graph10.AbscissaData = X_Data;
+            Graph10.DataSource = Data10;
+
+            Graph11.AbscissaData = X_Data;
+            Graph11.DataSource = Data11;
+
+            Graph12.AbscissaData = X_Data;
+            Graph12.DataSource = Data12;
+
+            Graph13.AbscissaData = X_Data;
+            Graph13.DataSource = Data13;
+
+            for (Int16 t = DAQ.bp; t <= DAQ.sp; t++)
+            {
+                Data20.Add(DAQ.MaxNo[t].ToString());
+            }
+
+            Graph20.AbscissaData = X_Data;
+            Graph20.DataSource = Data20;
+            plotSurface2D1.Add(Graph20);
+
 
             int Check = 0;
 
@@ -1259,48 +1427,65 @@ using System.Diagnostics;
             if (checkBox_Voc2.Checked == true) {plotSurface2D1.Add(Graph2); Check++; }  // VOC 2
             if (checkBox_Voc3.Checked == true) {plotSurface2D1.Add(Graph3); Check++; }  // VOC 3
             if (checkBox_Voc4.Checked == true) {plotSurface2D1.Add(Graph4); Check++; }  // VOC 4
-                                                                           //      if (checkBox_Temperature.Checked == true) plotSurface2D1.Add(Graph5); // VOC 3
-                                                                           //        if (checkBox_Humidity.Checked == true) plotSurface2D1.Add(Graph6); // VOC 4
 
             if (checkBox_Voc1_Median.Checked == true) {plotSurface2D1.Add(Graph5); Check++; } 
             if (checkBox_Voc2_Median.Checked == true) {plotSurface2D1.Add(Graph6); Check++; } 
             if (checkBox_Voc3_Median.Checked == true) {plotSurface2D1.Add(Graph7); Check++; }
-            if (checkBox_Voc4_Median.Checked == true) {plotSurface2D1.Add(Graph8); Check++; }
-            
+            if (checkBox_Voc4_Median.Checked == true) {plotSurface2D1.Add(Graph8); Check++; }            
             if ( Check == 0)
             {
-                plotSurface2D1.Add(Graph7);
+               // plotSurface2D1.Add(Graph7);
             }
-            
-        
-
-
-        //     plotSurface2D1.Add(Graph8);
-
-        /*
-        if (!((checkBox_Speed.Checked == true) || (checkBox_Current.Checked == true) ||
-                (checkBox_Voltage.Checked == true) || (checkBox_Temperature.Checked == true)))
-        {
-            for (Int16 t = DAQ.bp; t <= DAQ.sp; t++)
-            {
-                Data1.Clear();
-                Data1.Add("0");
-            }
-            plotSurface2D1.Add(Graph1);
-        }
-        */
+            if(checkBox_Temperature.Checked == true) {plotSurface2D1.Add(Graph9); Check++; }
+            if(checkBox_Humidity.Checked == true){ plotSurface2D1.Add(Graph10); Check++;}
+            if (checkBox_InfraLight.Checked == true) { plotSurface2D1.Add(Graph11); Check++; }
+            if (checkBox_Light.Checked == true) { plotSurface2D1.Add(Graph12); Check++; }
+            if (checkBox_FanSpeed.Checked == true) { plotSurface2D1.Add(Graph13); Check++; }
 
 
 
-        plotSurface2D1.ShowCoordinates = true;
+
+            plotSurface2D1.ShowCoordinates = true;
             //      plotSurface2D1.YAxis1.Label = "";
             plotSurface2D1.YAxis1.LabelOffsetAbsolute = true;
             plotSurface2D1.YAxis1.LabelOffset = 0;
             plotSurface2D1.YAxis1.HideTickText = false;
 
             //     plotSurface2D1.XAxis1.Label = " Test Variables ";
-            plotSurface2D1.Padding = 5;
-            plotSurface2D1.AutoScaleTitle = true;
+                 plotSurface2D1.Padding = 5;
+            //      plotSurface2D1.AutoScaleTitle = true;
+
+
+            //     plotSurface2D1.Top.CompareTo(plotSurface2D1.Top);
+            //     plotSurface2D1.Size.Height.CompareTo(plotSurface2D1.Size.Height);
+            //      plotSurface2D1.Size.Equals(34);
+            //    plotSurface2D1.Size.Height.Equals(1000);
+            //   plotSurface2D1.Size.Height.ToString("1000");
+            //       plotSurface2D1.Size.Width.CompareTo(1000);
+   //        plotSurface2D1.YAxis1.SmallTickSize.Equals(Data1);
+    //        plotSurface2D1.YAxis1.AutoScaleTicks.Equals(Data2);
+      //      plotSurface2D1.YAxis1.LargeTickSize.Equals(Data2);
+       //     plotSurface2D1.YAxis1.LargeTickSize.CompareTo(100);
+        //    plotSurface2D1.YAxis1.LargeTickSize.Equals(100);
+        //    plotSurface2D1.YAxis1.AutoScaleTicks.Equals(false);
+       //     plotSurface2D1.YAxis1.AutoScaleTicks.Equals(2000);
+      //      plotSurface2D1.YAxis1.LabelOffset = 220;
+        //    plotSurface2D1.YAxis1.LabelOffsetAbsolute = true;
+/*
+            plotSurface2D1.YAxis1.TickTextNextToAxis = true;
+
+            plotSurface2D1.YAxis1.TickTextColor = Color.BlueViolet;
+            plotSurface2D1.YAxis1.TicksIndependentOfPhysicalExtent = true;
+            plotSurface2D1.YAxis1.LargeTickSize = 1000;
+            plotSurface2D1.YAxis1.SmallTickSize = 10;
+            plotSurface2D1.YAxis1.MinPhysicalLargeTickStep = 1000;
+            plotSurface2D1.YAxis1.SmallTickSize.Equals(true);
+
+            plotSurface2D1.YAxis1.AutoScaleTicks.Equals(false);
+            plotSurface2D1.YAxis1.AutoScaleText = false;
+*/
+            //   plotSurface2D1.YAxis1.WorldMin.Equals(true);
+            //   plotSurface2D1.
             //  plotSurface2D1.BackColor = 
             /*
             if (!((checkBox_Speed.Checked == false) && (checkBox_Current.Checked == false) &&
@@ -1811,6 +1996,11 @@ private void systemTimeToolStripMenuItem_Click(object sender, EventArgs e)
         }
 
         private void checkBox_Voc4_Median_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
 
         }

@@ -99,7 +99,7 @@ using System.Text;
         public static readonly UInt16 DEFAULT_PREAMBLE = 0XAAAA; // preamble+length 4 byte + 4 byte
         public static readonly UInt16 DEFAULT_CRC_INIT = 0XAAAA; // preamble+length 4 byte + 4 byte
 
-        public static readonly UInt16 DEFAULT_LENGTH = 133; // islemci tarafindaki ayni def ile degerde olmali
+        public static readonly UInt16 DEFAULT_LENGTH = 142; // islemci tarafindaki ayni def ile degerde olmali
 
         public static readonly UInt16 SHIFT24 = 24;
         public static readonly UInt16 SHIFT16 = 16;
