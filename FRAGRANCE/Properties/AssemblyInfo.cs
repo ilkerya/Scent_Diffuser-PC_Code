@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("VOI_DAQ")]
+[assembly: AssemblyTitle("FRAGRANCE")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("VOI")]
-[assembly: AssemblyProduct("VOI_DAQ")]
-[assembly: AssemblyCopyright("Copyright © Voi")]
+[assembly: AssemblyCompany("FRAGRANCE")]
+[assembly: AssemblyProduct("FRAGRANCE")]
+[assembly: AssemblyCopyright("Copyright © FRAGRANCE")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
