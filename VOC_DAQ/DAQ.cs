@@ -121,7 +121,7 @@ using System.Text;
                 public static byte  Speed_Animation_Latch = 0;
                 public static byte  No_Animation_Latch = 0;
         */
-        public static byte Plot_Init;
+    //    public static byte Plot_Init;
         /*
          union 
         {
@@ -200,13 +200,15 @@ using System.Text;
         public static string[] BME_VOC_Arr4 = new string[MAX_ARRAY_SIZE];
 
 
+        public static string[] Fan = new string[MAX_ARRAY_SIZE];
         public static string[] Arr5 = new string[MAX_ARRAY_SIZE];
         public static string[] Arr6 = new string[MAX_ARRAY_SIZE];
 
-        public static string[] VOC_Arr1_Median = new string[MAX_ARRAY_SIZE];
-        public static string[] VOC_Arr2_Median = new string[MAX_ARRAY_SIZE];
-        public static string[] VOC_Arr3_Median = new string[MAX_ARRAY_SIZE];
-        public static string[] VOC_Arr4_Median = new string[MAX_ARRAY_SIZE];
+
+    //    public static string[] VOC_Arr1_Median = new string[MAX_ARRAY_SIZE];
+    //    public static string[] VOC_Arr2_Median = new string[MAX_ARRAY_SIZE];
+      //  public static string[] VOC_Arr3_Median = new string[MAX_ARRAY_SIZE];
+     //   public static string[] VOC_Arr4_Median = new string[MAX_ARRAY_SIZE];
 
 
         public static UInt32 Median_Total_VOC1 = 0;

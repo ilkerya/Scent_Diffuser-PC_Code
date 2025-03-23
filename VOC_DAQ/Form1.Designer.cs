@@ -80,7 +80,13 @@ namespace DAQ_VOC
             this.SP1_textBox_Device = new System.Windows.Forms.TextBox();
             this.richTextBox_BME680 = new System.Windows.Forms.RichTextBox();
             this.richTextBox_BME680_2 = new System.Windows.Forms.RichTextBox();
+            this.textBox_FanPWM = new System.Windows.Forms.TextBox();
+            this.numericUpDown_PWM = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_PWM)).BeginInit();
             this.SuspendLayout();
             // 
             // SP1_serialPort
@@ -117,7 +123,7 @@ namespace DAQ_VOC
             this.SP1_SendtextBox.Location = new System.Drawing.Point(11, 179);
             this.SP1_SendtextBox.Multiline = true;
             this.SP1_SendtextBox.Name = "SP1_SendtextBox";
-            this.SP1_SendtextBox.Size = new System.Drawing.Size(329, 55);
+            this.SP1_SendtextBox.Size = new System.Drawing.Size(329, 72);
             this.SP1_SendtextBox.TabIndex = 729;
             this.SP1_SendtextBox.Text = "Send Log";
             // 
@@ -212,20 +218,20 @@ namespace DAQ_VOC
             // SP1_DatatextBox
             // 
             this.SP1_DatatextBox.BackColor = System.Drawing.Color.AliceBlue;
-            this.SP1_DatatextBox.Location = new System.Drawing.Point(13, 251);
+            this.SP1_DatatextBox.Location = new System.Drawing.Point(13, 257);
             this.SP1_DatatextBox.Multiline = true;
             this.SP1_DatatextBox.Name = "SP1_DatatextBox";
             this.SP1_DatatextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.SP1_DatatextBox.Size = new System.Drawing.Size(329, 166);
+            this.SP1_DatatextBox.Size = new System.Drawing.Size(329, 272);
             this.SP1_DatatextBox.TabIndex = 738;
             this.SP1_DatatextBox.Text = "Receive Log";
             // 
             // SP1_richTextBox
             // 
             this.SP1_richTextBox.BackColor = System.Drawing.Color.AliceBlue;
-            this.SP1_richTextBox.Location = new System.Drawing.Point(11, 423);
+            this.SP1_richTextBox.Location = new System.Drawing.Point(11, 535);
             this.SP1_richTextBox.Name = "SP1_richTextBox";
-            this.SP1_richTextBox.Size = new System.Drawing.Size(329, 491);
+            this.SP1_richTextBox.Size = new System.Drawing.Size(329, 379);
             this.SP1_richTextBox.TabIndex = 737;
             this.SP1_richTextBox.Text = "Receive Log";
             // 
@@ -236,7 +242,7 @@ namespace DAQ_VOC
             this.checkBox_Voc4.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_Voc4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox_Voc4.ForeColor = System.Drawing.Color.Red;
-            this.checkBox_Voc4.Location = new System.Drawing.Point(366, 811);
+            this.checkBox_Voc4.Location = new System.Drawing.Point(346, 779);
             this.checkBox_Voc4.Name = "checkBox_Voc4";
             this.checkBox_Voc4.Size = new System.Drawing.Size(71, 21);
             this.checkBox_Voc4.TabIndex = 752;
@@ -250,7 +256,7 @@ namespace DAQ_VOC
             this.checkBox_Voc3.Checked = true;
             this.checkBox_Voc3.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_Voc3.ForeColor = System.Drawing.Color.Red;
-            this.checkBox_Voc3.Location = new System.Drawing.Point(366, 782);
+            this.checkBox_Voc3.Location = new System.Drawing.Point(346, 750);
             this.checkBox_Voc3.Name = "checkBox_Voc3";
             this.checkBox_Voc3.Size = new System.Drawing.Size(67, 20);
             this.checkBox_Voc3.TabIndex = 751;
@@ -262,7 +268,7 @@ namespace DAQ_VOC
             this.checkBox_Temperature.AutoSize = true;
             this.checkBox_Temperature.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox_Temperature.ForeColor = System.Drawing.Color.Pink;
-            this.checkBox_Temperature.Location = new System.Drawing.Point(585, 719);
+            this.checkBox_Temperature.Location = new System.Drawing.Point(346, 630);
             this.checkBox_Temperature.Name = "checkBox_Temperature";
             this.checkBox_Temperature.Size = new System.Drawing.Size(112, 21);
             this.checkBox_Temperature.TabIndex = 750;
@@ -276,7 +282,7 @@ namespace DAQ_VOC
             this.checkBox_Voc2.Checked = true;
             this.checkBox_Voc2.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_Voc2.ForeColor = System.Drawing.Color.Red;
-            this.checkBox_Voc2.Location = new System.Drawing.Point(366, 750);
+            this.checkBox_Voc2.Location = new System.Drawing.Point(346, 718);
             this.checkBox_Voc2.Name = "checkBox_Voc2";
             this.checkBox_Voc2.Size = new System.Drawing.Size(67, 20);
             this.checkBox_Voc2.TabIndex = 748;
@@ -289,7 +295,7 @@ namespace DAQ_VOC
             this.checkBox_Voc1.Checked = true;
             this.checkBox_Voc1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_Voc1.ForeColor = System.Drawing.Color.Red;
-            this.checkBox_Voc1.Location = new System.Drawing.Point(366, 720);
+            this.checkBox_Voc1.Location = new System.Drawing.Point(346, 688);
             this.checkBox_Voc1.Name = "checkBox_Voc1";
             this.checkBox_Voc1.Size = new System.Drawing.Size(67, 20);
             this.checkBox_Voc1.TabIndex = 747;
@@ -308,7 +314,7 @@ namespace DAQ_VOC
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1539, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1539, 28);
             this.menuStrip1.TabIndex = 753;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -500,7 +506,7 @@ namespace DAQ_VOC
             this.checkBox_Humidity.AutoSize = true;
             this.checkBox_Humidity.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox_Humidity.ForeColor = System.Drawing.Color.Black;
-            this.checkBox_Humidity.Location = new System.Drawing.Point(585, 750);
+            this.checkBox_Humidity.Location = new System.Drawing.Point(344, 657);
             this.checkBox_Humidity.Name = "checkBox_Humidity";
             this.checkBox_Humidity.Size = new System.Drawing.Size(84, 21);
             this.checkBox_Humidity.TabIndex = 757;
@@ -514,11 +520,11 @@ namespace DAQ_VOC
             this.checkBox_Voc4_Median.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_Voc4_Median.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox_Voc4_Median.ForeColor = System.Drawing.Color.Blue;
-            this.checkBox_Voc4_Median.Location = new System.Drawing.Point(900, 684);
+            this.checkBox_Voc4_Median.Location = new System.Drawing.Point(1288, 797);
             this.checkBox_Voc4_Median.Name = "checkBox_Voc4_Median";
             this.checkBox_Voc4_Median.Size = new System.Drawing.Size(75, 21);
             this.checkBox_Voc4_Median.TabIndex = 762;
-            this.checkBox_Voc4_Median.Text = "BME_1";
+            this.checkBox_Voc4_Median.Text = "BME_4";
             this.checkBox_Voc4_Median.UseVisualStyleBackColor = true;
             this.checkBox_Voc4_Median.CheckedChanged += new System.EventHandler(this.checkBox_Voc4_Median_CheckedChanged);
             // 
@@ -529,12 +535,13 @@ namespace DAQ_VOC
             this.checkBox_Voc3_Median.Checked = true;
             this.checkBox_Voc3_Median.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_Voc3_Median.ForeColor = System.Drawing.Color.Blue;
-            this.checkBox_Voc3_Median.Location = new System.Drawing.Point(889, 797);
+            this.checkBox_Voc3_Median.Location = new System.Drawing.Point(1291, 686);
             this.checkBox_Voc3_Median.Name = "checkBox_Voc3_Median";
             this.checkBox_Voc3_Median.Size = new System.Drawing.Size(72, 20);
             this.checkBox_Voc3_Median.TabIndex = 761;
-            this.checkBox_Voc3_Median.Text = "BME_2";
+            this.checkBox_Voc3_Median.Text = "BME_3";
             this.checkBox_Voc3_Median.UseVisualStyleBackColor = false;
+            this.checkBox_Voc3_Median.CheckedChanged += new System.EventHandler(this.checkBox_Voc3_Median_CheckedChanged);
             // 
             // checkBox_Voc2_Median
             // 
@@ -542,11 +549,11 @@ namespace DAQ_VOC
             this.checkBox_Voc2_Median.Checked = true;
             this.checkBox_Voc2_Median.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_Voc2_Median.ForeColor = System.Drawing.Color.Blue;
-            this.checkBox_Voc2_Median.Location = new System.Drawing.Point(1304, 782);
+            this.checkBox_Voc2_Median.Location = new System.Drawing.Point(889, 762);
             this.checkBox_Voc2_Median.Name = "checkBox_Voc2_Median";
             this.checkBox_Voc2_Median.Size = new System.Drawing.Size(72, 20);
             this.checkBox_Voc2_Median.TabIndex = 760;
-            this.checkBox_Voc2_Median.Text = "BME_4";
+            this.checkBox_Voc2_Median.Text = "BME_2";
             this.checkBox_Voc2_Median.UseVisualStyleBackColor = true;
             // 
             // checkBox_Voc1_Median
@@ -555,11 +562,11 @@ namespace DAQ_VOC
             this.checkBox_Voc1_Median.Checked = true;
             this.checkBox_Voc1_Median.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_Voc1_Median.ForeColor = System.Drawing.Color.Blue;
-            this.checkBox_Voc1_Median.Location = new System.Drawing.Point(1304, 695);
+            this.checkBox_Voc1_Median.Location = new System.Drawing.Point(889, 684);
             this.checkBox_Voc1_Median.Name = "checkBox_Voc1_Median";
             this.checkBox_Voc1_Median.Size = new System.Drawing.Size(72, 20);
             this.checkBox_Voc1_Median.TabIndex = 759;
-            this.checkBox_Voc1_Median.Text = "BME_3";
+            this.checkBox_Voc1_Median.Text = "BME_1";
             this.checkBox_Voc1_Median.UseVisualStyleBackColor = true;
             // 
             // SP1_textBox_Device
@@ -590,6 +597,62 @@ namespace DAQ_VOC
             this.richTextBox_BME680_2.TabIndex = 765;
             this.richTextBox_BME680_2.Text = "Receive Log";
             // 
+            // textBox_FanPWM
+            // 
+            this.textBox_FanPWM.Location = new System.Drawing.Point(580, 716);
+            this.textBox_FanPWM.Name = "textBox_FanPWM";
+            this.textBox_FanPWM.Size = new System.Drawing.Size(71, 22);
+            this.textBox_FanPWM.TabIndex = 766;
+            // 
+            // numericUpDown_PWM
+            // 
+            this.numericUpDown_PWM.Location = new System.Drawing.Point(581, 744);
+            this.numericUpDown_PWM.Maximum = new decimal(new int[] {
+            97,
+            0,
+            0,
+            0});
+            this.numericUpDown_PWM.Minimum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.numericUpDown_PWM.Name = "numericUpDown_PWM";
+            this.numericUpDown_PWM.Size = new System.Drawing.Size(70, 22);
+            this.numericUpDown_PWM.TabIndex = 767;
+            this.numericUpDown_PWM.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(577, 697);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(70, 16);
+            this.label3.TabIndex = 768;
+            this.label3.Text = "FAN PWM";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(530, 719);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(44, 16);
+            this.label4.TabIndex = 769;
+            this.label4.Text = "Actual";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(538, 750);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(27, 16);
+            this.label5.TabIndex = 770;
+            this.label5.Text = "Set";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -598,6 +661,11 @@ namespace DAQ_VOC
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1539, 844);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.numericUpDown_PWM);
+            this.Controls.Add(this.textBox_FanPWM);
             this.Controls.Add(this.SP1_textBox_Device);
             this.Controls.Add(this.checkBox_Voc4_Median);
             this.Controls.Add(this.checkBox_Voc3_Median);
@@ -631,6 +699,7 @@ namespace DAQ_VOC
             this.TransparencyKey = System.Drawing.Color.Lavender;
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_PWM)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -696,6 +765,11 @@ namespace DAQ_VOC
         private System.Windows.Forms.ToolStripMenuItem comPortListToolStripMenuItem;
         private System.Windows.Forms.RichTextBox richTextBox_BME680;
         private System.Windows.Forms.RichTextBox richTextBox_BME680_2;
+        private System.Windows.Forms.TextBox textBox_FanPWM;
+        private System.Windows.Forms.NumericUpDown numericUpDown_PWM;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }
 

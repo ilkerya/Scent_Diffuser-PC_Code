@@ -23,6 +23,7 @@ using Microsoft.Win32;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 
 
@@ -30,7 +31,7 @@ using System.Diagnostics;
 
 
 //namespace VOI_DAQ
- namespace DAQ_VOC
+namespace DAQ_VOC
 {
 
     public partial class Form1 : Form
@@ -402,7 +403,7 @@ using System.Diagnostics;
                         SP1.Preamble = (UInt16)((SP1.Buffer[0] << SP1.SHIFT8) + SP1.Buffer[1]);
                         //    SP1.Length = (UInt16)((SP1.Buffer[2] << SP1.SHIFT8) + SP1.Buffer[3]);
 
-                        SP1.Length = SP1.DEFAULT_LENGTH;
+                        SP1.Length_Rx = SP1.DEFAULT_RX_LENGTH;
 
                         if (SP1.Preamble == SP1.DEFAULT_PREAMBLE) // CHECK IF PREAMLE IS EQUAL TO THE DEFAULT ONE
                         {
@@ -424,7 +425,7 @@ using System.Diagnostics;
                                                     //  SP1_serialPort.ReadExisting();
                                                     //   return;
                                                     // SP1.Length = (UInt16)(SP1.PREAMBLE_BYTES + SP1.DATALENGTH_BYTES); // default
-                            SP1.Length = SP1.DEFAULT_LENGTH;
+                            SP1.Length_Rx = SP1.DEFAULT_RX_LENGTH;
 
                             //        SP1_serialPort.ReadExisting();
                         }
@@ -432,9 +433,9 @@ using System.Diagnostics;
                 }
                 if (SP1.ReadSequence == 1) // IF MATCH SUCCESFULL GO ON READING THE REMAINING
                 {
-                    if (SP1_serialPort.BytesToRead >= SP1.Length - (SP1.PREAMBLE_BYTES + SP1.DATALENGTH_BYTES)) // READ REMAINING CRC AND DATA BYTES IF ALL AT BUFFER
+                    if (SP1_serialPort.BytesToRead >= SP1.Length_Rx - (SP1.PREAMBLE_BYTES + SP1.DATALENGTH_BYTES)) // READ REMAINING CRC AND DATA BYTES IF ALL AT BUFFER
                     {
-                        SP1_serialPort.Read(SP1.ReceiveBuf, 0, (int)SP1.Length - (SP1.PREAMBLE_BYTES + SP1.DATALENGTH_BYTES));  // READ REMAINING CRC AND DATA BYTES
+                        SP1_serialPort.Read(SP1.ReceiveBuf, 0, (int)SP1.Length_Rx - (SP1.PREAMBLE_BYTES + SP1.DATALENGTH_BYTES));  // READ REMAINING CRC AND DATA BYTES
                         SP1.ReadSequence = 2;
                         SP1_CalculateRcvData();
                         SP1.ReadSequence = 0;
@@ -447,7 +448,6 @@ using System.Diagnostics;
                 //SP1.Preamble = SP1.Buffer[0];
                 SP1.Length = (UInt16)((SP1.Buffer[2] << SP1.SHIFT8) + SP1.Buffer[3]);
                 */
-
             }
             catch
             {
@@ -462,23 +462,70 @@ using System.Diagnostics;
         {
             try
             {
-                //               SP1_CalculateSendData();
-                //             SP1_serialPort.Write(SP1_SendBuf, 0, (int)SP1.DEFAULT_LENGTH);
-                //             SP1_SendtextBox.Text = SP1_SendTextData();
-                //             SP1_DataRcvtextBox.Text = SP1_PrintSendText();
+                SP1.SendBuf[0] = 0XAA;
+                SP1.SendBuf[1] = 0XAA;
+                SP1.SendBuf[2] = 0x0;
+                SP1.SendBuf[3] = (byte)SP1.DEFAULT_TX_LENGTH;
+                if (SP1.Acknowledge) SP1.SendBuf[4] = 5;
+                else SP1.SendBuf[4] = 1;
+            //    SP1.SendBuf[5] = 50;
+                SP1.SendBuf[5] = SP1.DutyCyle;
+            //    textBox_FanPWM.Text
 
-
+                SP1.CRC_Send = SP1.DEFAULT_CRC_INIT;
+                for (UInt16 i = SP1.PREAMBLE_BYTES; i < (SP1.DEFAULT_TX_LENGTH - SP1.CRC_BYTES); i++)
+                {
+                    SP1.CRC_Send ^= SP1.SendBuf[i];
+                }
+                SP1.CRC_Send <<= 8;
+                for (UInt16 i = SP1.PREAMBLE_BYTES; i < (SP1.DEFAULT_TX_LENGTH - SP1.CRC_BYTES); i++)
+                {
+                    SP1.CRC_Send ^= SP1.SendBuf[i];
+                }
+                SP1.SendBuf[SP1.DEFAULT_TX_LENGTH - 1] = (byte)(SP1.CRC_Send); // DEFAULT_LENGTH-1
+                SP1.SendBuf[SP1.DEFAULT_TX_LENGTH - 2] = (byte)(SP1.CRC_Send >> 8);// DEFAULT_LENGTH-2
+                                                                                   //           SP1.SendBuf[SP1.DEFAULT_TX_LENGTH - 1] = (byte)(SP1.CRC_Send & 0X00FF); // DEFAULT_LENGTH-1
+                                                                                   //         SP1.SendBuf[63] = 0xAA;
+                SP1_serialPort.Write(SP1.SendBuf, 0, SP1.DEFAULT_TX_LENGTH);
+                SP1_SendtextBox.Text = SP1_SendTextData();
             }
             catch
             {
                 SP1_DisConnect_Procedure();
             }
         }
+        String SP1_SendTextData()
+        {
+            String Textdata = "";
+            /*
+                for (int i = 0; i < (SP1.PREAMBLE_BYTES + SP1.DATALENGTH_BYTES); i++)
+                {
+                    //  Textdata += i.ToString() + " : " + SP1_Buffer[i].ToString() + " / 0 X" + SP1_Buffer[i].ToString("X") + System.Environment.NewLine;
+                    //  Textdata += i.ToString() + ".0X" + SP1.Buffer[i].ToString("X") + "  ";
+                    Textdata += "0X" + SP1.SendBuf[i].ToString("X2") + " ";
+                }
+                Textdata += System.Environment.NewLine;
+            */
+            int k = 0; int j = 0;
+            for (int i = 0; i < SP1.DEFAULT_TX_LENGTH; i++)
+            {
+                // Textdata += i.ToString() + " : " + SP1_ReceiveBuf[k].ToString() +  " / 0 X"+SP1_ReceiveBuf[k].ToString("X") + System.Environment.NewLine;
+                //       Textdata += i.ToString() + "." + SP1.ReceiveBuf[k].ToString("X") + "  ";
+                Textdata += "0X" + SP1.SendBuf[k].ToString("X2") + " ";
+                k++;
+                j++;
+                if (j > 7)
+                {
+                    Textdata += System.Environment.NewLine;
+                    j = 0;
+                }
+            }
+            return Textdata;
+        }
         void SP1_serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             SP1_ReceiveData_Procedure();
         }
-
         void SP1_ConnectButton_Click(object sender, EventArgs e)
         {
             if (DAQ.Connect == false)
@@ -491,26 +538,30 @@ using System.Diagnostics;
                 SP1_DisConnect_Procedure();
                 DAQ.Connect = false;
             }
-
         }
-
         void SP1_SendButton_Click(object sender, EventArgs e)
         {
             SP1_SendData_Procedure();
+            SP1.Acknowledge = true;
         }
-
+/*
+        private void numericUpDown_PWM_ValueChanged(object sender, EventArgs e)
+        {
+            //textBox_FanPWM.Text = numericUpDown_PWM.Value.ToString();
+            SP1_SendData_Procedure();
+            SP1.Acknowledge = true;
+        }
+      */  
         void button1_Click(object sender, EventArgs e)
         {
             SP1_richTextBox.Clear();
             SP1_DatatextBox.Clear();
             SP1.CRC_Error = 0;
         }
-
         void SP1_DisConnectButton_Click(object sender, EventArgs e)
         {
             SP1_DisConnect_Procedure();
         }
-
         /*              ******************  serial port1 ***********************************************************/
         unsafe void SP1_CalculateRcvData()
         {
@@ -546,12 +597,11 @@ using System.Diagnostics;
             DAQ.Current_Diff = (Int32)(DAQ.Current_Sampled - 524);
             DAQ.Current_Set = (Int32)(DAQ.Current_Setlevel - 524);
             */
-            UInt16 MaxLength = (UInt16)(SP1.Length - (SP1.PREAMBLE_BYTES + SP1.DATALENGTH_BYTES));
+            UInt16 MaxLength = (UInt16)(SP1.Length_Rx - (SP1.PREAMBLE_BYTES + SP1.DATALENGTH_BYTES));
             SP1.CRC_Received = (UInt16)((SP1.ReceiveBuf[(MaxLength - 2)] << SP1.SHIFT8) + SP1.ReceiveBuf[MaxLength - 1]);
             //      SP1.CRC_Received = (UInt16)((SP1.ReceiveBuf[34] << SP1.SHIFT8) + SP1.ReceiveBuf[35]);
 
             SP1.CRC_Calc = SP1.DEFAULT_CRC_INIT;
-
 
             for (int i = SP1.PREAMBLE_BYTES; i < (SP1.PREAMBLE_BYTES + SP1.DATALENGTH_BYTES); i++)  //  data crc
             {
@@ -583,8 +633,24 @@ using System.Diagnostics;
             else
             {
                 SP1.CRC_Success++;
+                byte B_Count = 0;  //  ++            
+                if (SP1.Acknowledge)
+                {
+                    if (SP1.ReceiveBuf[B_Count] == SP1.ACKNOWLEDGE) SP1.Acknowledge = false;
+                    else
+                    {
+                        SP1_SendData_Procedure();
+                        if (SP1.AckTimer > 20)
+                        {
+                            SP1.AckTimer = 0;
+                            SP1.Acknowledge = false;
+                        }
+                        SP1.AckTimer++;
+                    }
+                }
+                else SP1.AckTimer = 0;
 
-                byte B_Count = 0;  //  ++
+                 B_Count = 1;  //  ++
                 DAQ.Multi_Gas_1_VOC = (UInt32)((SP1.ReceiveBuf[B_Count] << SP1.SHIFT24) + (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT16) +
                                 (SP1.ReceiveBuf[++B_Count] << SP1.SHIFT8) + SP1.ReceiveBuf[++B_Count]);  //32 bit
 
@@ -647,6 +713,8 @@ using System.Diagnostics;
                 DAQ.Temperature_Float = ((float)Temp / 100).ToString();
                 DAQ.Temperature_Float = DAQ.Temperature_Float.Replace(",", ".");
                 DAQ.BME680_Temp_1 = DAQ.Temperature_Float;
+
+         //       DAQ.Temperature_Convert = DAQ.Temperature_Float;
 
                 //      s = s.Replace("a", "b")
                 //       Int32 Temp_Real = (Int32)Math.Abs(Temp_Val);
@@ -837,6 +905,11 @@ using System.Diagnostics;
                 DAQ.BME680_Prs_4 = ((float)Temp / 100).ToString();
                 DAQ.BME680_Prs_4 = DAQ.BME680_Prs_4.Replace(",", ".");
 
+                SP1.DutyCyle_Rx = SP1.ReceiveBuf[++B_Count];
+
+          //      SP1.DutyCyle_Rx = SP1.ReceiveBuf[++B_Count].ToString();
+                textBox_FanPWM.Text = SP1.DutyCyle_Rx.ToString();
+
                 /*
                 DAQ.Accelometer_Z = (Int32)SP1.ReceiveBuf[22] * 0x00FFFFFF;
                 DAQ.Accelometer_Z += (Int32)SP1.ReceiveBuf[23] * 0x0000FFFF;
@@ -844,7 +917,6 @@ using System.Diagnostics;
                 DAQ.Accelometer_Z += (Int32)SP1.ReceiveBuf[25];
                 DAQ.Accelometer_Zf = ((float)DAQ.Accelometer_Z) / 10000;
                 */
-
                 DAQ.Median_Total_VOC1 += DAQ.Multi_Gas_1_VOC;
                 DAQ.Median_Total_VOC2 += DAQ.Multi_Gas_2_VOC;
                 DAQ.Median_Total_VOC3 += DAQ.Multi_Gas_3_VOC;
@@ -855,9 +927,7 @@ using System.Diagnostics;
                 {
                     DAQ.Median_Counter = 0;
                     DAQ.Median_Total_VOC1 /= 100;
-
                 }
-
                 DAQ.Int_Counter++;
                 if (DAQ.Int_Counter >= 10)
                 {
@@ -899,21 +969,26 @@ using System.Diagnostics;
             String Textdata = "";
             try
             {
+                /*
                 for (int i = 0; i < (SP1.PREAMBLE_BYTES + SP1.DATALENGTH_BYTES); i++)
                 {
                     //  Textdata += i.ToString() + " : " + SP1_Buffer[i].ToString() + " / 0 X" + SP1_Buffer[i].ToString("X") + System.Environment.NewLine;
-                    Textdata += i.ToString() + "." + SP1.Buffer[i].ToString() + "  ";
+                 //   Textdata += i.ToString("0X")  + SP1.Buffer[i].ToString("X2") + "  ";
+                    Textdata += "0X" + SP1.Buffer[i].ToString("X2") + " ";
                 }
                 Textdata += System.Environment.NewLine;
+                */
                 int k = 0; int j = 0;
-                for (int i = (SP1.PREAMBLE_BYTES + SP1.DATALENGTH_BYTES); i < SP1.Length; i++)
+                //      for (int i = (SP1.PREAMBLE_BYTES + SP1.DATALENGTH_BYTES); i < SP1.Length_Rx; i++)
+                      for (int i = 0; i < SP1.DEFAULT_RX_LENGTH; i++)
                 {
 
                     // Textdata += i.ToString() + " : " + SP1_ReceiveBuf[k].ToString() +  " / 0 X"+SP1_ReceiveBuf[k].ToString("X") + System.Environment.NewLine;
-                    Textdata += i.ToString() + "." + SP1.ReceiveBuf[k].ToString() + "  ";
+                    //       Textdata += i.ToString("0X")  + SP1.ReceiveBuf[k].ToString("X2") + "  ";
+                    Textdata += "0X" + SP1.ReceiveBuf[k].ToString("X2") + " ";
                     k++;
                     j++;
-                    if (j > 4)
+                    if (j > 7)
                     {
                         Textdata += System.Environment.NewLine;
                         j = 0;
@@ -933,47 +1008,48 @@ using System.Diagnostics;
             Textdata += "   Sync "  + SP1.Preamble_Trial.ToString( );
 
 
-            Textdata += "  Length:" + SP1.Length.ToString() + DAQ.nl;
+            Textdata += "  Length:" + SP1.Length_Rx.ToString() + DAQ.nl;
             Textdata += "CRC_Recv." + "0X" + SP1.CRC_Received.ToString("X");
             Textdata += "     Calc. " + "0X" + SP1.CRC_Calc.ToString("X") + DAQ.nl;
 
-            Textdata += "CRC_Err. " + SP1.CRC_Error.ToString();
-            Textdata += "    Suc.  " + SP1.CRC_Success.ToString() + DAQ.nl;
+            Textdata += "CRC Success:" + SP1.CRC_Success.ToString();
+            Textdata += "  Err. " + SP1.CRC_Error.ToString();
+
 
             if (SP1.CRC_Success != 0)
             {
                 float ErroRate = SP1.CRC_Error * 100000 / SP1.CRC_Success;
                 if (ErroRate > 0) {
-                    Textdata += "Error Rate : %" + (ErroRate / 1000).ToString();
+                    Textdata += "  Rate: %" + (ErroRate / 1000).ToString();
                 }
-                else Textdata += "Error Rate : %0.0000";
+                else Textdata += "  Rate: %0.0000";
             }
-            else Textdata += "Error Rate : % 0.0000";
+            else Textdata += "  Rate: % 0.0000";
 
             Textdata += System.Environment.NewLine + System.Environment.NewLine;
 
             Textdata += "Multi_Gas_1_VOC  : " + DAQ.Multi_Gas_1_VOC.ToString() + "  " + DAQ.nl;
             Textdata += "Multi_Gas_1_C2H5OH:" + DAQ.Multi_Gas_1_C2H5OH.ToString() + "  " + DAQ.nl;
             Textdata += "Multi_Gas_1_CO  :  " + DAQ.Multi_Gas_1_CO.ToString() + "  " + DAQ.nl;
-            Textdata += "Multi_Gas_1_NO2 :  " + DAQ.Multi_Gas_1_NO2.ToString() + "  " + DAQ.nl + DAQ.nl;
+            Textdata += "Multi_Gas_1_NO2 :  " + DAQ.Multi_Gas_1_NO2.ToString() + "  " + DAQ.nl ;
 
             Textdata += "Multi_Gas_2_VOC  : " + DAQ.Multi_Gas_2_VOC.ToString() + "  " + DAQ.nl;
             Textdata += "Multi_Gas_2_C2H5OH:" + DAQ.Multi_Gas_2_C2H5OH.ToString() + "  " + DAQ.nl;
             Textdata += "Multi_Gas_2_CO  :  " + DAQ.Multi_Gas_2_CO.ToString() + "  " + DAQ.nl;
-            Textdata += "Multi_Gas_2_NO2 :  " + DAQ.Multi_Gas_2_NO2.ToString() + "  " + DAQ.nl + DAQ.nl;
+            Textdata += "Multi_Gas_2_NO2 :  " + DAQ.Multi_Gas_2_NO2.ToString() + "  " + DAQ.nl ;
 
             Textdata += "Multi_Gas_3_VOC  : " + DAQ.Multi_Gas_3_VOC.ToString() + "  " + DAQ.nl;
             Textdata += "Multi_Gas_3_C2H5OH:" + DAQ.Multi_Gas_3_C2H5OH.ToString() + "  " + DAQ.nl;
             Textdata += "Multi_Gas_3_CO  :  " + DAQ.Multi_Gas_3_CO.ToString() + "  " + DAQ.nl;
-            Textdata += "Multi_Gas_3_NO2 :  " + DAQ.Multi_Gas_3_NO2.ToString() + "  " + DAQ.nl + DAQ.nl;
+            Textdata += "Multi_Gas_3_NO2 :  " + DAQ.Multi_Gas_3_NO2.ToString() + "  " + DAQ.nl ;
 
             Textdata += "Multi_Gas_4_VOC  : " + DAQ.Multi_Gas_4_VOC.ToString() + "  " + DAQ.nl;
             Textdata += "Multi_Gas_4_C2H5OH:" + DAQ.Multi_Gas_4_C2H5OH.ToString() + "  " + DAQ.nl;
             Textdata += "Multi_Gas_4_CO  :  " + DAQ.Multi_Gas_4_CO.ToString() + "  " + DAQ.nl;
-            Textdata += "Multi_Gas_4_NO2 :  " + DAQ.Multi_Gas_4_NO2.ToString() + "  " + DAQ.nl + DAQ.nl;
+            Textdata += "Multi_Gas_4_NO2 :  " + DAQ.Multi_Gas_4_NO2.ToString() + "  " + DAQ.nl ;
 
             Textdata += "Temperature  :  " + DAQ.Temperature_Float + "  " + DAQ.nl;
-            Textdata += "Humidity  :  " + DAQ.Humidity_Float + "  " + DAQ.nl + DAQ.nl;
+            Textdata += "Humidity  :  " + DAQ.Humidity_Float + "  " + DAQ.nl ;
 
             
             return Textdata;
@@ -1017,9 +1093,7 @@ using System.Diagnostics;
                    Task_Counter++;
                     if (Task_Counter > 4) Task_Counter = 0;  // 8-> 1 sec                     
                                                              //      Update_Chart = 1;
-                                                             //       Plot_Chart();
-
-       
+                                                             //       Plot_Chart();    
                     SP1_richTextBox.Text = SP1_GetTextdata(); // main informative screen
            
                     SP1_DatatextBox.Text = SP1_GetTextdata2();  // all data in hex format screen
@@ -1030,7 +1104,18 @@ using System.Diagnostics;
                 if (DAQ.Enable_Menu_Time_Update == true)
                     systemTimeToolStripMenuItem.Text = "Time & Date: " + COMMON_GetDateTime();
 
-            }
+
+                //     if( SP1.DutyCyle != SP1.DutyCycle_Prev)
+
+                if (numericUpDown_PWM.Value.ToString() != textBox_FanPWM.Text)
+                {
+                    
+                    SP1.DutyCyle = (byte)numericUpDown_PWM.Value;
+                    SP1_SendData_Procedure();
+                    SP1.Acknowledge = true;
+                }             
+
+    }
             if (DAQ.EnableInitTimer == true)
             {
                 DAQ.InitTimer++;
@@ -1046,7 +1131,6 @@ using System.Diagnostics;
                 if (SP1_serialPort.BytesToRead != 0)
                 {
                     SP1.ComTimeout++;
-
                 }
                 else SP1.ComTimeout = 0;
                 if (SP1.ComTimeout > 2)
@@ -1066,7 +1150,6 @@ using System.Diagnostics;
                 //        SP1.ReadSequence = 0;
 
                 //          SP1_CalculateRcvData();
-
             }
             try
             {
@@ -1077,7 +1160,6 @@ using System.Diagnostics;
                 */
             }
             catch { }
-
         }
         void Array_Fill()
         {
@@ -1097,12 +1179,12 @@ using System.Diagnostics;
                     DAQ.BME_VOC_Arr3[t - 1] = DAQ.BME_VOC_Arr3[t];
                     DAQ.BME_VOC_Arr4[t - 1] = DAQ.BME_VOC_Arr4[t];
 
+                    DAQ.Fan[t - 1] = DAQ.Fan[t];
+                    DAQ.Arr5[t - 1] = DAQ.Arr5[t];
+                    DAQ.Arr6[t - 1] = DAQ.Arr6[t];
 
-
-                
-             //       DAQ.Arr5[t - 1] = DAQ.Arr5[t];
-              //      DAQ.Arr6[t - 1] = DAQ.Arr6[t];
-
+                    //       DAQ.Arr5[t - 1] = DAQ.Arr5[t];
+                    //      DAQ.Arr6[t - 1] = DAQ.Arr6[t];
 
                 }
             }
@@ -1121,18 +1203,16 @@ using System.Diagnostics;
             DAQ.BME_VOC_Arr3[DAQ.sp] = (DAQ.BME_Voc3 / 100).ToString();
             DAQ.BME_VOC_Arr4[DAQ.sp] = (DAQ.BME_Voc4 / 100).ToString();
 
-            //       DAQ.Arr5[DAQ.sp] = (DAQ.Temperature_Convert/100).ToString();
-            //         DAQ.Arr6[DAQ.sp] = (DAQ.Humidity_Convert/100).ToString();
+
+            DAQ.Fan[DAQ.sp] = (SP1.DutyCyle_Rx).ToString();
+            DAQ.Arr5[DAQ.sp] = (DAQ.Temperature_Convert/100).ToString();
+            DAQ.Arr6[DAQ.sp] = (DAQ.Humidity_Convert/100).ToString();
             //
             //      DAQ.Current_Arr[DAQ.sp] = ((double)(DAQ.Current/100)).ToString();
             //   DAQ.Voltage_Arr[DAQ.sp] = ((double)(DAQ.Voltage/100)).ToString();
 
             //       DAQ.Voltage_Arr[DAQ.sp] = ValTemp.ToString();
-
-
-
             //         DAQ.Temperature_Arr[DAQ.sp] = DAQ.Temperature.ToString();
-
 
             // Adjust bp
             if (DAQ.sp >= DAQ.ChartSize) // 300 550 // bp->250
@@ -1160,6 +1240,10 @@ using System.Diagnostics;
             NPlot.LinePlot Graph6 = new NPlot.LinePlot();
             NPlot.LinePlot Graph7 = new NPlot.LinePlot();
             NPlot.LinePlot Graph8 = new NPlot.LinePlot();
+            NPlot.LinePlot Graph9 = new NPlot.LinePlot();
+            NPlot.LinePlot Graph10 = new NPlot.LinePlot();
+            NPlot.LinePlot Graph11 = new NPlot.LinePlot();
+
             /*
                         Graph1.Pen = new Pen(Color.Red, 1);
                         Graph2.Pen = new Pen(Color.Blue, 2);
@@ -1170,7 +1254,6 @@ using System.Diagnostics;
                         Graph7.Pen = new Pen(Color.Red, 1);
                         Graph8.Pen = new Pen(Color.Blue, 2);
             */
-
             Graph1.Pen = new Pen(Color.Red, 1);
             Graph2.Pen = new Pen(Color.Red, 1);
             Graph3.Pen = new Pen(Color.Red, 1);
@@ -1179,6 +1262,11 @@ using System.Diagnostics;
             Graph6.Pen = new Pen(Color.Blue, 1);   // 
             Graph7.Pen = new Pen(Color.Blue, 1);
             Graph8.Pen = new Pen(Color.Blue, 1);
+
+            Graph9.Pen = new Pen(Color.YellowGreen, 1);   // 
+            Graph10.Pen = new Pen(Color.Purple, 1);
+            Graph11.Pen = new Pen(Color.Black, 1);
+
 
 
             List<String> X_Data = new List<String>();
@@ -1190,7 +1278,9 @@ using System.Diagnostics;
             List<String> Data6 = new List<String>();
             List<String> Data7 = new List<String>();
             List<String> Data8 = new List<String>();
-
+            List<String> Data9 = new List<String>();
+            List<String> Data10 = new List<String>();
+            List<String> Data11 = new List<String>();
             plotSurface2D1.Clear();
 
             //     Plot_Create_Instance();
@@ -1204,6 +1294,9 @@ using System.Diagnostics;
             Data6.Clear();
             Data7.Clear();
             Data8.Clear();
+            Data9.Clear();
+            Data10.Clear();
+            Data11.Clear();
             //     plotSurface2D1.Clear();
             /*
                         grid.VerticalGridType = NPlot.Grid.GridType.Coarse;
@@ -1231,6 +1324,11 @@ using System.Diagnostics;
                 Data6.Add(DAQ.BME_VOC_Arr2[t].ToString());
                 Data7.Add(DAQ.BME_VOC_Arr3[t].ToString());
                 Data8.Add(DAQ.BME_VOC_Arr4[t].ToString());
+
+                Data9.Add(DAQ.Fan[t].ToString());
+                Data10.Add(DAQ.Arr5[t].ToString());
+                Data11.Add(DAQ.Arr6[t].ToString());
+                
             }
             Graph1.AbscissaData = X_Data;
             Graph1.DataSource = Data1;
@@ -1250,8 +1348,13 @@ using System.Diagnostics;
             Graph8.AbscissaData = X_Data;
             Graph8.DataSource = Data8;
 
+            Graph9.AbscissaData = X_Data;
+            Graph9.DataSource = Data9;
+            Graph10.AbscissaData = X_Data;
+            Graph10.DataSource = Data10;
+            Graph11.AbscissaData = X_Data;
+            Graph11.DataSource = Data11;
 
-            //    checkBox_Power
 
             int Check = 0;
 
@@ -1261,7 +1364,6 @@ using System.Diagnostics;
             if (checkBox_Voc4.Checked == true) {plotSurface2D1.Add(Graph4); Check++; }  // VOC 4
                                                                            //      if (checkBox_Temperature.Checked == true) plotSurface2D1.Add(Graph5); // VOC 3
                                                                            //        if (checkBox_Humidity.Checked == true) plotSurface2D1.Add(Graph6); // VOC 4
-
             if (checkBox_Voc1_Median.Checked == true) {plotSurface2D1.Add(Graph5); Check++; } 
             if (checkBox_Voc2_Median.Checked == true) {plotSurface2D1.Add(Graph6); Check++; } 
             if (checkBox_Voc3_Median.Checked == true) {plotSurface2D1.Add(Graph7); Check++; }
@@ -1271,28 +1373,27 @@ using System.Diagnostics;
             {
                 plotSurface2D1.Add(Graph7);
             }
-            
-        
 
+            plotSurface2D1.Add(Graph9);
+            plotSurface2D1.Add(Graph10);
+            plotSurface2D1.Add(Graph11);
 
-        //     plotSurface2D1.Add(Graph8);
+            //     plotSurface2D1.Add(Graph8);
 
-        /*
-        if (!((checkBox_Speed.Checked == true) || (checkBox_Current.Checked == true) ||
-                (checkBox_Voltage.Checked == true) || (checkBox_Temperature.Checked == true)))
-        {
-            for (Int16 t = DAQ.bp; t <= DAQ.sp; t++)
+            /*
+            if (!((checkBox_Speed.Checked == true) || (checkBox_Current.Checked == true) ||
+                    (checkBox_Voltage.Checked == true) || (checkBox_Temperature.Checked == true)))
             {
-                Data1.Clear();
-                Data1.Add("0");
+                for (Int16 t = DAQ.bp; t <= DAQ.sp; t++)
+                {
+                    Data1.Clear();
+                    Data1.Add("0");
+                }
+                plotSurface2D1.Add(Graph1);
             }
-            plotSurface2D1.Add(Graph1);
-        }
-        */
+            */
 
-
-
-        plotSurface2D1.ShowCoordinates = true;
+            plotSurface2D1.ShowCoordinates = true;
             //      plotSurface2D1.YAxis1.Label = "";
             plotSurface2D1.YAxis1.LabelOffsetAbsolute = true;
             plotSurface2D1.YAxis1.LabelOffset = 0;
@@ -1319,7 +1420,6 @@ using System.Diagnostics;
             //  form.BackColor = Color.
             form.Show();
         }
-
         private void dataLoggerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DAQ.Enable_Menu_Time_Update = true;
@@ -1346,7 +1446,6 @@ using System.Diagnostics;
         public void LOG_SaveLogFile() { 
             if (LOG_File_SaveAs() == false) return;
         }
-
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //LOG_SaveLogFile();
@@ -1409,8 +1508,7 @@ using System.Diagnostics;
                 LOG_LogStatusUpdate();
                 stopToolStripMenuItem.Enabled = true;
                
-            }
-            
+            }      
                 DAQ.Log_SampleCounter = 0;
             return true;
         }
@@ -1524,7 +1622,6 @@ using System.Diagnostics;
                 else fr = "";
                 //      Okyanus.Definitions.WorkDrive + 
                 Okyanus.Definitions.Original_Log_File = Okyanus.Definitions.Original_Log_File_Base + fr + Okyanus.Variables.Log_Original_Log_File_post_add.ToString();	 // add 
-
             }
             else
             {
@@ -1601,8 +1698,6 @@ using System.Diagnostics;
             Mystring += DAQ.Multi_Gas_1_VOC.ToString() + "," + DAQ.Multi_Gas_2_VOC.ToString() + "," + DAQ.Multi_Gas_3_VOC.ToString() + "," + DAQ.Multi_Gas_4_VOC.ToString() +
                   "," + DAQ.Temperature_Float + ","+ DAQ.Humidity_Float;
 
-
-
             return Mystring;
         }
         public String LOG_DeleteStreamWriter(StreamWriter Sw)
@@ -1629,7 +1724,6 @@ using System.Diagnostics;
             catch (IOException) { DAQ.Log_Error = true; return "false"; }
             return "true";
         }
-
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
          //   Okyanus.Chart.Play = false;
@@ -1669,28 +1763,19 @@ using System.Diagnostics;
                    
                     break;
             }
-
-
-
-
-
         //    DAQ.Max_Array_Size = Ref;
-        //    if (DAQ.Index > DAQ.Max_Array_Size) DAQ.Index = 0;
-       
+        //    if (DAQ.Index > DAQ.Max_Array_Size) DAQ.Index = 0;    
         }
-
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
             DAQ.ChartSize = DAQ.SAMPLE_10SEC;
             SetArrayColors();
         }
-
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
             DAQ.ChartSize = DAQ.SAMPLE_20SEC;
             SetArrayColors();
         }
-
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
             DAQ.ChartSize = DAQ.SAMPLE_1MIN;
@@ -1741,7 +1826,6 @@ private void systemTimeToolStripMenuItem_Click(object sender, EventArgs e)
 }
 */
 
-
         void FuncT() { 
         
         }
@@ -1750,7 +1834,6 @@ private void systemTimeToolStripMenuItem_Click(object sender, EventArgs e)
  //       {
          //   DAQ.Slope = (double) numericUpDown_incline.Value;
   //      }
-
         private void communicationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             /*
@@ -1762,7 +1845,6 @@ private void systemTimeToolStripMenuItem_Click(object sender, EventArgs e)
             form.checkBox_Simulator_State.Checked = true;
             */
         }
-
         private void deviceManagerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("devmgmt.msc");
@@ -1776,7 +1858,6 @@ private void systemTimeToolStripMenuItem_Click(object sender, EventArgs e)
                 {
                     if (names.Contains(s))
                     {
-
                         SP1_SendtextBox.Text += s + "     " + NAM + "\r\n";
 
                   //  SP1_SendtextBox.Text = s;
@@ -1789,7 +1870,6 @@ private void systemTimeToolStripMenuItem_Click(object sender, EventArgs e)
             else
                 SP1_SendtextBox.Text = "No COM ports found";  //  return s;
         }
-
         private void comPortListToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ComPort_List_ForTable(SP1.VID_1, SP1.PID_1, SP1.NAM_1);
@@ -1804,7 +1884,6 @@ private void systemTimeToolStripMenuItem_Click(object sender, EventArgs e)
             //  form.BackColor = Color.
         //    form.Show();
         }
-
         private void checkBox_Temperature_CheckedChanged(object sender, EventArgs e)
         {
 
@@ -1815,13 +1894,14 @@ private void systemTimeToolStripMenuItem_Click(object sender, EventArgs e)
 
         }
 
+        private void checkBox_Voc3_Median_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
         //    private void numericUpDown_Wheel_ValueChanged(object sender, EventArgs e)
         //    {
         //        DAQ.Wheel_Diameter = (Int16)numericUpDown_Wheel.Value;
         //     }
-
     }
-
-
 }
 

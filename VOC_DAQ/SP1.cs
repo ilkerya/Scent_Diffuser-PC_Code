@@ -38,9 +38,9 @@ using System.Text;
          public static String Def_NAM = SP1.NAM_4;
         */
 
-        public static String Def_VID = SP1.VID_3;
-        public static String Def_PID = SP1.PID_3;
-        public static String Def_NAM = SP1.NAM_3;
+        public static String Def_VID = SP1.VID_5;
+        public static String Def_PID = SP1.PID_5;
+        public static String Def_NAM = SP1.NAM_5;
         
         public static String PortConnectName;
         public static uint ComTimeout;  // SP1.ComTimeout
@@ -99,14 +99,24 @@ using System.Text;
         public static readonly UInt16 DEFAULT_PREAMBLE = 0XAAAA; // preamble+length 4 byte + 4 byte
         public static readonly UInt16 DEFAULT_CRC_INIT = 0XAAAA; // preamble+length 4 byte + 4 byte
 
-        public static readonly UInt16 DEFAULT_LENGTH = 133; // islemci tarafindaki ayni def ile degerde olmali
-
+        public static readonly UInt16 DEFAULT_RX_LENGTH = 136; // islemci tarafindaki ayni def ile degerde olmali
+        public static readonly UInt16 DEFAULT_TX_LENGTH = 30; // islemci tarafindaki ayni def ile degerde olmali
         public static readonly UInt16 SHIFT24 = 24;
         public static readonly UInt16 SHIFT16 = 16;
        public static readonly UInt16 SHIFT8 = 8;
 
-        public static UInt16 Length = DEFAULT_LENGTH;
+        public static UInt16 Length_Tx = DEFAULT_TX_LENGTH;
+        public static UInt16 Length_Rx = DEFAULT_RX_LENGTH;
+        public static UInt16 CRC_Send = DEFAULT_RX_LENGTH;
 
+        public static readonly byte ACKNOWLEDGE = 0XC3;
+        public static readonly byte DATA_BYTE = 0X55;
+        public static bool Acknowledge;
+        public static byte AckTimer;
+
+        public static byte DutyCyle;
+        public static byte DutyCyle_Rx;
+        // public static byte DutyCycle_Prev;
     }
 
 
